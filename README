@@ -26,4 +26,4 @@ sortLC.php:
 
 Security:
 
-This set of programs takes data uploaded by a user and inserts it into a database. It is HIGHLY recommended that you secure this set of processes in a password-protected directory. Some effort has been made to reduce the possibility of SQL-injections, but there are likely still vulnerabilities. Use sensbily!
+This set of programs takes data uploaded by a user and inserts it into a database. It is HIGHLY recommended that you secure this set of processes in a password-protected directory. Some effort has been made to reduce the possibility of SQL-injections, but there are likely still vulnerabilities. Use sensibly!
