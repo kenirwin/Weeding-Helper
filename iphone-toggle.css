@@ -1,0 +1,78 @@
+/* Checkbox style */
+
+.iphone-style  {
+	display: block;
+	width: 87px;
+	height: 28px;
+	background: url('images/check-square.png') no-repeat;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	overflow: hidden;
+	cursor: pointer;
+}
+	
+.firerift-style {		
+	display: block;
+	width: 68px;
+	height: 28px;
+	background: url('images/check-circle.png') no-repeat;
+	cursor: pointer;
+}
+	
+.on {
+	background-position: 0% 100%;
+}
+	
+.off {
+	background-position: 100% 0%;
+}
+
+/* Checkbox style */
+
+label {
+	display: block;
+	float: right;
+	width: 30em;
+}
+
+.cleaner {
+	clear: both;
+}
+	
+.hidden {
+	display: none;
+}
+
+.separator {
+	clear: both;
+	margin-bottom: 1em;
+	border-bottom: 1px dotted #ccc;
+}
+
+.title {
+	display: block;
+	font-size: 25px;
+	line-height: 1.5em;
+	font-weight: bold;
+	text-shadow: 0px 2px 0px #fff;
+	border-bottom: 2px solid #ccc;
+	margin-bottom: 1em;
+}
+
+.title-2 {
+	display: block;
+	font-size: 20px;
+	line-height: 1.5em;
+	font-weight: bold;
+	text-shadow: 0px 2px 0px #fff;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: #4b4b4b;
+}
+
+a:hover {
+	border-bottom: 1px dotted #4b4b4b;
+}

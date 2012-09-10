@@ -1,0 +1,3 @@
+Redistribution: You are allowed to distribute ajaxCRUDTM with non-commercial packages given that you a) emphasize on your download page that ajaxCRUDTM is not free for commercial use, and b) provide a link back to this web page on your download page. 
+
+See: http://ajaxcrud.com/license.php
