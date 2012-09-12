@@ -9,7 +9,13 @@ else { // if config.php
     die('Could not connect: ' . mysql_error());
   }
   
-
+  $extant_tables = array();
+  $q = "SHOW TABLES"; 
+  $r = mysql_query($q); 
+  while ($myrow = mysql_fetch_row($r)) {
+    array_push ($extant_tables, $row[0]);
+  } //while checking rows 
+  
   mysql_query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB") || print "<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>";
   
     // make foo the current db
@@ -18,6 +24,7 @@ else { // if config.php
     die ('Can\'t use $MYSQL_DB : ' . mysql_error());
   }
 
+  if (! in_array("controller", $extant_tables)) {
   $sql = "\n"
     . " CREATE TABLE IF NOT EXISTS `$MYSQL_DB`.`controller` ( `filename` varchar( 255 ) NOT NULL ,\n"
     . " `file_title` varchar( 255 ) NOT NULL ,\n"
@@ -28,7 +35,43 @@ else { // if config.php
     . " `load_date` datetime DEFAULT NULL ,\n"
     . " `innreach_finished` date DEFAULT NULL ) COMMENT = 'track weeding progress';";
   (mysql_query ($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`controller`: <b>$sql</b></p>\n";
-  
+  } //end if no controller table  
 
+  if (! in_array("table_config", $extant_tables)) {
+    $sql = "\n"
+      . " CREATE TABLE `weeding`.`table_config` ( `table_name` varchar( 25 ) NOT NULL ,\n"
+      . " `action` varchar( 255 ) NOT NULL ,\n"
+      . " `field` varchar( 255 ) DEFAULT NULL ,\n"
+      . " `printable` char( 1 ) DEFAULT NULL )";
+    (mysql_query ($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`table_config`: <b>$sql</b></p>\n";
+    
+    $sql = "\n"
+      . "INSERT INTO `table_config` (`table_name`, `action`, `field`, `printable`) VALUES"
+      . "('default', 'omitField', 'publisher', 'Y'),"
+      . "('default', 'omitField', 'loc', 'N'),"
+      . "('default', 'omitField', 'bcode', 'N'),"
+      . "('default', 'omitField', 'mat_type', 'N'),"
+      . "('default', 'omitField', 'bib_record', 'N'),"
+      . "('default', 'disallowEdit', 'subclass', 'N'),"
+      . "('default', 'disallowEdit', 'subj_starts', 'N'),"
+      . "('default', 'omitField', 'classic', 'N'),"
+      . "('default', 'omitField', 'condition', 'N'),"
+      . "('default', 'disallowEdit', 'author', 'Y'),"
+      . "('default', 'disallowEdit', 'title', 'Y'),"
+      . "('default', 'disallowEdit', 'year', 'Y'),"
+      . "('default', 'disallowEdit', 'lcsh', 'N'),"
+      . "('default', 'disallowEdit', 'catdate', 'N'),"
+      . "('default', 'disallowEdit', 'call', 'Y'),"
+      . "('default', 'disallowEdit', 'circs', 'N'),"
+      . "('default', 'disallowEdit', 'renews', 'N'),"
+      . "('default', 'disallowEdit', 'int_use', 'N'),"
+      . "('default', 'disallowEdit', 'last_checkin', 'N'),"
+      . "('default', 'disallowEdit', 'items', 'N'),"
+      . "('default', 'disallowEdit', 'circ_items', 'N'),"
+      . "('default', 'disallowEdit', 'subclass', 'N'),"
+      . "('default', 'disallowEdit', 'subj_starts', 'N')";
+    (mysql_query ($sql)) || print "<p class=\"warn\">Unable to populate the table `$MYSQL_DB`.`table_config` with default settings</p>\n";    
+
+  } //end if no table_config table  
 } //end else if config exists
 ?>
