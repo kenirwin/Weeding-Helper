@@ -9,13 +9,6 @@ else { // if config.php
     die('Could not connect: ' . mysql_error());
   }
   
-  $extant_tables = array();
-  $q = "SHOW TABLES"; 
-  $r = mysql_query($q); 
-  while ($myrow = mysql_fetch_row($r)) {
-    array_push ($extant_tables, $row[0]);
-  } //while checking rows 
-  
   mysql_query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB") || print "<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>";
   
     // make foo the current db
@@ -23,6 +16,14 @@ else { // if config.php
   if (!$db_selected) {
     die ('Can\'t use $MYSQL_DB : ' . mysql_error());
   }
+
+  $extant_tables = array();
+  $q = "SHOW TABLES"; 
+  $r = mysql_query($q); 
+  while ($myrow = mysql_fetch_row($r)) {
+    array_push ($extant_tables, $myrow[0]);
+  } //while checking rows 
+  
 
   if (! in_array("controller", $extant_tables)) {
   $sql = "\n"

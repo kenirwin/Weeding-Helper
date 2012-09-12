@@ -191,8 +191,8 @@ function CreateTable ($table_name) {
 }
 
 function LoadTable ($table, $file) {
-  $this_dir = "/docs/weed";
-  $q = "LOAD DATA INFILE '$this_dir/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
+  global $path_main;
+  $q = "LOAD DATA INFILE '$path_main/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
   print $q . "\n";
   $r = mysql_query($q);
   if (mysql_errno() > 0) {
