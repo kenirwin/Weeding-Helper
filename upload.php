@@ -74,7 +74,7 @@ function ShowUploadForm() {
 <p>
 <label for="table_name">Table name</label>
 <input name="table_name" type="text" />
-<span class="fieldnote">Something short with funn characters, for the MySQL table name, like "history"</span>
+<span class="fieldnote">Something short without funny characters, for the MySQL table name, like "history"</span>
 </p>
 
 <p>
