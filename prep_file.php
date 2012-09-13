@@ -28,12 +28,19 @@ while ($myrow = mysql_fetch_assoc($r)) {
   extract($myrow);
   //  fwrite ($log, "$now - PrepFile: $filename");
   if (PrepFile ($filename)) {
+    print "SUCCESS: Prepped file for database ingestion\n";
     //  fwrite ($log, "$now - CreateTable: $table_name");
-    CreateTable($table_name);
-    //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
-    LoadTable($table_name, $filename);
+    if (CreateTable($table_name)) {
+      //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
+      if (LoadTable($table_name, $filename)) {
+      }
+      else { print "FAILED: Cound not load data from $filname into $table_name\n";}
+    } //end if CreateTable 
+    else { 
+      print "FAILED: Could not create table $table_name\n";
+    } 
   } //end if PrepFile
-  else { print "FAILED: Failed to PrepFile; Database table not created"; }
+  else { print "FAILED: Failed to PrepFile $filename; Database table not created\n"; }
 
   $q = "SELECT count(*) FROM `$table_name`"; 
   $r = mysql_query($q);
@@ -190,9 +197,11 @@ function CreateTable ($table_name) {
   if (mysql_errno() > 0) {
     $error = "ERROR: " . mysql_errno() . ": " . mysql_error(). "\n";
     print ($error);
+    return false;
   } //end if error
   else {
     print ("SUCCESS: Created table: $table_name\n");
+    return true;
   }
 }
 
@@ -204,9 +213,11 @@ function LoadTable ($table, $file) {
   if (mysql_errno() > 0) {
     $error = "ERROR: " . mysql_errno() . ": " . mysql_error(). "\n";
     print ($error);
+    return false;
   } //end if error
   else {
-    print ("SUCCESS: LOADED FILE\n");
+    print ("SUCCESS: LOADED FILE $file\n");
+    return true;
   }
 } //end function LoadFile
 
