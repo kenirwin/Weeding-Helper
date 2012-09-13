@@ -51,7 +51,8 @@ function PrepFile ($filename) {
   
   /* SETUP VARIABLES */
   $handle = fopen("upload/$filename", "r");
-  $output_handle = fopen("prepped/$filename", "w");
+  $output_filename = "prepped/$filename";
+  $output_handle = fopen("$output_filename", "w"); // || print ("FAILED: Could not open $output_filename for writing");
   // these arrays define variable names to be used later
   $fixed = array ("author","title","pub","lcsh","cat_date","loc","call","bcode","mat_type","bib_record");
   $itemized = array ("total_circ","renews","int_use","last_checkin");
