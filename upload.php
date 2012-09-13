@@ -35,7 +35,7 @@ if ($allow_uploads == true) {
   } // end if web server has write permissions
 
   else { // if web server doesn't have write permissions
-    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the upload/ directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the upload/ directory. In the mean time you can still upload files through your MySQL interface (<a href=\"documentation.php#how_to_add_circ_data\">see documentation</a>).</p>";
+    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the upload/ directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the upload/ directory. (<a href=\"documentation.php#installation\">See Installation documentation, step 4</a>).</p>";
  
     /*
       Don't know the username for your webserver's process? 

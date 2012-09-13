@@ -3,7 +3,8 @@
    if ($_SESSION[weed_table] == ""){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
-	      "settings.php" => "View/Edit Settings"
+	      "settings.php" => "View/Edit Settings",
+	      "documentation.php" => "Help"
 	      );
    }
    
@@ -13,7 +14,8 @@ $nav = array ("controller.php" => "All Tables",
 	      "view.php" => "View/Edit",
 	      "cloud.php" => "Keyword Cloud",
 	      "graph.php" => "Graph",
-	      "settings.php" => "View/Edit Settings"
+	      "settings.php" => "View/Edit Settings",
+	      "documentation.php" => "Help"
 	      );
    }
 foreach ($nav as $link => $name) {

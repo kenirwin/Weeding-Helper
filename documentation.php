@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Documentation: Weeding Helper</title>
+<title>Help/Documentation: Weeding Helper</title>
 <link rel="stylesheet" href="style.css" />
 <style>
    body { margin: 0 10% 0 5% }
@@ -15,7 +15,7 @@ div.example {
 </style>
 </head>
 <body>
-<h1>Weeding Helper: Documentation</h1>
+<h1>Weeding Helper: Help/Documentation</h1>
 
 <a name="pre-install"></a>
    <h2>Pre-Installation: System Requirements and Access Needed</h2>
