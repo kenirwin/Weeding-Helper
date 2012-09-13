@@ -27,12 +27,14 @@ $now = date ("Y-m-d h:i:s");
 while ($myrow = mysql_fetch_assoc($r)) {
   extract($myrow);
   //  fwrite ($log, "$now - PrepFile: $filename");
-  PrepFile ($filename);
-  //  fwrite ($log, "$now - CreateTable: $table_name");
-  CreateTable($table_name);
-  //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
-  LoadTable($table_name, $filename);
-  
+  if (PrepFile ($filename)) {
+    //  fwrite ($log, "$now - CreateTable: $table_name");
+    CreateTable($table_name);
+    //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
+    LoadTable($table_name, $filename);
+  } //end if PrepFile
+  else { print "FAILED: Failed to PrepFile; Database table not created"; }
+
   $q = "SELECT count(*) FROM `$table_name`"; 
   $r = mysql_query($q);
   $row_a = mysql_fetch_array($r);
@@ -52,7 +54,9 @@ function PrepFile ($filename) {
   /* SETUP VARIABLES */
   $handle = fopen("upload/$filename", "r");
   $output_filename = "prepped/$filename";
-  $output_handle = fopen("$output_filename", "w"); // || print ("FAILED: Could not open $output_filename for writing");
+  $output_handle = fopen("$output_filename", "w");
+  if (! $output_handle) { return false; }
+  
   // these arrays define variable names to be used later
   $fixed = array ("author","title","pub","lcsh","cat_date","loc","call","bcode","mat_type","bib_record");
   $itemized = array ("total_circ","renews","int_use","last_checkin");
@@ -175,6 +179,7 @@ function PrepFile ($filename) {
       fwrite ($output_handle, $info);
     }
   } //end if handle
+  return true;
   } //end function PrepFile
 
 
