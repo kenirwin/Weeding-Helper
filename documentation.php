@@ -16,6 +16,7 @@ div.example {
 </head>
 <body>
 <h1>Weeding Helper: Help/Documentation</h1>
+<? include("nav.php"); ?>
 
 <a name="pre-install"></a>
    <h2>Pre-Installation: System Requirements and Access Needed</h2>
@@ -27,12 +28,12 @@ div.example {
    <li>Unzip the file in a directory of its own. (The unzipping process creates a lot of files in the current directory, rather than a new directory with a lot of files in it.)</li>
      <li>Rename or copy the <b>config-sample.php</b> to be <b>config.php</b></li>
      <li>Edit the <b>config.php</b> file to include your local MySQL username, password, and the name you wish to use for the msyql database associated with Weeding Helper.</li>
-   <li>On the Linux command-line, change the permissions on the <b>upload/</b> and <b>prepped/</b> directories to be writeable by the web server. This command will probably look something like: <br />
+					   <li>On the Linux command-line, change the permissions on the <b>upload/</b> and <b>prepped/</b> directories to be writeable by the web server AND by the user who under whose name the <b>cron</b> processes will run (see step 5). In our library, this has been achieved by making a permission group called &quot;apache&quot;, containing both the web-process-user and the chief implementor&#39;s own username; This command will probably look something like: <br />
 <div class="example">
    <code>&gt; chgrp apache upload/</code><br />
    <code>&gt; chgrp apache prepped/</code><br />
 </div>
-where "apache" is the name of a permissions group that grants write-permissions to the web server.</li>
+where "apache" is the name of a permissions group that grants write-permissions to the web server and includes the user who sets up the cron job in the next step.</li>
    <li>Set up the <code>cron</code> jobs that power Weeding Helper&apos;s automated functions. Cron is a unix utility that can run scripts on a regular basis; if you hare unfamiliar with cron, you will want to get help from a system administrator or similar. The two files that will need to be activated by cron jobs are <b>prep_file.php</b> and <b>innreach_check.php</b>. Running the cronjobs once per minute is an effective approach.
    <ol class="sublist">
    <li><b>prep_file.php</b> takes an already-uploaded file loads it into the database. That only needs to happen once per file. If that cron job runs once per minute, it will usually not need to do anything; but when a file is uploaded, it will reliably be added to the database very quickly.</li>
