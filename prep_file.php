@@ -17,7 +17,7 @@ include ("config.php");
 require ("mysql_connect.php");
 
 //$log = fopen ("/docs/weed/log.txt", "a+"); 
-echo exec('whoami');
+
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
 $r = mysql_query ($q);
 $rows = mysql_num_rows($r);
