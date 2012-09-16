@@ -55,11 +55,16 @@ td.button-cell {
 <? include ("jquery.php"); ?>
 </head>
 <body>
-<h1>All Tables</h1>
-
 <?
 require("mysql_connect.php");
-include("scripts.php");
+if ($no_config) { 
+  die(); 
+}
+?>
+
+<h1>All Tables</h1>
+
+<?include("scripts.php");
 include("nav.php");
 if ($_REQUEST[action] == "choose_table") {
   print "<div class=\"error\">To edit a table, please select the table from one of the fully loaded tables below</div>\n";
