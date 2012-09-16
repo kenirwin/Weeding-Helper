@@ -13,10 +13,11 @@ you'll also have to change the reporting output at the end of the script
 
 include ("scripts.php"); 
 include ("sortLC.php");
+include ("config.php");
 require ("mysql_connect.php");
 
 //$log = fopen ("/docs/weed/log.txt", "a+"); 
-
+echo exec('whoami');
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
 $r = mysql_query ($q);
 $rows = mysql_num_rows($r);
@@ -34,7 +35,7 @@ while ($myrow = mysql_fetch_assoc($r)) {
       //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
       if (LoadTable($table_name, $filename)) {
       }
-      else { print "FAILED: Cound not load data from $filname into $table_name\n";}
+      else { print "FAILED: Cound not load data from $filename into $table_name\n";}
     } //end if CreateTable 
     else { 
       print "FAILED: Could not create table $table_name\n";
@@ -57,10 +58,10 @@ while ($myrow = mysql_fetch_assoc($r)) {
 
 
 function PrepFile ($filename) { 
-  
+  global $path_main;
   /* SETUP VARIABLES */
-  $handle = fopen("upload/$filename", "r");
-  $output_filename = "prepped/$filename";
+  $handle = fopen("$path_main/upload/$filename", "r");
+  $output_filename = "$path_main/prepped/$filename";
   $output_handle = fopen("$output_filename", "w");
   if (! $output_handle) { return false; }
   
