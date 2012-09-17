@@ -3,7 +3,7 @@ if (! include("config.php")) {
   print "<h1>Weeding Helper Installation</h1>\n";
   print '<link rel="stylesheet" href="style.css" />';
   print "<p class=\"warn\">Please rename the file 'config-sample.php' to 'config.php' and set the configuration variables in the file.</p>\n";
-  print "<p>See the <a href=\"documentation.php#install\">installation instructions</a> for
+  print "<p>See the <a href=\"documentation.php#installation\">installation instructions</a> for
 more detail.</p>\n";
   $no_config = true;
 }
