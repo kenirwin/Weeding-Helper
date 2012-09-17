@@ -186,6 +186,11 @@ Max field length: none</p>
    <dd>Released under the MIT License</dd>
    <dd>See: <a href="http://simplehtmldom.sourceforge.net/">http://simplehtmldom.sourceforge.net/</a>
 
+<dt>iPhone-style Checkboxes</dt>
+ <dd>By Hidayat Sagita</dd>
+ <dd>Shared without mention of a specific license, used as if under a non-commercial share-alike license.</dd>
+ <dd>See: <a href="http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/">http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/</a></dd>
+
 <dt>sortLC.php: </dt>
    <dd>Based on sortLC.pl (version 1.2) by Michael Doran, doran@uta.edu</dd>
    <dd>Used in accordance with the non-commercial license </dd>
