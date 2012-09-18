@@ -1,3 +1,17 @@
+<? 
+session_start();
+if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
+$table = $_SESSION[weed_table];
+include('scripts.php');
+include('mysql_connect.php');
+$q = "SELECT file_title from `controller` where table_name = '$table'";
+$r = mysql_query($q);
+$myrow = mysql_fetch_row($r);
+$title = $myrow[0];
+?>
+<html>
+<head>
+<title>Print View: $table</title>
 <style>
 table,td,th { 
   border-collapse: collapse; border: 1px solid black;
@@ -6,16 +20,8 @@ table,td,th {
 
 td:nth-child(5),td:nth-child(6) { text-align: right }
 </style>
-<? 
-session_start();
-if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
-$table = $_SESSION[weed_table];
-$class = "LJ";
-?>
-<h2>(<?=$class;?>) Education Books - No CIRC since EZRA (1993)</h2>
+<h1><?=$title;?></h1>
 <?
-include('scripts.php');
-include('mysql_connect.php');
 include("nav.php");
 
 $q1 = "SELECT field from `table_config` where `printable` = 'Y' and `table_name` = 'default'";
