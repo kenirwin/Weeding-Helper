@@ -7,11 +7,12 @@ include ("/docs/lib/include/DOM/simple_html_dom.php");
 include ("mysql_connect.php");
 
 // Frequency: $hits=hits per minute; $sleep = seconds between hits
-if (date("H")<7) { $hits = 9; } 
-else { $hits = 6;//6; }
-  $sleep = 6;//6; //seconds between hits 
+if (date("H")<$innreach['night_ends']) { $hits = $innreach['overnight_hits']; } 
+else { 
+  $hits = $innreach['daytime_hits'];
 }
-//$table = "educ_main_jun2011_2";
+
+$sleep = round(55/$hits); //space hits over 55 seconds, sleep between them
 
 // get the first table needing check
 $q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and `load_date` IS NOT NULL ORDER BY `upload_date` DESC LIMIT 0,1";
@@ -100,5 +101,4 @@ function CheckInnReach($bib) {
   } //end if results size > 0
   //  else { return(); }
 } //end function
-
 ?>
