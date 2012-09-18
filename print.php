@@ -11,7 +11,7 @@ $title = $myrow[0];
 ?>
 <html>
 <head>
-<title>Print View: $table</title>
+<title>Print View: <?=$table;?></title>
 <style>
 table,td,th { 
   border-collapse: collapse; border: 1px solid black;
