@@ -2,6 +2,13 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 } 
 
+h1 { padding-left: 110px;
+     background-image: url('images/logo-color100.png');
+     background-repeat: no-repeat;
+     height: 100px;
+   }
+
+
 .warn, .warning {
     color: red;
 }
@@ -18,7 +25,10 @@ padding: 1em 0;
 color: grey;
 }
 #navlinks {
-
+    z-index: 2;
+    position: absolute;
+    top: 50px;
+    left: 60px;
 }
 #navlinks li, .action {
     display: inline;
@@ -40,3 +50,5 @@ color: grey;
 #navlinks li:hover {
     background-color: lightgreen;
 }
+
+dt { padding-top: .5em }

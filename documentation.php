@@ -3,7 +3,7 @@
 <title>Help/Documentation: Weeding Helper</title>
 <link rel="stylesheet" href="style.css" />
 <style>
-   body { margin: 0 10% 0 5% }
+   #main { margin: 0 10% 0 5% }
    ol { list-style: decimal; }
 ol.sublist { list-style: lower-latin; } 
 div.example { 
@@ -14,9 +14,10 @@ div.example {
 </style>
 </head>
 <body>
-<h1>Weeding Helper: Help/Documentation</h1>
+<h1>Help/Documentation</h1>
 <? include("nav.php"); ?>
 
+<div id="main">
 <dl id="toc">
    <dt>Getting Started</dt>
     <dd><a href="#pre-install">Pre-Installation: System Requirements and Access Needed</a></dd>
@@ -196,10 +197,13 @@ Max field length: none</p>
    <dd>Used in accordance with the non-commercial license </dd>
    <dd>See full license in the sortLC.php file</dd>
    <dd>See also: <a href="http://rocky.uta.edu/doran/sortlc/">http://rocky.uta.edu/doran/sortlc/</a></dd>
-																											<dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
-																											
+<dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
+									
+<? include("attribution.php"); ?>
 
+</div><!-- id=main -->
   <? include ("license.php"); ?>
+
 </body>
 </html>
 
