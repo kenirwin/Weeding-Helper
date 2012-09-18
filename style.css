@@ -8,7 +8,15 @@ body {
 .success {
     color: blue;
 }
-
+#license {
+margin-top: 3em;
+color: grey;
+border-top: 1px solid grey;
+padding: 1em 0;
+}
+#license a, #license a:visited {
+color: grey;
+}
 #navlinks {
 
 }

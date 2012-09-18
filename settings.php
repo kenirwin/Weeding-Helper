@@ -178,5 +178,6 @@ function DisplayTableSettings($table) {
 
 
 ?>
+<? include("license.php"); ?>
 </body>
 </html>
