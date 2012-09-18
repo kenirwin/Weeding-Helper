@@ -131,5 +131,7 @@ function MakeButton ($url, $img, $tooltip) {
 ?>
 
 <p><a href="upload.php">Upload new file</a></p>
+
+  <? include ("license.php"); ?>
 </body>
 </html>

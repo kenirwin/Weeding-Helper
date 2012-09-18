@@ -78,5 +78,6 @@ while ($myrow = mysql_fetch_assoc($r)) {
 } //end while
 print "<table>$lines</table>\n";
 ?>
+  <? include ("license.php"); ?>
 </body>
 </html>

@@ -130,5 +130,6 @@ function HandleUpload () {
 
 ?>
 <p><a href="controller.php">Go to Controller page</a></p>
+  <? include ("license.php"); ?>
 </body>
 </html>

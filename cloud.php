@@ -84,5 +84,6 @@ foreach ($top_words as $word=>$v) {
 	?>
 
 </div>
+  <? include ("license.php"); ?>
 </body>
 </html>

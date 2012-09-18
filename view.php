@@ -181,5 +181,6 @@ $bool = array ("Y","N");
 	}
 
 ?>
+  <? include ("license.php"); ?>
 </body>
 </html>

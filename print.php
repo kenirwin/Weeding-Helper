@@ -43,3 +43,5 @@ else {
   print "no function";
 }
 ?>
+
+  <? include ("license.php"); ?>

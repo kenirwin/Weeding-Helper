@@ -199,5 +199,7 @@ Max field length: none</p>
 																											<dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
 																											
 
-
+  <? include ("license.php"); ?>
+</body>
+</html>
 
