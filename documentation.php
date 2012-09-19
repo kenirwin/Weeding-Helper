@@ -42,7 +42,7 @@ div.example {
    <ol>
    <li>Unzip the file in a directory of its own. (The unzipping process creates a lot of files in the current directory, rather than a new directory with a lot of files in it.)</li>
      <li>Rename or copy the <b>config-sample.php</b> to be <b>config.php</b></li>
-					   <li>Edit the <b>config.php</b> file to include your local MySQL username, password, and the name you wish to use for the msyql database associated with Weeding Helper. If you plan to use the innreach_check.php functions to look up how many copies of your items are available in an InnReach catalog, you will also need to speficy several variables in the $innreach array in config.php.</li>
+					   <li>Edit the <b>config.php</b> file to include your local MySQL username, password, and the name you wish to use for the msyql database associated with Weeding Helper. If you plan to use the <b>innreach_check.php</b> functions to look up how many copies of your items are available in an InnReach catalog, you will also need to speficy several variables in the $innreach array in <b>config.php</b>.</li>
 					   <li>On the Linux command-line, change the permissions on the <b>upload/</b> and <b>prepped/</b> directories to be writeable by the web server AND by the user who under whose name the <b>cron</b> processes will run (see step 6). In our library, this has been achieved by making a permission group called &quot;apache&quot;, containing both the web-process-user and the chief implementor&#39;s own username; This command will probably look something like: <br />
 <div class="example">
    <code>&gt; chgrp apache upload/</code><br />
@@ -74,7 +74,7 @@ where "apache" is the name of a permissions group that grants write-permissions 
 </div>
 </li>
 
-   <li>Navigate to the <a href="index.php">index.php</a> page; this will attempt to automatically create the database named in the config file, as well as the `controller` and `table_config` tables in the database. (You will be notified if the system is unable to create the table and/or the files. Your system administrator or another user familiar with MySQL may need to create the database and/or tables manually. (*****HOW****)</li>
+					   <li>Navigate to the <a href="index.php">index.php</a> page; this will attempt to automatically create the database named in the config file, as well as the `controller` and `table_config` tables in the database. (You will be notified if the system is unable to create the table and/or the files. Your system administrator or another user familiar with MySQL may need to create the database and/or tables manually. To do this, create the MySQL database using the method approved by your sysadmin (unless it was successfully created automatically) and then use the commands in <b>manual_table_creation.sql</b> to create the tables and their contents.</li>
    </ol>
 
 <a name="security"></a>
@@ -82,7 +82,7 @@ where "apache" is the name of a permissions group that grants write-permissions 
 
 <p>This set of programs takes data uploaded by a user and inserts it into a database. It is HIGHLY recommended that you secure this set of processes in a password-protected directory. Some effort has been made to reduce the possibility of SQL-injections, but there are likely still vulnerabilities. Use sensibly!</p>
 
-																											<p>If you do not currently need the upload functionality turned on, you may turn it off in the config.php file by setting:
+																											<p>If you do not currently need the upload functionality turned on, you may turn it off in the <b>config.php</b> file by setting:
 																											<div class="example"><code>$allow_uploads = false;</code></div>
 
 <hr />
@@ -123,15 +123,15 @@ Max field length: none</p>
 																											<p>Once the review file is created and exported in the above format, it may be uploaded into Weeding Helper. Click the <b>Upload File</b> button, and fill out the form fields associated with the file. This will upload the file into the upload/ directory. (If the upload fails, it may be because the file is too large (many servers have a 2MB max upload file; see your system administrator about changing this limitation). Upload problems will also occur if your web server does not have write permissions for the upload directory (see <a href="#installation">Installation, step 4</a>).</p>
 
 <h4>Importing data to the database</h4>
-<p>Once the file is uploaded, the prep_file.php cron job will read the file contents and import them into a database table. (You will assign the table name at the time of upload.) This database import is <em>not</em> instantaneous upon upload. It should happen the next time the cron-job processes. If you choose not to run the cron jobs automatically, a user with shell access to your webserver may run the prep_file.php script manually.</p>
+<p>Once the file is uploaded, the <b>prep_file.php</b> cron job will read the file contents and import them into a database table. (You will assign the table name at the time of upload.) This database import is <em>not</em> instantaneous upon upload. It should happen the next time the cron-job processes. If you choose not to run the cron jobs automatically, a user with shell access to your webserver may run the <b>prep_file.php</b> script manually.</p>
 
 <a name="innreach"></a>
 <h3>Check holding against an InnReach catalog</h3>
 <p>If your library is part of a consortium that uses the InnReach functions of III&#39;s system to borrow materials from other libraries, you may wish to take your consortial holdings into account when making weeding decisions. (e.g., you may not wish to weed the last copy of a material held in your collection, or you may feel more inclined to weed an underused item if you know that there are many copies available in your consortium.)</p>
 
-<p>Checking InnReach holdings is a laborious process by hand; with the automated features of Weeding Helper, it may still take a few hours or days (depending on the number of items in a file) but it is much less work! If you have set up the innreach_check.php cron job (See <a href="#installation">Installation, step 5</a>), and have configured the $innreach settings in the config.php file, the cron job will check the holdings of several items each time the cron job fires. By default, the script runs 9 times per cron instance between midnight and 7am, and 6 times per instance at other times. (This is designed to be respectful of the InnReach server.) You can change these settings in the $innreach array in config.php</p>
+<p>Checking InnReach holdings is a laborious process by hand; with the automated features of Weeding Helper, it may still take a few hours or days (depending on the number of items in a file) but it is much less work! If you have set up the <b>innreach_check.php</b> cron job (See <a href="#installation">Installation, step 5</a>), and have configured the $innreach settings in the <b>config.php</b> file, the cron job will check the holdings of several items each time the cron job fires. By default, the script runs 9 times per cron instance between midnight and 7am, and 6 times per instance at other times. (This is designed to be respectful of the InnReach server.) You can change these settings in the $innreach array in <b>config.php</b></p>
 
-<p>I really need to say more about how to set up the $innreach settings in config.php. Please contact me if you need help with that. (kirwin@wittenberg.edu)</p>
+<p>I really need to say more about how to set up the $innreach settings in <b>config.php</b>. Please contact me if you need help with that. (kirwin@wittenberg.edu)</p>
 
 
 <a name="view_edit"></a>
