@@ -15,6 +15,14 @@ h1 { padding-left: 110px;
 .success {
     color: blue;
 }
+
+div.example { 
+  padding: .25em 1em;
+  background-color: #CFDBF3; 
+  border-radius: 5px;
+} 
+
+
 #license {
 margin-top: 3em;
 color: grey;
