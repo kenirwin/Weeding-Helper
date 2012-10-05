@@ -45,7 +45,7 @@ else { // if config.php
 
   if (! in_array("table_config", $extant_tables)) {
     $sql = "\n"
-      . " CREATE TABLE `weeding`.`table_config` ( `table_name` varchar( 25 ) NOT NULL ,\n"
+      . " CREATE TABLE `$MYSQL_DB`.`table_config` ( `table_name` varchar( 25 ) NOT NULL ,\n"
       . " `action` varchar( 255 ) NOT NULL ,\n"
       . " `field` varchar( 255 ) DEFAULT NULL ,\n"
       . " `printable` char( 1 ) DEFAULT NULL )";
