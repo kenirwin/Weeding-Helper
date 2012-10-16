@@ -69,9 +69,15 @@ include("nav.php");
 if ($_REQUEST[action] == "choose_table") {
   print "<div class=\"error\">To edit a table, please select the table from one of the fully loaded tables below</div>\n";
 }
+
+if ($_REQUEST[delete]) {
+  DeleteTable($_REQUEST[delete]);
+}
+
 DisplayProcessTable_v2();
 
 function DisplayProcessTable_v2($sort="filename") {
+  global $allow_delete;
   $q = "SELECT * FROM `controller` ORDER BY `$sort`";
   $r = mysql_query($q);
   while ($myrow=mysql_fetch_assoc($r)) {
@@ -113,6 +119,9 @@ function DisplayProcessTable_v2($sort="filename") {
       $next_action.= MakeButton ("cloud.php?table=$myrow[table_name]","images/tag-cloud.png","Keyword Cloud");
       $next_action.= MakeButton ("graph.php?table=$myrow[table_name]","images/bar-graph.png","Graphs");
       $next_action.= MakeButton ("settings.php?table=$myrow[table_name]","images/checkbox.png","View/Edit Settings");
+      if ($allow_delete) {
+	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
+      } //if allow_delete = true
     }
     else { 
       $next_action = "Awaiting Cron Job to Load Data";
@@ -123,10 +132,58 @@ function DisplayProcessTable_v2($sort="filename") {
   print "<table><thead>$thead</thead><tbody>$rows</tbody></table>\n";
 }
 
+function DeleteTable ($table) {
+  /* DELETE CONTROLLER ENTRY */
+  $q1 = "SELECT * FROM `controller` WHERE `table_name` = '$table'";
+  $r1 = mysql_query($q1);
+  $myrow = mysql_fetch_assoc($r1);
+  extract($myrow);
+  
+  /* DROP THE MAIN DATA TABLE */
+  $q2 = "DROP TABLE `$table`";
+  if (mysql_query($q2)) { 
+    $success .= "<li class=\"success\">Dropped table <b>`$table`</b> from database</li>\n";
+  }
+  else { 
+    $fail .= "<li class=\"warn\">Could not drop table <b>`$table`</b> from database: ". mysql_error();
+  } 
+  
+  /* DELETE THE UPLOAD AND PREP FILES */
+
+  $dirs = array ("upload", "prepped");
+  foreach ($dirs as $dir) {
+    $file = "./$dir/$filename";
+    //print "<li>trying to delete: $file</li>\n";
+    if (file_exists($file)) {
+      //print "<li>found: $file</li>\n";
+      if (unlink($file)) {
+	$success .= "<li class=\"success\">Delete file <b>$file</b></li>\n";
+      }
+      else {
+	$fail .= "<li class=\"warn\">Could not delete file <b>$file</b></li>\n";
+      } //end else if not deleted
+    } //end if file exists
+  } //end foreach file
+
+  /* DELETE LINE FROM THE CONTROLLER TABLE */
+  
+  $q5 = "DELETE FROM `controller` WHERE `table_name` = '$table'";
+  if (mysql_query($q5)) { 
+    $success .= "<li class=\"success\">Deleted <b>$table</b> from controller table</li>\n";
+  }
+  else { 
+    $fail .= "<li class=\"warn\">Could not delete <b>$table</b> from controller table: ". mysql_error();
+  }
+
+  print "$success$fail";
+} //end DeleteTable
+
 function MakeButton ($url, $img, $tooltip) {
   $button = "<a href=\"$url\" class=\"action tooltip\" data-tooltip=\"$tooltip\"><img src=\"$img\" alt=\"$tooltip\" /></a>";
   return $button;
 }
+
+
 
 ?>
 

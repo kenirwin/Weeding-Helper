@@ -6,6 +6,7 @@ $path_crud = $path_main . '/ajaxcrud'; //don't change
 $htpath_crud = $path_http . '/ajaxcrud/'; //don't change
 
 $allow_uploads = true;
+$allow_delete = true; 
 
 $MYSQL_HOST = "localhost"; // probably but not necessarily "localhost"
 $MYSQL_LOGIN = ""; // mysql username, needs create/replace/update/delete perm
