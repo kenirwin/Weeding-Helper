@@ -3,7 +3,7 @@
 //error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-include ("/docs/lib/include/DOM/simple_html_dom.php");
+include ("./DOM/simple_html_dom.php");
 include ("mysql_connect.php");
 
 // Frequency: $hits=hits per minute; $sleep = seconds between hits
