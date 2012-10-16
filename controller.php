@@ -137,7 +137,7 @@ function DeleteTable ($table) {
   $q1 = "SELECT * FROM `controller` WHERE `table_name` = '$table'";
   $r1 = mysql_query($q1);
   $myrow = mysql_fetch_assoc($r1);
-  extract($myrow);
+  extract($myrow); //this will get the $filename variable
   
   /* DROP THE MAIN DATA TABLE */
   $q2 = "DROP TABLE `$table`";
@@ -149,21 +149,22 @@ function DeleteTable ($table) {
   } 
   
   /* DELETE THE UPLOAD AND PREP FILES */
-
-  $dirs = array ("upload", "prepped");
-  foreach ($dirs as $dir) {
-    $file = "./$dir/$filename";
-    //print "<li>trying to delete: $file</li>\n";
-    if (file_exists($file)) {
-      //print "<li>found: $file</li>\n";
-      if (unlink($file)) {
-	$success .= "<li class=\"success\">Delete file <b>$file</b></li>\n";
-      }
-      else {
-	$fail .= "<li class=\"warn\">Could not delete file <b>$file</b></li>\n";
-      } //end else if not deleted
-    } //end if file exists
-  } //end foreach file
+  if ($filename) {
+    $dirs = array ("upload", "prepped");
+    foreach ($dirs as $dir) {
+      $file = "./$dir/$filename";
+      //print "<li>trying to delete: $file</li>\n";
+      if (file_exists($file)) {
+	//print "<li>found: $file</li>\n";
+	if (unlink($file)) {
+	  $success .= "<li class=\"success\">Delete file <b>$file</b></li>\n";
+	}
+	else {
+	  $fail .= "<li class=\"warn\">Could not delete file <b>$file</b></li>\n";
+	} //end else if not deleted
+      } //end if file exists
+    } //end foreach file
+  } //if there was a filename in the table
 
   /* DELETE LINE FROM THE CONTROLLER TABLE */
   
