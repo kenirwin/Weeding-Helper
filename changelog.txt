@@ -1,0 +1,12 @@
+v. 1.0.4
+ - added DeleteTable function to controller.php (deletes main data table, plus the associated text files on the server and the related line from the controller mysql table)
+ - added delete.png to to the images/ folder
+
+v. 1.0.3
+ - added a document-relative path where there had been a previously root-relative one in innreach_check.php
+
+v. 1.0.2 
+ - fixed a spot where the database name was hard-coded as 'weeding' instead of $MYSQL_DB in line 48 of mysql_connect.php
+
+v. 1.0.1
+ - first release version, bugs and all!
