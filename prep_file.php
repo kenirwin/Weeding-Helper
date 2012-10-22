@@ -175,7 +175,8 @@ function PrepFile ($filename) {
 	} // foreach date_item
 	
 	if (! preg_match ("/CALL/", $call)) //skip headers
-	  $data[$call] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call\t$bcode\t$mat_type\t$bib_record\t$total_circ\t$renews\t$int_use\t$last_checkin\t$num_items\t$circ_items\n";
+	  $data[$call] .= "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call\t$bcode\t$mat_type\t$bib_record\t$total_circ\t$renews\t$int_use\t$last_checkin\t$num_items\t$circ_items\n";
+	//the .= instead of = allows for multiple items with the same call number
       } //end if contains data
       //        print "$most_recent_date\t$title\n";
     } //end while

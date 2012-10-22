@@ -125,6 +125,11 @@ function HandleUpload () {
       
       
     } //end if isset
+  else { 
+    if ($_FILES['userfile']['size'] ==  0) { 
+      print "<p class=warning>failed to upload file: file appears to be empty. please be sure that you have saved the file and that it has a size greater than 0 KB.</p>\n";
+    } //end if size == 0
+  } //end else if couldn't start upload
 } //end HandleUpload
 
 

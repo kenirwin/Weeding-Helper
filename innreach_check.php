@@ -3,8 +3,8 @@
 //error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-include ("./DOM/simple_html_dom.php");
 include ("mysql_connect.php");
+include ("$path_main/DOM/simple_html_dom.php");
 
 // Frequency: $hits=hits per minute; $sleep = seconds between hits
 if (date("H")<$innreach['night_ends']) { $hits = $innreach['overnight_hits']; } 

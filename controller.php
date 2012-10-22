@@ -122,10 +122,14 @@ function DisplayProcessTable_v2($sort="filename") {
       if ($allow_delete) {
 	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
       } //if allow_delete = true
-    }
+    } //end if data has been loaded
     else { 
       $next_action = "Awaiting Cron Job to Load Data";
-    }
+      if ($allow_delete) {
+	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
+      } //if allow_delete = true
+    } // end else if waiting for cron to load data
+
     $rows .= "<tr><td>$row</td><td class=\"button-cell\">$next_action</td></tr>\n";
   }
   $thead = "<tr><th>". join("</th><th>",$headers_array) . "</th></tr>\n";
