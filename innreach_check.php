@@ -19,7 +19,7 @@ $q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and 
 
 $r = mysql_query($q);
 
-print $q;
+print "$q\n";
 
 if (mysql_num_rows($r) > 0) { // if there's work to be done
   $myrow = mysql_fetch_row($r);
@@ -31,21 +31,21 @@ function BatchCheck ($table, $hits, $sleep) {
   
 
   $q = "SELECT * FROM $table WHERE innreach_total_copies IS NULL limit 0,$hits";
-  print ($q);
+  print "$q\n";
 
   $r = mysql_query($q);
   
   if (mysql_num_rows($r) > 0) {
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
-    print "<h4>$bib_record: $title</h4>";
+    print "<h4>$bib_record: $title</h4>\n";
 
     $innreach_count = CheckInnReach($bib_record);
     // print_r($innreach);
     if (! $innreach_count[CIRC]) { $innreach_count[CIRC] = 0; }
     //  print "<p>$innreach[CIRC] / ". array_sum($innreach) ."</p>\n";
     $uq = "UPDATE $table SET innreach_circ_copies = '$innreach_count[CIRC]', innreach_total_copies = '". array_sum($innreach_count) ."' WHERE bib_record = '$bib_record'";
-    print "<p>$uq</p>";
+    print "<p>$uq</p>\n";
     $ur = mysql_query($uq);
     sleep($sleep);
   } //end while
@@ -53,7 +53,7 @@ function BatchCheck ($table, $hits, $sleep) {
   else  { //if the current file is finished, mark it as done in the controller
     $q = "UPDATE `controller` SET `innreach_finished` = now() WHERE `table_name` = '$table'";
     mysql_query($q);
-    print "done: $q";
+    print "done: $q\n";
   }
 
   
@@ -65,22 +65,25 @@ function CheckInnReach($bib) {
   $bibcode = $innreach[local_id] . "+$bib";
   $base = $innreach[url] . "/search/z?" . $innreach[local_id] ."+";
   $url = $base . $bib;
-  //  print "<p>$url</p>\n";
-  //  print "$bib<br>\n";
-  if ($html) { $html->clear(); }
-  $html = file_get_html($url);
-  //  print_r($html->innertext);
-  //  $holdings = $html->find('table.holdingsContainer');
-  $holdings = $html->find('$innreach[holdings_selector]') || $size = -1;
-  if (! $size == -1) { $size = sizeof($holdings); }
+  print "<p>URL1: $url</p>\n";
 
+  if ($html) { $html->clear(); } //helps manage memory leaks
+  $html = file_get_html($url);
+  ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
+  if ($size != -1) { $size = sizeof($holdings); }
+  /*
+  $holdings = $html->find($innreach[holdings_selector]);
+  $size = sizeof($holdings);
+  */
+
+  //  print("Size: " . $size . "<br>\n");
   if ($size == 0) {
     $url = "$innreach[url]/search~S0?/z$bibcode/z$bibcode/1,1,1,B/detlframeset&FF=z$bibcode&1,1,";
-//      print "<p>$url</p>\n";
+    print "<p>URL1: $url</p>\n";
       //  print "$bib<br>\n";
       $html = file_get_html($url);
-      $holdings = $html->find('$innreach[holdings_selector]')|| $size =-1;
-      if (! $size == -1) { $size = sizeof($holdings); }
+      ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
+      if ($size != -1) { $size = sizeof($holdings); }
   }
   if ($size > 0) {
     $holdings = $holdings[0];
@@ -94,7 +97,7 @@ function CheckInnReach($bib) {
 	if (preg_match ("/AVAIL|DUE/", $this_stat)) { $this_stat = "CIRC"; }
 	if ($this_stat != "") 
 	  $statuses[$this_stat]++;
-      }//end if not your institution
+      }//end if not Witt
     } //end foreach location
     return($statuses);
   } //end if results size > 0

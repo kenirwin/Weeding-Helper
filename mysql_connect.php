@@ -1,4 +1,7 @@
 <?
+error_reporting(E_WARN);
+ini_set("display_errors", 1);
+
 if (! include("config.php")) {
   print "<h1>Weeding Helper Installation</h1>\n";
   print '<link rel="stylesheet" href="style.css" />';
