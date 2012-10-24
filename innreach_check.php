@@ -15,7 +15,7 @@ else {
 $sleep = round(55/$hits); //space hits over 55 seconds, sleep between them
 
 // get the first table needing check
-$q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and `load_date` IS NOT NULL ORDER BY `upload_date` DESC LIMIT 0,1";
+$q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and `load_date` IS NOT NULL ORDER BY `upload_date` ASC LIMIT 0,1";
 
 $r = mysql_query($q);
 
@@ -67,21 +67,20 @@ function CheckInnReach($bib) {
   $url = $base . $bib;
   //  print "<p>$url</p>\n";
   //  print "$bib<br>\n";
+  if ($html) { $html->clear(); }
   $html = file_get_html($url);
   //  print_r($html->innertext);
   //  $holdings = $html->find('table.holdingsContainer');
-  $holdings = $html->find($innreach[holdings_selector]);
-  $size = sizeof($holdings);
-  //  print("Size: " . $size . "<br>\n");
+  $holdings = $html->find('$innreach[holdings_selector]') || $size = -1;
+  if (! $size == -1) { $size = sizeof($holdings); }
+
   if ($size == 0) {
     $url = "$innreach[url]/search~S0?/z$bibcode/z$bibcode/1,1,1,B/detlframeset&FF=z$bibcode&1,1,";
 //      print "<p>$url</p>\n";
       //  print "$bib<br>\n";
       $html = file_get_html($url);
-      //  print_r($html->innertext);
-      //  $holdings = $html->find('table.holdingsContainer');
-      $holdings = $html->find('table.centralHoldingsTable');
-      $size = sizeof($holdings);
+      $holdings = $html->find('$innreach[holdings_selector]')|| $size =-1;
+      if (! $size == -1) { $size = sizeof($holdings); }
   }
   if ($size > 0) {
     $holdings = $holdings[0];
@@ -89,13 +88,13 @@ function CheckInnReach($bib) {
     $locations = $holdings->find('tr');
     foreach ($locations as $line) {
       $loc = $line->find('td', 0);
-      if (! preg_match("/WITTENBERG/i", $loc)) {
+      if (! preg_match("/$innreach[local_display_name]/i", $loc)) {
 	$status = $line->find('td', 4);
 	$this_stat = $status->innertext;
 	if (preg_match ("/AVAIL|DUE/", $this_stat)) { $this_stat = "CIRC"; }
 	if ($this_stat != "") 
 	  $statuses[$this_stat]++;
-      }//end if not Witt
+      }//end if not your institution
     } //end foreach location
     return($statuses);
   } //end if results size > 0

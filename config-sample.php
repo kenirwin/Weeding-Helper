@@ -15,6 +15,7 @@ $MYSQL_DB = "weeding"; //or whatever else you want to call it
 
 $innreach = array (
 		   "local_id" => "", //your institutional code, eg "wt3ug"
+		   "local_display_name" => "" // your institution as it displays in the innreach catalog, eg "WITTENBERG"
 		   "url" => "", // InnReach catalog url, e.g. "http://olc1.ohiolink.edu"
 		   "holdings_selector" => "", // CSS-style selector for the holdings table in your InnReach catalog, e.g. "table.centralHoldingsTable" (this is the correct selector for the OhioLINK central catalog
 

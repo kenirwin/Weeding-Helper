@@ -1,7 +1,14 @@
 (v. 1.0.5 IN PROGRESS)
+   pre-release a:
  - change line 180 in prep_file.php to .= instead of = ; this allows for multiple items with the same call number; previous versions disappeared subsequent items with duplicate call numbers
  - update innreach_check.php: call DOM parser with $path_main instead of ./ in the path -- works more reliably in some environments 
  - updated upload.php to fail verbosely when file is empty
+   pre-release b:
+ - changed innreach_check.php so that the oldest file is checked first against the InnReach catalog
+ - updated config-sample.php so include $innreach[local_display_name] variable
+ - updated innreach_check.php to use $innreach[local_display_name] variable
+ - added $html->clear() to help manage memory issue on the dom parser in innreach_check.php
+ - changed innreach_check.php to enter a value of -1 if innreach check cannot return a value. this should keep the process from stalling out.
 
 v. 1.0.4
  - added DeleteTable function to controller.php (deletes main data table, plus the associated text files on the server and the related line from the controller mysql table)
