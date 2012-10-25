@@ -12,18 +12,25 @@ include ("jquery.php");
 $path = $path_crud;
 $htpath = $htpath_crud;
 
+if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
+$table = $_SESSION[weed_table];
+$q = "SELECT file_title from `controller` where table_name = '$table'";
+$r = mysql_query($q);
+$myrow = mysql_fetch_row($r);
+$title = $myrow[0];
+
 require_once($path . '/preheader.php');
 #the code for the class
 include ($path . '/ajaxCRUD.class.php');
 
-$banner = "<h1>View/Edit</h1>\n";
+$banner = "<h1>View/Edit: $title</h1>\n";
 
     #this one line of code is how you implement the class
     ########################################################
     ##
 
     // args: ( ? , table name, primarykey name, path)
-if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
+
 if ($_SESSION[weed_table]) {
 ?>
 <script type="text/javascript">
@@ -108,7 +115,7 @@ if ($_REQUEST[submit_query_builder]) {
 $q = "SELECT * FROM `table_config` where `table_name` = '$_SESSION[table]'";
 $r = mysql_query($q);
 
-if (mysql_num_rows() == 0) { // use defaults if no table-specific settings
+if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
   $q = "SELECT * FROM `table_config` where `table_name` = 'default'";
   $r = mysql_query($q);
 }

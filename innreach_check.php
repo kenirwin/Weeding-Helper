@@ -69,21 +69,21 @@ function CheckInnReach($bib) {
 
   if ($html) { $html->clear(); } //helps manage memory leaks
   $html = file_get_html($url);
-  ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
-  if ($size != -1) { $size = sizeof($holdings); }
-  /*
-  $holdings = $html->find($innreach[holdings_selector]);
-  $size = sizeof($holdings);
-  */
 
-  //  print("Size: " . $size . "<br>\n");
+  // if holdings block found, size = 1
+  // if holdings block requires follow_through, size = 0
+  // if unable to parse, size = -1
+  ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
+  if (is_array($holdings)) { $size = sizeof($holdings); }
+  //print "SIZE: $size\n";
+
   if ($size == 0) {
     $url = "$innreach[url]/search~S0?/z$bibcode/z$bibcode/1,1,1,B/detlframeset&FF=z$bibcode&1,1,";
-    print "<p>URL1: $url</p>\n";
+    print "<p>URL2: $url</p>\n";
       //  print "$bib<br>\n";
       $html = file_get_html($url);
       ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
-      if ($size != -1) { $size = sizeof($holdings); }
+      if (is_array($holdings)) { $size = sizeof($holdings); }
   }
   if ($size > 0) {
     $holdings = $holdings[0];
@@ -99,8 +99,9 @@ function CheckInnReach($bib) {
 	  $statuses[$this_stat]++;
       }//end if not Witt
     } //end foreach location
+    if ($size == -1) { $statuses[CIRC] = -1; }
+    print_r($statuses);
     return($statuses);
   } //end if results size > 0
-  //  else { return(); }
-} //end function
+} //end function CheckInnReach
 ?>
