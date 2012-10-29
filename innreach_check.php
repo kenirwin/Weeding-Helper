@@ -73,6 +73,7 @@ function CheckInnReach($bib) {
   // if holdings block found, size = 1
   // if holdings block requires follow_through, size = 0
   // if unable to parse, size = -1
+  if ($holdings) { $holdings->clear();}
   ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
   if (is_array($holdings)) { $size = sizeof($holdings); }
   //print "SIZE: $size\n";
@@ -81,7 +82,9 @@ function CheckInnReach($bib) {
     $url = "$innreach[url]/search~S0?/z$bibcode/z$bibcode/1,1,1,B/detlframeset&FF=z$bibcode&1,1,";
     print "<p>URL2: $url</p>\n";
       //  print "$bib<br>\n";
+    if ($html) { $html->clear(); }
       $html = file_get_html($url);
+      if ($holdings) { $holdings->clear();}
       ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
       if (is_array($holdings)) { $size = sizeof($holdings); }
   }

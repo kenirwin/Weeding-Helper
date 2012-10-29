@@ -6,7 +6,8 @@
  - updated config-sample.php to include $innreach[local_display_name] variable
  - updated innreach_check.php to use $innreach[local_display_name] variable
  - added $html->clear() to help manage memory issue on the dom parser in innreach_check.php
- - changed innreach_check.php to enter a value of -1 if innreach check cannot return a value. this should keep the process from stalling out.
+ - changed innreach_check.php to enter a value of -1 if innreach check cannot return a value. this should keep the process from stalling out. (this appears not to be working right yet)
+ - added unstick.php to get the innreach checks unstuck when they hit a page they can't parse. added a call to this functionality from controller.php
  - updated view.php: show table title  
 
 v. 1.0.4

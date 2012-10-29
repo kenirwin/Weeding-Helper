@@ -56,11 +56,21 @@ td.button-cell {
 </head>
 <body>
 <?
+session_start();
 require("mysql_connect.php");
 if ($no_config) { 
   die(); 
 }
 ?>
+
+<script>
+$(document).ready(function() {
+    $("a[href]$='unstick']").click(function() {
+	$(this).hide();
+	confirm("If InnReach checks stall out and aren't getting incrementing, use this to unstick the process: note - this will result in a value of -1 in the innreach fields. Do you wish to proceed?");
+      }); //end click
+  }); //end onload
+</script>
 
 <h1>All Tables</h1>
 
@@ -74,6 +84,11 @@ if ($_REQUEST[delete]) {
   DeleteTable($_REQUEST[delete]);
 }
 
+if ($_SESSION[unstuck] != "") { 
+  print "<li class=\"success\">Set InnReach info to -1 for record $_SESSION[unstuck]; InnReach checks should now continue normally</li>\n";
+  $_SESSION[unstuck] = "";
+}
+
 DisplayProcessTable_v2();
 
 function DisplayProcessTable_v2($sort="filename") {
@@ -82,6 +97,7 @@ function DisplayProcessTable_v2($sort="filename") {
   $r = mysql_query($q);
   while ($myrow=mysql_fetch_assoc($r)) {
     //    extract($myrow);
+    $unstick = "";
     $headers_array = array_keys($myrow);
     array_push($headers_array, "Tools");
     // add spaces between words in column headers
@@ -105,6 +121,7 @@ function DisplayProcessTable_v2($sort="filename") {
       $innr_count = $ct_myrow[0];
       if ($innr_count > 0) {
 	$myrow[innreach_finished] =  "$innr_count of $myrow[records]";
+	$unstick = MakeButton("unstick.php?table=$myrow[table_name]","","Unstick");
       }
       else {
 	$myrow[innreach_finished] = "In Queue";
@@ -122,14 +139,11 @@ function DisplayProcessTable_v2($sort="filename") {
       if ($allow_delete) {
 	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
       } //if allow_delete = true
-    } //end if data has been loaded
+      $next_action .= $unstick;
+    }
     else { 
       $next_action = "Awaiting Cron Job to Load Data";
-      if ($allow_delete) {
-	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
-      } //if allow_delete = true
-    } // end else if waiting for cron to load data
-
+    }
     $rows .= "<tr><td>$row</td><td class=\"button-cell\">$next_action</td></tr>\n";
   }
   $thead = "<tr><th>". join("</th><th>",$headers_array) . "</th></tr>\n";
@@ -184,7 +198,9 @@ function DeleteTable ($table) {
 } //end DeleteTable
 
 function MakeButton ($url, $img, $tooltip) {
-  $button = "<a href=\"$url\" class=\"action tooltip\" data-tooltip=\"$tooltip\"><img src=\"$img\" alt=\"$tooltip\" /></a>";
+  if (! $img == "") { $img = "<img src=\"$img\" alt=\"$tooltip\" />"; }
+  else { $img = $tooltip; }
+  $button = "<a href=\"$url\" class=\"action tooltip\" data-tooltip=\"$tooltip\">$img</a>";
   return $button;
 }
 
