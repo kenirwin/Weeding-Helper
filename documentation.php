@@ -128,6 +128,8 @@ Max field length: none</p>
 
 <p>I really need to say more about how to set up the $innreach settings in <b>config.php</b>. Please contact me if you need help with that. (kirwin@wittenberg.edu)</p>
 
+<p>If an InnReach is too large to be parsed by the software, the process of checking the catalog will get STUCK. Left to its own devices, it will try over and over again, and fail every time. If you notice this happening (if the number of records checked in InnReach stays the same for several minutes (if the cronjob is running every minute), then you may need to click the "Unstick" button to fix it. This will enter InnReach holdings values of -1 for the stuck record and then proceed to check other files. Restarting may take another minute or so, so please be patient.</p>
+
 
 <a name="view_edit"></a>
 <h3>View/Edit</h3>

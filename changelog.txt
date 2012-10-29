@@ -1,4 +1,4 @@
-(v. 1.0.5 IN PROGRESS)
+v. 1.0.5 - 29 October 2012
  - change line 180 in prep_file.php to .= instead of = ; this allows for multiple items with the same call number; previous versions disappeared subsequent items with duplicate call numbers
  - update innreach_check.php: call DOM parser with $path_main instead of ./ in the path -- works more reliably in some environments 
  - updated upload.php to fail verbosely when file is empty
