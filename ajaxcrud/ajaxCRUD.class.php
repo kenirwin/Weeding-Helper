@@ -1438,7 +1438,7 @@ class ajaxCRUD{
 	}
 
 	function getFields($table){
-		$query = "SHOW COLUMNS FROM $table";
+		$query = "SHOW COLUMNS FROM `$table`";
 		$rs = q($query);
 
 		//print_r($rs);
