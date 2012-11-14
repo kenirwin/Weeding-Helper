@@ -1,3 +1,8 @@
+v. 1.0.7 - in progress
+ - added GetTableNames() script to scripts.php - return an array of human-friendly names, keyed to mysql table_name
+ - fixed bug in settings.php: can now turn off columns in print view (could previously only turn them ON)
+ - show human-friendly names in settings.php
+
 v. 1.0.6 - 06 October 2012
  - added backticks to a mysql table call in ajaxcrud.class.php 
  - allowed for user to enter non-allowed characters in upload.php table name (non allowed characters will convert to underscores)
