@@ -1,5 +1,17 @@
 <?
 
+function GetTableNames() {
+  //returns an array of file_titles by table_name
+  //e.g. $file_titles = array("econ" => "Economics Books");
+  $q = "SELECT `table_name`,`file_title` FROM `controller` WHERE 1";
+  $r = mysql_query($q);
+  while ($myrow = mysql_fetch_assoc($r)) {
+    extract($myrow);
+    $file_titles[$table_name] = $file_title;
+  }
+  return $file_titles;
+}
+
 function MysqlResultsTable ($mysql_results) {
   while ($myrow = mysql_fetch_assoc($mysql_results)) {
     if (! ($headers))

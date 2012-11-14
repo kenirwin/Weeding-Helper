@@ -11,6 +11,7 @@ include ("config.php");
 include ("mysql_connect.php");
 include ("jquery.php");
 include ("iphone-toggle.php");
+include ("scripts.php");
 ?>
 
 <!--link rel="stylesheet" type="text/css" media="screen, projection" href="demo.css" /-->
@@ -67,11 +68,12 @@ function CloneSettings($clone_to, $clone_from="default") {
 } //end function CloneSettings
 
 function ChooseTable($last_table_used) {
+  $file_titles = GetTableNames();
   $q = "SELECT distinct(table_name) from `table_config`";
   $r = mysql_query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
-    $opts .= "<option value=\"$table_name\">$table_name</option>\n";
+    $opts .= "<option value=\"$table_name\">$file_titles[$table_name] ($table_name)</option>\n";
   }
   $form1 =  "<form id=\"choose\" method=\"post\"><select name=\"choose_table\"><option>Choose a table to edit</option>$opts</select><input type=\"submit\"></form>\n";
   
@@ -135,7 +137,8 @@ function UpdateSettingsTable() {
 
 
 function DisplayTableSettings($table) {
-  print "<h2>Table Settings: $table</h2>\n";
+  $file_titles = GetTableNames();
+  print "<h2>Table Settings: $file_titles[$table] ($table)</h2>\n";
   $q = "SELECT * FROM `table_config` WHERE `table_name` = '$table'";
   $r = mysql_query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
