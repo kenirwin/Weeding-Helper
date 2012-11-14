@@ -90,7 +90,15 @@ function ChooseTable($last_table_used) {
 
 
 function UpdateSettingsTable() {
-  //  print_r ( $_REQUEST);
+  //print_r ( $_REQUEST);
+  /* Set all printable values to NO; all yeses will be activated below */
+  $q = "UPDATE `table_config` SET printable='N' WHERE `table_name`='$_REQUEST[table_name]'";
+  mysql_query($q);
+  if (mysql_errno() > 0) {
+    $errors++;
+    $error_messages .= "<li>Error #".mysql_errno().": ". mysql_error()."</li>\n";
+  }
+  
   foreach ($_REQUEST as $k=>$v) {
     if (preg_match("/^value_(.*)/", $k, $m)) {
       $q = "UPDATE `table_config` SET action='$v' WHERE `table_name`='$_REQUEST[table_name]' AND field = '$m[1]'";
@@ -106,6 +114,7 @@ function UpdateSettingsTable() {
       if ($v == "on") { $p = "Y"; }
       else { $p = "N"; }
       $q = "UPDATE `table_config` SET printable='$p' WHERE `table_name`='$_REQUEST[table_name]' AND field = '$m[1]'";
+      //print "<p>$q</p>\n";
       mysql_query($q);
       if (mysql_errno() > 0) {
 	$errors++;
@@ -126,6 +135,7 @@ function UpdateSettingsTable() {
 
 
 function DisplayTableSettings($table) {
+  print "<h2>Table Settings: $table</h2>\n";
   $q = "SELECT * FROM `table_config` WHERE `table_name` = '$table'";
   $r = mysql_query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
