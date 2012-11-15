@@ -53,8 +53,18 @@ if (preg_match("/\d\d\d\d-\d\d-\d\d/", $_REQUEST['cmp_date']) and (in_array($_RE
   $added_query .= "AND `catdate`" . $_REQUEST['before_after'] . "'" . $_REQUEST['cmp_date'] . "'";
 } //end if date cmp
 
+/* Find out if there are special settings for this table */
+$q = "SELECT distinct `table_name` from `table_config` where `table_name`= '$table'"; 
+$r = mysql_query($q);
+if (mysql_num_rows($r) > 0 ) {
+  $print_settings = $table;
+}
+else {
+  $print_settings = "default";
+}
 
-$q1 = "SELECT field from `table_config` where `printable` = 'Y' and `table_name` = 'default'";
+
+$q1 = "SELECT field from `table_config` where `printable` = 'Y' and `table_name` = '$print_settings'";
 $r1 = mysql_query($q1);
 $fields = array();
 while ($myrow = mysql_fetch_assoc($r1)) {
