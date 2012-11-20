@@ -31,19 +31,40 @@ form { display: inline }
 
 include ("nav.php");
 
-if ($_REQUEST[submit_change_settings]) {
+if ($_REQUEST['submit_change_settings']) {
   //  print_r($_REQUEST);
   UpdateSettingsTable();
+  print (ChooseTable());
 }
 
-elseif ($_REQUEST[clone_settings_submit]) {
-  CloneSettings($_REQUEST[clone_settings_table]);
+elseif ($_REQUEST['clone_settings_submit']) {
+  CloneSettings($_REQUEST['clone_settings_table']);
+  DisplayTableSettings($_REQUEST['clone_settings_table']);
+  print (ChooseTable());
 }
 
-print (ChooseTable());
+elseif ($_REQUEST['table']) {  
+  /* this is invoked if coming to this page from a button on the main page
+     FIRST: determine if table already has settings*/
+  $q = "SELECT * FROM table_config WHERE `table_name` = '".$_REQUEST['table']. "'";
+  $r = mysql_query($q);
 
-if ($_REQUEST[choose_table]) {
-  DisplayTableSettings($_REQUEST[choose_table]);
+  /* if settings, show settings*/
+  if (mysql_num_rows($r) > 0) {
+    print (ChooseTable());
+    DisplayTableSettings($_REQUEST['table']);
+  }
+
+  /* if not settings, ask how to proceed: clone or work with default*/
+  else {
+    print "<h2>Settings have not yet been established for this table. Do you want to <a href=\"settings.php?clone_settings_submit=true&clone_settings_table=$_REQUEST[table]\" class=\"action\">Create Settings for This Table</a> or <a href=\"settings.php?choose_table=default\" class=\"action\">Edit the Default Settings</a></h2>\n";
+  } 
+
+} //end else if REQUEST[table]
+
+if ($_REQUEST['choose_table']) {
+  print (ChooseTable());
+  DisplayTableSettings($_REQUEST['choose_table']);
 }
 
 function CloneSettings($clone_to, $clone_from="default") {
@@ -75,7 +96,7 @@ function ChooseTable($last_table_used) {
     extract($myrow);
     $opts .= "<option value=\"$table_name\">$file_titles[$table_name] ($table_name)</option>\n";
   }
-  $form1 =  "<form id=\"choose\" method=\"post\"><select name=\"choose_table\"><option>Choose a table to edit</option>$opts</select><input type=\"submit\"></form>\n";
+  $form1 =  "<form id=\"choose\" method=\"post\" action=\"settings.php\"><select name=\"choose_table\"><option>Choose a table to edit</option>$opts</select><input type=\"submit\"></form>\n";
   
   $q = "SELECT table_name,file_title FROM `controller` WHERE table_name NOT IN (SELECT distinct(table_name) FROM table_config)";
   $r = mysql_query($q);
