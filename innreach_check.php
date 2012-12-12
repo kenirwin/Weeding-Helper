@@ -1,6 +1,7 @@
 #!/usr/bin/php -e
 <?
 //error_reporting(E_ALL);
+ini_set("memory_limit", "128M");
 ini_set("display_errors", 1);
 
 include ("mysql_connect.php");

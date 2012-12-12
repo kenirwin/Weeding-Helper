@@ -1,3 +1,7 @@
+v. 1.0.8 - in progress Dec 2012
+ - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 
+
+
 v. 1.0.7 - 20 November 2012
  - added GetTableNames() script to scripts.php - return an array of human-friendly names, keyed to mysql table_name
  - fixed bug in settings.php: can now turn off columns in print view (could previously only turn them ON)
