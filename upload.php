@@ -60,8 +60,8 @@ function ShowUploadForm() {
 <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 
 <p>
-<label for="userfile">File to upload</label>
-<input name="userfile" type="file" id="userfile" />
+    <label for="userfile">File to upload</label>
+			    <input name="userfile" type="file" id="userfile" /> <a href="http://pcirc.wittenberg.edu/weed/documentation.php#how_to_add_circ_data" target="_new">See documentation for correct file format</a>
 </p>
 
 <p>
@@ -125,8 +125,8 @@ function HandleUpload () {
       $path = preg_replace ("/[^\/]+$/", "", $_SERVER[SCRIPT_FILENAME]);
       
       
-    } //end if isset
-  else { 
+    } //end if upload file isset and is larger than 0
+  else { //if couldn't start upload
     if ($_FILES['userfile']['size'] ==  0) { 
       print "<p class=warning>failed to upload file: file appears to be empty. please be sure that you have saved the file and that it has a size greater than 0 KB.</p>\n";
     } //end if size == 0
