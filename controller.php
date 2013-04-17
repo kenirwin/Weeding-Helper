@@ -143,6 +143,9 @@ function DisplayProcessTable_v2($sort="filename") {
     }
     else { 
       $next_action = "Awaiting Cron Job to Load Data";
+      if ($allow_delete) {
+	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
+      } //if allow_delete = true
     }
     $rows .= "<tr><td>$row</td><td class=\"button-cell\">$next_action</td></tr>\n";
   }

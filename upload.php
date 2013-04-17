@@ -108,6 +108,9 @@ function HandleUpload () {
 	    $_REQUEST[$k] = mysql_real_escape_string($v);
 	  }
 	  print "<li class=\"success\">SUCCESS: file uploaded</li>\n";
+	  if (! $_REQUEST[table_name]) {
+	    $_REQUEST[table_name] = $fileName;
+	  }
 	  $_REQUEST[table_name] = preg_replace("/[^a-zA-Z0-9]+/","_",$_REQUEST[table_name]);
 	  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`upload_date`) VALUES ('$fileName', '$_REQUEST[file_title]', '$_REQUEST[table_name]', '$_REQUEST[user]', now())";
 	  $r = mysql_query($q);

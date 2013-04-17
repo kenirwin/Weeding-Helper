@@ -1,5 +1,12 @@
 v. 1.0.8 - in progress Dec 2012
  - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 
+ - added link to export format on upload page, clarified rules on table_name
+ - allow user to delete files awaiting cron ingestion, e.g. bad format
+
+*** TO DO: 
+    * increase upload filesize limit - this must be done in php.ini, can't do it in the script. 
+    * lately AjaxCRUD has been not displaying changes until reload. Why is that?
+    * I have a note that we should notify on failed upload, but it looks to me like we already do that. Need examples of failed cases.  
 
 
 v. 1.0.7 - 20 November 2012
