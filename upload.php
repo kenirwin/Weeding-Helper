@@ -61,7 +61,7 @@ function ShowUploadForm() {
 
 <p>
     <label for="userfile">File to upload</label>
-			    <input name="userfile" type="file" id="userfile" /> <a href="http://pcirc.wittenberg.edu/weed/documentation.php#how_to_add_circ_data" target="_new">See documentation for correct file format</a>
+			    <input name="userfile" type="file" id="userfile" /> <span class="fieldnote"><a href="http://pcirc.wittenberg.edu/weed/documentation.php#how_to_add_circ_data" target="_new">See documentation for correct file format</a></span>
 </p>
 
 <p>
@@ -74,7 +74,7 @@ function ShowUploadForm() {
 <p>
 <label for="table_name">Table name</label>
 <input name="table_name" type="text" />
-<span class="fieldnote">Something short without funny characters, for the MySQL table name, like "history"</span>
+<span class="fieldnote">Something short with NO SPACES or funny characters, for the MySQL table name, like "history"</span>
 </p>
 
 <p>
