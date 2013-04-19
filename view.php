@@ -1,13 +1,15 @@
-<html>
-<head>
-<title>View/Edit - Weeding Helper</title>
 <?php
+  /* 
+     NOTE: No HTML output may precede the inclusion of:
+     preheader.php and ajaxCRUD.class.php
+     Don't Do it!
+     Hence the initial html and head attributes being generated later in the file than usual
+  */
 session_start();
 
 include ("config.php");
 include ("mysql_connect.php");
 include ("scripts.php");
-include ("jquery.php");
 
 $path = $path_crud;
 $htpath = $htpath_crud;
@@ -25,14 +27,13 @@ include ($path . '/ajaxCRUD.class.php');
 
 $banner = "<h1>View/Edit: $title</h1>\n";
 
-    #this one line of code is how you implement the class
-    ########################################################
-    ##
-
-    // args: ( ? , table name, primarykey name, path)
-
 if ($_SESSION[weed_table]) {
 ?>
+<html>
+<head>
+<title>View/Edit - Weeding Helper</title>
+<? include ("jquery.php"); ?>
+
 <script type="text/javascript">
     $(document).ready(function(){
 	//	$("#search-form form").toggle("#search-form form");
@@ -63,10 +64,15 @@ margin-bottom: 1em;
 </head>
 <body>
 <?
+print "$banner";
+include ("nav.php");
 
+    #this one line of code is how you implement the class
+    ########################################################
+    ##
 
-  print "$banner";
-  include ("nav.php");
+    // args: ( ? , table name, primarykey name, path)
+
   $tblDemo = new ajaxCRUD("Item", "$_SESSION[weed_table]", "call_order", $htpath);
 }
 else {
@@ -170,22 +176,8 @@ $bool = array ("Y","N");
     #i can set the size of the filter box
     //$tblDemo->setAjaxFilterBoxSize('fldField1', 3);
 
-	#i can format the data in cells however I want with formatFieldWithFunction
-	#this is arguably one of the most important (visual) functions
-	$tblDemo->formatFieldWithFunction('fldField1', 'makeBlue');
-	$tblDemo->formatFieldWithFunction('fldField2', 'makeBold');
-
 	#actually show the table
 	$tblDemo->showTable();
-
-	#my self-defined functions used for formatFieldWithFunction
-	function makeBold($val){
-		return "<b>$val</b>";
-	}
-
-	function makeBlue($val){
-		return "$val";
-	}
 
 ?>
   <? include ("license.php"); ?>

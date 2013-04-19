@@ -174,6 +174,7 @@ Max field length: none</p>
 
 <dt>AjaxCRUD:</dt>
    <dd>Used here in a customized form to update database records</dd>
+   <dd>Licensed free-of-charge for <strong>non-commercial use</strong> only</dd>
    <dd>ajaxCRUD(tm) by Loud Canvas Media is licensed under a
    Creative Commons Attribution-Share Alike 3.0 United States License</dd>
 																											<dd>See: <a href="http://www.ajaxCRUD.com">http://www.ajaxCRUD.com</a></dd>
