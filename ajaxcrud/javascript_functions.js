@@ -1,8 +1,11 @@
-var loading_image_html; //set via setLoadingImageHTML()
+/* javascript_functions.js - for ajaxCRUD version 6.x */
+/* you should NOT need to ever edit this file */
 
-var filterReq = "";
-var sortReq = "";
-var this_page;		// the php file loading ajaxCRUD
+var loading_image_html; //set via setLoadingImageHTML()
+var filterReq = "";	// used in filtering the table
+var pageReq = "";	// used in pagination
+var sortReq = ""; 	// used for sorting the table
+var this_page;		// the php file loading ajaxCRUD (including all params)
 
 /* Ajax functions */
 function createRequestObject() {
@@ -13,7 +16,8 @@ function createRequestObject() {
          	// set type accordingly to anticipated content type
             //http_request.overrideMimeType('text/xml');
             //http_request.overrideMimeType('text/html');
-            http_request.overrideMimeType('text/plain;charset=ISO-8859-1');
+            //http_request.overrideMimeType('text/plain;charset=ISO-8859-1');
+            //http_request.overrideMimeType('application/x-www-form-urlencoded; charset=UTF-8');
          }
       } else if (window.ActiveXObject) { // IE
          try {
@@ -41,15 +45,25 @@ var other_http = createRequestObject();
 //used for updating
 function sndUpdateReq(action) {
     http.open('get', action);
-    http.onreadystatechange = handleResponse;
+    http.onreadystatechange = handleUpdateResponse;
     http.send(null);
+}
+
+function getThisPage(){
+	var returnPageName = this_page;
+	var paramChar = "?";
+	if (returnPageName.indexOf("?") != -1){
+		paramChar = "&";
+	}
+	returnPageName = returnPageName + paramChar;
+	return returnPageName;
 }
 
 /*
 unused (for now)
 function sndPostReq(url, parameters) {
     http.open('POST', url);
-	http.onreadystatechange = handleResponse;
+	http.onreadystatechange = handleUpdateResponse;
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	http.setRequestHeader("Content-length", parameters.length);
 	http.setRequestHeader("Connection", "close");
@@ -67,7 +81,11 @@ function sndDeleteReq(action) {
 			var table = broken_string[0];
 			var id = broken_string[1];
 
-			$('#' + table + '_row_' + id).fadeOut('slow');
+			//$('#' + table + '_row_' + id).fadeOut('slow');
+			//this new line was added in v5.4 to support vertical layout
+			$("tr[id^=" + table + "_row_" + id +"]").fadeOut('slow');
+			updateRowCount(table);
+
 		}
 	}
     http.send(null);
@@ -78,12 +96,15 @@ function sndAddReq(action, table) {
     http.open('get', action);
     http.onreadystatechange = function() {
 		if(http.readyState == 4){
-			add_http.open('get', ajax_file + "?ajaxAction=add&table=" + table);
+			var action2 = ajax_file + "?ajaxAction=add&table=" + table;
+			add_http.open('get', action2);
 			add_http.onreadystatechange = function(){
 				if(add_http.readyState == 4){
 					var return_string = add_http.responseText;
 					var table_html = return_string;
 					document.getElementById(table).innerHTML = table_html;
+					doValidation(); //rebind any validation functions to the new elements
+					updateRowCount(table);
 				}
 			}
 			add_http.send(null);
@@ -96,14 +117,19 @@ function sndAddReq(action, table) {
 function sndFilterReq(action, table) {
     http.open('get', action);
     http.onreadystatechange = function(){
-		filter_http.open("get", ajax_file + "?ajaxAction=filter&table=" + table);
-		filter_http.onreadystatechange = function(){
-			if(filter_http.readyState == 4){
-				var table_html = filter_http.responseText;
-				document.getElementById(table).innerHTML = table_html;
+		if(http.readyState == 4){
+			filter_http.open("get", ajax_file + "?ajaxAction=filter&table=" + table);
+			filter_http.onreadystatechange = function(){
+				if(filter_http.readyState == 4){
+					var table_html = filter_http.responseText;
+					document.getElementById(table).innerHTML = table_html;
+					//$("#" + table).html(table_html); //maybe use this method some day if helpful
+					doValidation(); //rebind any validation functions to the new elements
+					updateRowCount(table);
+				}
 			}
+			filter_http.send(null);
 		}
-		filter_http.send(null);
 	}
 
     http.send(null);
@@ -120,6 +146,7 @@ function sndSortReq(action, table) {
 				if(sort_http.readyState == 4){
 					var table_html = sort_http.responseText;
 					document.getElementById(table).innerHTML = table_html;
+					doValidation(); //rebind any validation functions to the new elements
 				}
 			}
 			sort_http.send(null);
@@ -127,6 +154,19 @@ function sndSortReq(action, table) {
  	}
     http.send(null);
 }
+
+/* Update Row Count (if used with function insertRowsReturned() ) - added in v6.9 */
+function updateRowCount(table) {
+    http.open('get', ajax_file + "?ajaxAction=getRowCount&table=" + table);
+    http.onreadystatechange = function(){
+		if(http.readyState == 4){
+			var numRows = http.responseText;
+			$("." + table + "_rowCount").html(numRows);
+		}
+	}
+    http.send(null);
+}
+
 
 function sndReqNoResponse(action) {
     http.open('get', action);
@@ -151,14 +191,14 @@ function doNothing(){
 function changeSort(table, field_name, sort_direction){
 	//this should also maintain the filtering when sorting
 	sortReq = "&sort_field=" + field_name + "&sort_direction=" + sort_direction;
-	var req = this_page + "?table=" + table + sortReq + filterReq;
-
+	var req = getThisPage() + "table=" + table + sortReq + filterReq;
 	sndSortReq(req, table);
 	return false;
 }
 
 function pageTable(params, table){
-	var req = this_page + "?table=" + table + params + sortReq + filterReq;
+	var req = getThisPage() + "table=" + table + params + sortReq + filterReq;
+	pageReq = params;
 	//setLoadingImage(table);
 	sndSortReq(req, table);
 	return false;
@@ -171,13 +211,13 @@ function setLoadingImage(table){
 function filterTable(obj, table, field, query_string){
 	var filter_fields = getFormValues(document.getElementById(table + '_filter_form'), '');
     if (filter_fields != ''){
-    	var req = this_page + "?" + filter_fields + "&" + query_string;
-    	filterReq = "&" + filter_fields + "&" + query_string;
+    	var req = getThisPage() + filter_fields + "&" + query_string;
+    	filterReq = "&" + filter_fields + "&" + query_string; //this var declared at the top of this file
     }
     else{
-    	var req = this_page + "?action=unfilter";
-    	filterReq = "&action=unfilter";
-    }
+		var req = getThisPage() + "action=unfilter";
+		filterReq = "&action=unfilter";
+	}
 
 	// function to send the filter
 	var func = function() {
@@ -212,7 +252,7 @@ function ajax_deleteRow(id, table, pk){
 
 //for handling all ajax editing
 //TODO: make function name less generic
-function handleResponse() {
+function handleUpdateResponse() {
     if(http.readyState == 4){
 
         var return_string = http.responseText;
@@ -233,7 +273,6 @@ function handleResponse() {
             document.getElementById(id+'_edit').style.display = 'none';
             document.getElementById(id+'_save').style.display = 'none';
         }
-
         else{
             var broken_string = return_string.split("|");
             var id = broken_string[0];
@@ -278,7 +317,8 @@ function getFormValues(fobj,valFunc) {
 				val = eval(cmd)
 			}
 
-			str += fobj.elements[i].name + "=" + escape(fobj.elements[i].value) + "&";
+			//str += fobj.elements[i].name + "=" + escape(fobj.elements[i].value) + "&";
+			str += fobj.elements[i].name + "=" + cleanseStrForURIEncode(fobj.elements[i].value) + "&";
 		}
 		else if(element_type == 'select-one'){
 			str += fobj.elements[i].name + "=" + fobj.elements[i].options[fobj.elements[i].selectedIndex].value + "&";
@@ -286,7 +326,8 @@ function getFormValues(fobj,valFunc) {
 		else if(element_type == 'checkbox'){
 			var chkValue = '';
 			if (fobj.elements[i].checked){
-				var chkValue = escape(fobj.elements[i].value);
+				//var chkValue = escape(fobj.elements[i].value);
+				var chkValue = cleanseStrForURIEncode(fobj.elements[i].value);
 			}
 			str += fobj.elements[i].name + "=" + chkValue + "&";
 		}
@@ -342,7 +383,10 @@ function fn_validateNumeric(evento, elemento, dec) {
     if(charWich==null){
         charWich=charCode;
     }
-    if ( (charWich>=48 && charWich<=57) || charCode==8 || charCode==39 || charCode==37 || charCode==46 || charWich==46 || charWich==13) {
+
+    //48-57 are numbers; 8 is backspace, 9 is tab, 37 is left arrow, 39 is right arrow, 46 is delete, 13 is enter, 45 is dash (for negative numbers, 35 is end key, 36 is home key)
+    if ( (charWich>=48 && charWich<=57) || charCode==8 || charCode==9 || charCode==37 || charCode==39 || charCode==46 || charWich==46 || charWich==13 || charWich==45 || charCode==35 || charCode==36) {
+
         if(dec=="n" && charWich == 46){
             return false;
         }
@@ -358,6 +402,16 @@ function fn_validateNumeric(evento, elemento, dec) {
     }
 }
 
+//added 2-3-2013, to fix the issue with # characters not being encoded properly by encodeURI function
+function cleanseStrForURIEncode(str){
+	str = encodeURI(str);
+	str = str.replace(/#/g, '%23');
+	str = str.replace(/&/g, '%26');
+	str = str.replace(/>/g, "&gt;");
+	str = str.replace(/</g, "&lt;");
+	str = str.replace(/"/g, "&quot;");
+	return str;
+}
 
 function myAddSlashes(str) {
     str=str.replace(/\"/g,'\\"');
@@ -426,3 +480,5 @@ if('function' != typeof Array.prototype.splice) {
 		return a;
 	};
 }
+
+/* javascript_functions.js - last updated 10/1/2011 */

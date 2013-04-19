@@ -1,20 +1,41 @@
 <?php
 
+	/* you SHOULD edit the database details below; fill in your database info */
+
+	#this is the info for your database connection
+    ####################################################################################
+    ##
+  /* 
+     normally, database connection info would go here,
+     but it is instead defined in Weeding Helper's config.php file
+  */
+
+    ##
+    ####################################################################################
+
+	/********* THERE SHOULD BE NO NEED TO EDIT BELOW THIS LINE *******/
+
+	####################################################################################
+
 	#a session variable is set by class for much of the CRUD functionality -- eg adding a row
     session_start();
 
     #for pesky IIS configurations without silly notifications turned off
     error_reporting(E_ALL - E_NOTICE);
 
-    include ("./config.php"); //contains mysql connect info
-
-	$db = mysql_connect($MYSQL_HOST,$MYSQL_LOGIN,$MYSQL_PASS);
+	$db = @mysql_connect($MYSQL_HOST,$MYSQL_LOGIN,$MYSQL_PASS);
 
 	if(!$db){
-		echo('Unable to connect to database server:'. $MYSQL_HOST.'"' . mysql_error());
+		echo('Unable to authenticate user. <br />Error: <b>' . mysql_error() . "</b>");
 		exit;
 	}
-	mysql_select_db($MYSQL_DB);
+	$connect = @mysql_select_db($MYSQL_DB);
+	if (!$connect){
+		echo('Unable to connect to db <br />Error: <b>' . mysql_error() . "</b>");
+		exit;
+	}
+	mysql_query("SET NAMES 'utf8'");
+	//mysql_query("SET character_set_results = 'utf8_general_ci', character_set_client = 'utf8_general_ci', character_set_connection = 'utf8_general_ci', character_set_database = 'utf8_general_ci', character_set_server = 'utf8_general_ci'", $db);
 
 	# what follows are custom database handling functions - required for the ajaxCRUD class
 	# ...but these also may be helpful in your application(s) :-)
