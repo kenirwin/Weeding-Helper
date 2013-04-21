@@ -24,7 +24,7 @@ $innreach = array (
 		   "overnight_hits" => "9", // hits per minute between midnight and 'night_ends'-o'clock
 		   "daytime_hits" => "6", //hits per minute between 'night-ends' and midnight
 
-		   )
+		   );
 
   /* FILECHUCKER OPTIONS 
 
