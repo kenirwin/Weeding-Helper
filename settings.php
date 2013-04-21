@@ -28,6 +28,7 @@ form { display: inline }
 
 <?
 
+$_REQUEST['table'] = $_SESSION['weed_table'];
 
 include ("nav.php");
 

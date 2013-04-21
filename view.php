@@ -94,13 +94,20 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 <div id="search-form">
 <input type=button id="form-show-hide" value="Show/Hide Advanced Search" />
 <?
-if ($_REQUEST[submit_query_builder]) {
-  $where = BuildWhereFromSearch ($table);
-  print $where; 
-} //end if 
+  
+  if ($_REQUEST[clear_query]) {
+    $where = "";
+  } // end if clearing query conditions
+  else {
+    $clear_button = '<a href="view.php?clear_query=true"><button><img src="images/delete.png" style="height: .75em">&nbsp;Remove Conditions</button></a>';
+   if ($_REQUEST[submit_query_builder]) {
+     $where = BuildWhereFromSearch ($table);
+     print "$where $clear_button"; 
+   } //end if 
+} //end else
 ?>
 
-<form method="post">
+<form method="post" action="view.php">
 <div id="search-hints">
 <ol>
   <li>Wildcard character: <b>%</b> can be used in "LIKE" and "NOT LIKE" search, <br />e.g.: <b>%Norton%</b> will find "H.W. Norton", "Norton & Co", etc.</li>
