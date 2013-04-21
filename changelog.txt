@@ -5,6 +5,7 @@ v. 1.0.8 - in progress Dec 2012
  - allow user to delete files awaiting cron ingestion, e.g. bad format
  - updated to ajaxCRUD v7.91
  - moved html headers on view.php to lower in the page so as to not conflict with ajaxCRUD's need to do a few things first; this fixes the bug that required a reload of the page to see user-initiated changes to the record information
+ - added variables for future FileChucker support to config-sample.php
 
 *** TO DO: 
     * increase upload filesize limit - this must be done in php.ini, can't do it in the script. 

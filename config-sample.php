@@ -26,4 +26,15 @@ $innreach = array (
 
 		   )
 
+  /* FILECHUCKER OPTIONS 
+
+     Note: FileChucker is non-free, non-opensource software for managing file uploads, including much larger files than is sometimes achievable natively in PHP and therefor in Weeding Helper. It is likely (but not certain) that future releases of Weeding Helper will include optional FileChucker support, allowing users who pay the FileChucker licensing fee to use alternate upload options. Since changes to this file (config.php) can hinder the upgrade process, some unused variables are added here now (Apr 2013, v 1.0.8, for ease of later upgrades. 
+
+     More information about FileChucker at: http://encodable.com/filechucker/
+  */
+  
+$use_filechucker_for_upload = false;
+$filechucker_location = "";
+$filechucker_upload_page = "";
+
 ?>
