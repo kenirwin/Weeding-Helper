@@ -79,8 +79,10 @@ where 1 $added_query
 ORDER BY call_order";
 //ORDER BY subclass,subj_starts";
 
-
-print "<div class=\"example\">$q</div>\n";;
+if ($_REQUEST[before_after] || $_REQUEST[circ_count]) {
+    $clear_button = '<a href="print.php?"><button><img src="images/delete.png" style="height: .75em">&nbsp;Remove Conditions</button></a>';
+}
+print "<div class=\"example\">$q<br>$clear_button</div>\n";
 $r = mysql_query($q);
 print ("<h3>".mysql_num_rows($r)." items</h3>\n");
 if (function_exists("MysqlResultsTable")) {
