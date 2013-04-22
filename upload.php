@@ -25,7 +25,14 @@ include ("mysql_connect.php");
 
 if ($allow_uploads == true) { 
   if ($_REQUEST[upload_button]) { 
-    HandleUpload();
+    $q = "SELECT * FROM `controller` WHERE table_name = '$_REQUEST[table_name]'";
+    $r = mysql_query($q);
+    if (mysql_num_rows($r) > 0) {
+      print '<p class="warning">There is already a database table named <strong>$_REQUEST[table_name]</strong>. Please choose a different table name for this file.</p>';
+    }
+    else {
+      HandleUpload();
+    } //end else if tablename is ok
   }
   
   if (fopen("upload/temp","x")) { // try to make a file to test write permissions

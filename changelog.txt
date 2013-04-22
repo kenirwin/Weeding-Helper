@@ -7,11 +7,7 @@ v. 1.0.8 - in progress Apr 2013
  - moved html headers on view.php to lower in the page so as to not conflict with ajaxCRUD's need to do a few things first; this fixes the bug that required a reload of the page to see user-initiated changes to the record information
  - added variables for future FileChucker support to config-sample.php
  - added a "remove conditions" button on view.php & print.php after the user invokes the advanced search
-
-*** TO DO: 
-    * increase upload filesize limit - this must be done in php.ini, can't do it in the script. 
-    * I have a note that we should notify on failed upload, but it looks to me like we already do that. Need examples of failed cases.  
-
+ - prevented duplicate table names on upload
 
 v. 1.0.7 - 20 November 2012
  - added GetTableNames() script to scripts.php - return an array of human-friendly names, keyed to mysql table_name
