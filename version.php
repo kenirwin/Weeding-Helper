@@ -1,3 +1,3 @@
 <?
-$version = "1.0.8 (in progress)";
+$version = "1.0.8";
 ?>

@@ -1,5 +1,5 @@
 
-v. 1.0.8 - in progress Apr 2013
+v. 1.0.8 - 22 April 2013
  - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 
  - added link to export format on upload page, clarified rules on table_name
  - allow user to delete files awaiting cron ingestion, e.g. bad format
