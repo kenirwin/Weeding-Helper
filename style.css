@@ -36,6 +36,7 @@ color: grey;
     position: absolute;
     top: 50px;
     left: 60px;
+    line-height: 2em;
 }
 #navlinks li, .action {
     display: inline;
