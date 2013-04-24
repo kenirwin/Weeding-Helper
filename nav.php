@@ -20,7 +20,14 @@ $nav = array ("controller.php" => "All Tables",
 	      );
    }
 foreach ($nav as $link => $name) {
-  $navlinks .= "<li><a href=\"$link\">$name</a></li>\n";
+  if (($link == "upload.php") && ($allow_uploads !== true)) {
+    $class = 'class="turned-off"';
+    $class .= " blah=\"$link $allow_uploads\""; 
+  } 
+  else { // if upload is turned on
+    $class = "";
+  }
+  $navlinks .= "<li $class><a href=\"$link\">$name</a></li>\n";
 }
 
 print "<ul id=\"navlinks\">$navlinks</ul>\n";

@@ -47,11 +47,19 @@ color: grey;
     background-color: #CFDBF3;
 }
 
+#navlinks li.turned-off { 
+    background-color: #ccc;
+} 
+
 #navlinks li a, #navlinks li a:visited, .action {
     color: black;
     font-family: arial, helvetica, sans-serif;
     text-decoration: none;
     font-weight: bold;
+}
+
+#navlinks li.turned-off a {
+    color: #666;
 }
 
 #navlinks li:hover {

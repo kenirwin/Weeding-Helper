@@ -16,9 +16,9 @@ label {
 <h1>Upload New Review File</h1>
 
 <?
-include("nav.php");
 ERROR_REPORTING(0);
 include ("config.php");
+include("nav.php");
 include ("mysql_connect.php");
 //include ("scripts.php");
 
