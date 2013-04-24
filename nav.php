@@ -22,7 +22,6 @@ $nav = array ("controller.php" => "All Tables",
 foreach ($nav as $link => $name) {
   if (($link == "upload.php") && ($allow_uploads !== true)) {
     $class = 'class="turned-off"';
-    $class .= " blah=\"$link $allow_uploads\""; 
   } 
   else { // if upload is turned on
     $class = "";
