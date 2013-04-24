@@ -28,7 +28,6 @@ td { font-size: 80%; }
 </head>
 
 <body>
-<h1>Graph</h1>
 <?
 session_start();
 include ("mysql_connect.php");
@@ -36,6 +35,10 @@ if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
 $table = $_SESSION[weed_table];
 $imgsrc = "images/greenblock.gif";
 $redimg = "images/redblock.gif";
+$q = "SELECT file_title from `controller` where table_name = '$table'";
+$r = mysql_query($q);
+$myrow = mysql_fetch_row($r);
+$title = $myrow[0];
 
 include("nav.php");
 
@@ -45,6 +48,7 @@ $r= mysql_query($q);
 $last_class = "";
 
 ?>
+<h1>Graph: <?=$title;?></h1>
 
 <div class="intro">
 <p>This graphs the shelflist: arranged in call number order, the titles in this table are shown with the number of times circulated. Zero circs shown in red.</p>
