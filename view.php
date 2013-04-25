@@ -32,7 +32,8 @@ if ($_SESSION[weed_table]) {
 <html>
 <head>
 <title>View/Edit - Weeding Helper</title>
-<? include ("jquery.php"); ?>
+    <?  include ("jquery.php"); 
+?>
 
 <script type="text/javascript">
     $(document).ready(function(){
@@ -139,9 +140,10 @@ while ($myrow = mysql_fetch_assoc($r)) {
 } //end while settings
 
 
-//$tblDemo->omitField("loc");
+if ($where) {
     #i can use a where field to better-filter my table
     $tblDemo->addWhereClause($where);
+} 
 
     #i can order my table by whatever i want
     //$tblDemo->addOrderBy("ORDER BY fldField1 ASC");
