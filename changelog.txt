@@ -1,3 +1,6 @@
+v. 1.0.9 - 12 June 2013
+ - darkened view.php table text using the ajaxCRUD default.css file
+ - added missing values to table_config SQL table (fixes bug that prevented some view/print settings from being set.)
 
 v. 1.0.8 - 22 April 2013
  - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 

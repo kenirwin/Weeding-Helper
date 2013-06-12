@@ -56,6 +56,7 @@ else { // if config.php
     
     $sql = "\n"
       . "INSERT INTO `table_config` (`table_name`, `action`, `field`, `printable`) VALUES"
+      . "('default', 'omitField', 'call_order', 'N'),"
       . "('default', 'disallowEdit', 'author', 'Y'),"
       . "('default', 'disallowEdit', 'title', 'Y'),"
       . "('default', 'omitField', 'publisher', 'Y'),"
