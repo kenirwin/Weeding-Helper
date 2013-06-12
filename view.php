@@ -136,7 +136,7 @@ if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
 
 while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
-    $tblDemo->$action($field);
+    if ($action != "") { $tblDemo->$action($field); }
 } //end while settings
 
 
