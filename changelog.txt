@@ -1,3 +1,6 @@
+v. 1.0.9 - 12 June 2013
+ - darkened text in the view.php table (using ajaxCRUD css)
+ - added missing fields values to table_config setup in mysql_connect.php (this fixes a bug that prevented some settings from being changed)
 
 v. 1.0.8 - 22 April 2013
  - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 
