@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Help/Documentation: Weeding Helper</title>
+<!-- docuentation for bibrecord-based weeding helper -->
 <link rel="stylesheet" href="style.css" />
 <style>
    #main { margin: 0 10% 0 5% }
