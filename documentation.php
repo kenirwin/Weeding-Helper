@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Help/Documentation: Weeding Helper</title>
+<!-- docuentation for item-based weeding helper -->
 <link rel="stylesheet" href="style.css" />
 <style>
    #main { margin: 0 10% 0 5% }
@@ -98,14 +99,18 @@ where "apache" is the name of a permissions group that grants write-permissions 
 <tr><td>Bibliographic</td><td>Subject</td></tr>
 <tr><td>Bibliographic</td><td>Cat Date</td></tr>
 <tr><td>Bibliographic</td><td>Location</td></tr>
-<tr><td>Bibliographic</td><td>Call #</td></tr>
+<tr><td>Bibliographic</td><td>Call # (BIBLIO)</td></tr>
+<tr><td>Item</td><td>CALL # (ITEM)</td></tr>
+<tr><td>Item</td><td>VOLUME</td></tr>
 <tr><td>Bibliographic</td><td>BCODE3</td></tr>
 <tr><td>Bibliographic</td><td>MAT TYPE</td></tr>
 <tr><td>Bibliographic</td><td>RECORD #</td></tr>
-<tr><td>Item</td><td>Tot Chkout</td></tr>
-<tr><td>Item</td><td># Renewals</td></tr>
-<tr><td>Item</td><td>Intl Use</td></tr>
-<tr><td>Item</td><td>Lchkin</td></tr>
+<tr><td>Bibliographic</td><td>OCLC #</td></tr>
+<tr><td>Item</td><td>TOT CHKOUT</td></tr>
+<tr><td>Item</td><td>TOT RENEW</td></tr>
+<tr><td>Item</td><td>INTL USE</td></tr>
+<tr><td>Item</td><td>LCHKIN</td></tr>
+<tr><td>Item</td><td>BARCODE</td></tr>
 </tbody>
 </table>
 
