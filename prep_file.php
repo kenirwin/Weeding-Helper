@@ -18,6 +18,7 @@ require ("mysql_connect.php");
 
 //$log = fopen ("/docs/weed/log.txt", "a+"); 
 
+
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
 $r = mysql_query ($q);
 $rows = mysql_num_rows($r);
@@ -56,9 +57,9 @@ while ($myrow = mysql_fetch_assoc($r)) {
 
 
 
-
 function PrepFile ($filename) { 
   global $path_main;
+  global $authoritative_callnumber;
   /* SETUP VARIABLES */
   $handle = fopen("$path_main/upload/$filename", "r");
   $output_filename = "$path_main/prepped/$filename";
@@ -66,119 +67,45 @@ function PrepFile ($filename) {
   if (! $output_handle) { return false; }
   
   // these arrays define variable names to be used later
-  $fixed = array ("author","title","pub","lcsh","cat_date","loc","call","bcode","mat_type","bib_record");
-  $itemized = array ("total_circ","renews","int_use","last_checkin");
-  /* integer_items will be added together so that a book with 
-  5 circs on one copy and 6 on another will show a total of 11
-  */
-  
+  $fields = array ("author","title","pub","lcsh","cat_date","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","total_circ","renews","int_use","last_checkin","barcode");
+
   // Define data condensations/transformations
-  $integer_items = array ("total_circ","renews","int_use");
   $date_items = array ("cat_date", "last_checkin");
-  //condense some dates to their most recent instance
-  $most_recent_items = array ("last_checkin"); 
-  // NOT YET META: $pub_to_date = array ("pub" => "date");
-  $count_nonzero = array ("circ_items" => "total_circ");
   /* END SETUP */
-
-  $num_fixed = sizeof($fixed);
-  $num_itemized = sizeof($itemized);
-
-  // build a regex to match tab-delimited # of fixed items + many itemized
-  for ($i=0; $i<$num_fixed;$i++) {
-    $match_string .= "([^\t]*)\t";
-  }
-  $match_string .= "(.*)";
 
 
   if ($handle) {
     while (!feof($handle)) {
       $line = fgets($handle);
-      //    print "\n$line\n";
-      
-      if (preg_match("/^$match_string/", $line, $m)) { 
-	// grab first four fixed field, then take the rest as an array
-	for ($i=0; $i<$num_fixed; $i++) {
-	  $$fixed[$i] = $m[$i+1]; // =~ $bib_record = $m[1]...
-	} //end for each fixed
-	$items=split("\t",$m[$num_fixed+1]);
-	$num_items = sizeof($items)/sizeof($itemized); // there are 3 fields for each item
-	//      print_r($items);
-	/*
-	  print "BIB: $bib_record\n";
-	  print "CALL: $call\n";
-	  print "TITLE: $title\n";
-	  print "PUB: $pub\n";
-	  print_r ($items);
-	  print "\n\n";
-	*/
-	if (preg_match("/(\d\d\d\d)/",$pub,$n)) {
+      //      print "\nNEXT LINE: $line\n";
+      $line_fields = preg_split("/\t/",$line);
+      //      print_r($line_fields);
+
+      for ($i=0; $i<sizeof($fields); $i++) {
+	$index = $fields[$i];
+	$$index = $line_fields[$i];
+      }
+
+      //grab date from pub field
+      if (preg_match("/(\d\d\d\d)/",$pub,$n)) {
 	$year = $n[1];
-	} //end if numbers in pub info
-	
-	
-	/* count nonzeros */
-	/*
-	  foreach ($count_nonzero as $orig => $output) {
-	  // e.g. total_circs => nonzero-circ-items
-	  print "Total Circ: $total_circ\n";
-	  print_r (${$orig});
-	  $$output = sizeof(${$orig}) - sizeof(array_keys(${$orig},0));
-	  print "${$output}\n";
-	  }
-	*/
-	
+      } //end if numbers in pub info
 
-	/* condense arrays */
-	for ($i=0; $i<$num_itemized; $i++) {
-	  $$itemized[$i] = array_slice($items,($num_items*$i),$num_items);
-	  if (array_keys($count_nonzero, $itemized[$i])) {
-	    $field = $itemized[$i];
-	    $output_field = (array_keys($count_nonzero, $itemized[$i]));
-	    $output_field = $output_field[0]; // convert array to string
-	    //	  print "\n\nFIELD: $field\n";
-	    //print_r (${$field});
-	    $$output = sizeof(${$field}) - sizeof(array_keys(${$field},0));
-	    //	  print "OUTPUT: ${$output}\n";
-	    $$output_field = ${$output};
-	  }
-	  if (in_array($itemized[$i], $integer_items)) {
-	    $$itemized[$i] = array_sum($$itemized[$i]);
-	  }
-	}
-	
-	
-	
-	/* convert fixed-field dates to SQL */
-	foreach (array_intersect($fixed, $date_items) as $field) {
-	  $$field = sqlDate(${$field});
-	}
+      /* convert fixed-field dates to SQL */
+      foreach ($date_items as $field) {
+	$$field = sqlDate(${$field});
+      }
 
-	/* convert and condense variable-field dates */
-	
-	foreach ($most_recent_items as $this_field) {
-	  $most_recent = $most_recent_date = "";
-	  foreach ($$this_field as $date) { //foreach element in the associated array
-	    $datestamp = sqlDate($date);
-	    if ($most_recent < $datestamp) { 
-	      $most_recent = $datestamp;
-	    } //end if newer datestamp
-	  } //end foreach date in field array
-	  if ($most_recent == "1969-12-31") { $most_recent = "0000-00-00"; }
-	  /*
-	    print "$this_field\n";
-	    print_r ($$this_field);
-	    print "\nMost recent: $most_recent\n";
-	  */
-	  $$this_field = $most_recent; //over-write array with single string
-	  
-	} // foreach date_item
-	
-	if (! preg_match ("/CALL/", $call)) //skip headers
-	  $data[$call] .= "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call\t$bcode\t$mat_type\t$bib_record\t$total_circ\t$renews\t$int_use\t$last_checkin\t$num_items\t$circ_items\n";
-	//the .= instead of = allows for multiple items with the same call number
-      } //end if contains data
-      //        print "$most_recent_date\t$title\n";
+      $key = "";
+      if (! preg_match ("/CALL/", $call_item)) {//skip headers
+	$key = "${$authoritative_callnumber} v.$volume c.$copy";
+	if (! $data[$key]) { //if not already used
+	  $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode";
+	} //end if already used
+	else {
+	  print "<li>Duplicate ItemKey: $key</li>\n";
+	}
+      } //end if not the data headers
     } //end while
     fclose($handle);
     
