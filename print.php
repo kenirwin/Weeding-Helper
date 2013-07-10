@@ -35,11 +35,30 @@ include("nav.php");
 <br>
 <label for="circ_count">Total Circs</label>
 <select name="circ_count_operator">
-  <option value="<=">%lt= (less than or equal to)</option>
+  <option value="<=">&lt;= (less than or equal to)</option>
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
 <input type="text" name="circ_count" id="circ_count" placeholder="#" value="<?=$_REQUEST['circ_count'];?>"/>
+
+<br>
+<label for="innreach_count">Total Innreach Copies</label>
+<select name="innreach_count_operator">
+  <option value="<=">&lt;= (less than or equal to)</option>
+  <option value="=">= (equal to)</option>
+  <option value=">=">&gt;= (greater than or equal to)</option>
+</select>
+<input type="text" name="innreach_count" id="innreach_count" placeholder="#" value="<?=$_REQUEST['innreach_count'];?>"/>
+<br>
+<label for="innreach_circ_count">Total Innreach Circ Copies</label>
+<select name="innreach_circ_count_operator">
+  <option value="<=">&lt;= (less than or equal to)</option>
+  <option value="=">= (equal to)</option>
+  <option value=">=">&gt;= (greater than or equal to)</option>
+</select>
+<input type="text" name="innreach_circ_count" id="inreach_circ_count" placeholder="#" value="<?=$_REQUEST['innreach_circ_count'];?>"/>
+
+
 <input type="submit" value="Limit Records Displayed">
 </form>
 
@@ -48,6 +67,15 @@ include("nav.php");
 if (is_numeric($_REQUEST['circ_count']) and (in_array($_REQUEST['circ_count_operator'], $valid_operators))) {
   $added_query = " AND `circs`" . $_REQUEST['circ_count_operator'].  $_REQUEST['circ_count'] . " ";
 } //end if circ cmp
+
+if (is_numeric($_REQUEST['innreach_count']) and (in_array($_REQUEST['innreach_count_operator'], $valid_operators))) {
+  $added_query .= " AND `innreach_total_copies`" . $_REQUEST['innreach_count_operator'].  $_REQUEST['innreach_count'] . " ";
+} //end if circ cmp
+
+if (is_numeric($_REQUEST['innreach_circ_count']) and (in_array($_REQUEST['innreach_circ_count_operator'], $valid_operators))) {
+  $added_query .= " AND `innreach_circ_copies`" . $_REQUEST['innreach_circ_count_operator'].  $_REQUEST['innreach_circ_count'] . " ";
+} //end if circ cmp
+
 
 if (preg_match("/\d\d\d\d-\d\d-\d\d/", $_REQUEST['cmp_date']) and (in_array($_REQUEST['before_after'], $valid_operators))) {
   $added_query .= "AND `catdate`" . $_REQUEST['before_after'] . "'" . $_REQUEST['cmp_date'] . "'";
