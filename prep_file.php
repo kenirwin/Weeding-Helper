@@ -77,6 +77,7 @@ function PrepFile ($filename) {
   if ($handle) {
     while (!feof($handle)) {
       $line = fgets($handle);
+      $line = trim($line);
       //      print "\nNEXT LINE: $line\n";
       $line_fields = preg_split("/\t/",$line);
       //      print_r($line_fields);
@@ -99,8 +100,13 @@ function PrepFile ($filename) {
       $key = "";
       if (! preg_match ("/CALL/", $call_item)) {//skip headers
 	$key = "${$authoritative_callnumber} v.$volume c.$copy";
+	//	if (! $data[$key]) { $key = "BAD CALL $item_record"; }
+	if ($data[$key] || (${$authoritative_callnumber} == "")) {
+	  $key = "ZZZZ $bogus"; //bogus & duplicate keys drop to the bottom
+	  $bogus++;
+	}
 	if (! $data[$key]) { //if not already used
-	  $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode";
+	  $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
 	} //end if already used
 	else {
 	  print "<li>Duplicate ItemKey: $key</li>\n";
