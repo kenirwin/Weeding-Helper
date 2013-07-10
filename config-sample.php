@@ -13,6 +13,13 @@ $MYSQL_LOGIN = ""; // mysql username, needs create/replace/update/delete perm
 $MYSQL_PASS = ""; //mysql password
 $MYSQL_DB = "weeding"; //or whatever else you want to call it
 
+/* Which call number is most specific in your III system, the one in the
+   Bib Record or the one in the Item Record? If your library only uses
+   one of the two, choose the one that you use. If you use both, you
+   will probably want to use "call_item"
+*/
+$authoritative_callnumber = "call_bib"; //should be "call_bib" or "call_item"
+
 $innreach = array (
 		   "local_id" => "", //your institutional code, eg "wt3ug"
 		   "local_display_name" => "", // your institution as it displays in the innreach catalog, eg "WITTENBERG"
