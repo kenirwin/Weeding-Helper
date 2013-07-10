@@ -170,7 +170,7 @@ function DisplayTableSettings($table) {
   } //end while 
 
   if ($table == "default") {
-    $fields = array("call_order","author","title","publisher","year","lcsh","catdate","loc","call","bcode","mat_type","bib_record","circs","enews","int_use","last_checkin","items","circ_items","subclass","subj_starts","classic","best_book","condition","notes","fate","innreach_circ_copies","innreach_total_copies");
+    $fields = array("call_order","author","title","publisher","year","lcsh","catdate","loc","call","bcode","mat_type","bib_record","circs","renews","int_use","last_checkin","items","circ_items","subclass","subj_starts","classic","best_book","condition","notes","fate","innreach_circ_copies","innreach_total_copies");
   }
   else {
     $q = "SHOW COLUMNS FROM `$table`";
