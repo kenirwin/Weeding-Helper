@@ -15,16 +15,21 @@ else {
 
 $sleep = round(55/$hits); //space hits over 55 seconds, sleep between them
 
+
 // get the first table needing check
 $q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and `load_date` IS NOT NULL ORDER BY `upload_date` ASC LIMIT 0,1";
-
 $r = mysql_query($q);
 
 print "$q\n";
 
+
 if (mysql_num_rows($r) > 0) { // if there's work to be done
   $myrow = mysql_fetch_row($r);
   $table = $myrow[0];
+  // update the unknowables
+  $unknowable_q = "UPDATE $table SET innreach_circ_copies = '-1', innreach_total_copies = '-1' WHERE (volume != '')";
+  $r = mysql_query($unknowable_q);
+
   BatchCheck($table, $hits, $sleep);
 }
 
@@ -40,12 +45,16 @@ function BatchCheck ($table, $hits, $sleep) {
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
     print "<h4>$bib_record: $title</h4>\n";
-
-    $innreach_count = CheckInnReach($bib_record);
-    // print_r($innreach);
-    if (! $innreach_count[CIRC]) { $innreach_count[CIRC] = 0; }
-    //  print "<p>$innreach[CIRC] / ". array_sum($innreach) ."</p>\n";
-    $uq = "UPDATE $table SET innreach_circ_copies = '$innreach_count[CIRC]', innreach_total_copies = '". array_sum($innreach_count) ."' WHERE bib_record = '$bib_record'";
+    if ($volume != "") {
+      // if volume is set (ie, if is multi-volume), set innreach to -1 for unknown
+    }
+    else { //get innreach if single volume
+      $innreach_count = CheckInnReach($bib_record);
+      // print_r($innreach);
+      if (! $innreach_count[CIRC]) { $innreach_count[CIRC] = 0; }
+      //  print "<p>$innreach[CIRC] / ". array_sum($innreach) ."</p>\n";
+      $uq = "UPDATE $table SET innreach_circ_copies = '$innreach_count[CIRC]', innreach_total_copies = '". array_sum($innreach_count) ."' WHERE bib_record = '$bib_record'";
+    }
     print "<p>$uq</p>\n";
     $ur = mysql_query($uq);
     sleep($sleep);
