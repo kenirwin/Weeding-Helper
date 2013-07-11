@@ -77,14 +77,13 @@ function PrepFile ($filename) {
   if ($handle) {
     while (!feof($handle)) {
       $line = fgets($handle);
-      $line = trim($line);
       //      print "\nNEXT LINE: $line\n";
       $line_fields = preg_split("/\t/",$line);
       //      print_r($line_fields);
 
       for ($i=0; $i<sizeof($fields); $i++) {
 	$index = $fields[$i];
-	$$index = $line_fields[$i];
+	$$index = trim($line_fields[$i]);
       }
 
       //grab date from pub field
