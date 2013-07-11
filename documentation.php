@@ -93,24 +93,26 @@ where "apache" is the name of a permissions group that grants write-permissions 
  <tr><th>Field Type</th> <th>Field</th></tr>
 </thead>
 <tbody>
-<tr><td>Bibliographic</td><td>Author</td></tr>
-<tr><td>Bibliographic</td><td>Title</td></tr>
-<tr><td>Bibliographic</td><td>Imprint</td></tr>
-<tr><td>Bibliographic</td><td>Subject</td></tr>
-<tr><td>Bibliographic</td><td>Cat Date</td></tr>
-<tr><td>Bibliographic</td><td>Location</td></tr>
-<tr><td>Bibliographic</td><td>Call # (BIBLIO)</td></tr>
-<tr><td>Item</td><td>CALL # (ITEM)</td></tr>
-<tr><td>Item</td><td>VOLUME</td></tr>
-<tr><td>Bibliographic</td><td>BCODE3</td></tr>
-<tr><td>Bibliographic</td><td>MAT TYPE</td></tr>
-<tr><td>Bibliographic</td><td>RECORD #</td></tr>
-<tr><td>Bibliographic</td><td>OCLC #</td></tr>
-<tr><td>Item</td><td>TOT CHKOUT</td></tr>
-<tr><td>Item</td><td>TOT RENEW</td></tr>
-<tr><td>Item</td><td>INTL USE</td></tr>
-<tr><td>Item</td><td>LCHKIN</td></tr>
-<tr><td>Item</td><td>BARCODE</td></tr>
+<tr><td>Bibliographic</td> <td>AUTHOR</td></tr>
+<tr><td>Bibliographic</td> <td>TITLE</td></tr>
+<tr><td>Bibliographic</td> <td>IMPRINT</td></tr>
+<tr><td>Bibliographic</td> <td>SUBJECT</td></tr>
+<tr><td>Bibliographic</td> <td>CAT DATE</td></tr>
+<tr><td>Bibliographic</td> <td>LOCATION</td></tr>
+<tr><td>Bibliographic</td> <td>CALL #(BIBLIO)</td></tr>
+<tr><td>Item</td> <td>CALL #(ITEM)</td></tr>
+<tr><td>Item</td> <td>VOLUME</td></tr>
+<tr><td>Item</td> <td>COPY #</td></tr>
+<tr><td>Bibliographic</td> <td>BCODE3</td></tr>
+<tr><td>Bibliographic</td> <td>MAT TYPE</td></tr>
+<tr><td>Bibliographic</td> <td>RECORD #(BIBLIO)</td></tr>
+<tr><td>Item</td> <td>RECORD #(ITEM)</td></tr>
+<tr><td>Bibliographic</td> <td>OCLC #</td></tr>
+<tr><td>Item</td> <td>TOT CHKOUT</td></tr>
+<tr><td>Item</td> <td>TOT RENEW</td></tr>
+<tr><td>Item</td> <td>INTL USE</td></tr>
+<tr><td>Item</td> <td>LCHKIN</td></tr>
+<tr><td>Item</td> <td>BARCODE</td></tr>
 </tbody>
 </table>
 
