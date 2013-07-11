@@ -1,3 +1,3 @@
 <?
-$version = "1.0.9";
+$version = "2a in progress - Item-Based instead of Bib-Based";
 ?>
