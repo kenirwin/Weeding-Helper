@@ -104,12 +104,14 @@ function PrepFile ($filename) {
 	  $key = "ZZZZ $bogus"; //bogus & duplicate keys drop to the bottom
 	  $bogus++;
 	}
-	if (! $data[$key]) { //if not already used
-	  $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
-	} //end if already used
-	else {
+	if (preg_match("/^i/", $item_record)) {// if there is an item record
+	  if (! $data[$key]) { //if not already used
+	    $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
+	  } //end if already used
+	  else {
 	  print "<li>Duplicate ItemKey: $key</li>\n";
-	}
+	  }
+	} //end if there's an item record
       } //end if not the data headers
     } //end while
     fclose($handle);
