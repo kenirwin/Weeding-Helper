@@ -170,9 +170,11 @@ function DisplayTableSettings($table) {
   } //end while 
 
   if ($table == "default") {
-    $fields = array("call_order","author","title","publisher","year","lcsh","catdate","loc","call","bcode","mat_type","bib_record","circs","renews","int_use","last_checkin","items","circ_items","subclass","subj_starts","classic","best_book","condition","notes","fate","innreach_circ_copies","innreach_total_copies");
+    $field_query = "SHOW COLUMNS FROM '$table'";
+    $fields = array("call_order","author","title","publisher","year","lcsh","catdate","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","circs","renews","int_use","last_checkin","barcode","subclass","subj_starts","classic","best_book","condition","notes","fate","innreach_circ_copies","innreach_total_copies");
   }
   else {
+
     $q = "SHOW COLUMNS FROM `$table`";
     $r= mysql_query($q);
     $fields = array();
@@ -180,7 +182,7 @@ function DisplayTableSettings($table) {
       extract($myrow);
       array_push($fields, $Field);
     } //end while
-  } //end else if not default
+} //end else if not default
   
   foreach($fields as $field) {
     if ($print[$field] == "Y") { $checked = "checked"; }
