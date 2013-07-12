@@ -1,3 +1,9 @@
+v. 2.0.a.01 - 12 July 2013
+ - major revision! version 2 treats each volume as an individual item, whereas the original version treated each bib record (and all its attached items) as one unit. this should make shelf-list checking more meaningful, and the InnReach checking function attempts to differentiate between volume numbers (including variations like "v.1", "V.1", "vol. 1", etc.)
+ - NEW IMPORT FORMAT! version 2 uses different fields than version 1. This means that the fields exported from Millennium/Sierra will be different than before
+ - Version 2 is not backward-compatible with version 1; a new installation will be required
+ - fixed minor bug: settings.php now handles the "renews" field correctly
+
 v. 1.0.9 - 12 June 2013
  - darkened text in the view.php table (using ajaxCRUD css)
  - added missing fields values to table_config setup in mysql_connect.php (this fixes a bug that prevented some settings from being changed)
