@@ -6,7 +6,8 @@
 <style>
    #main { margin: 0 10% 0 5% }
    ol { list-style: decimal; }
-ol.sublist { list-style: lower-latin; } 
+   ol.sublist { list-style: lower-latin; } 
+table td {padding-right: 2em;  }
 </style>
 </head>
 <body>
