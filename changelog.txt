@@ -1,3 +1,7 @@
+v. 1.0.9d - 12 July 2013
+ - fixed 'enews' typo in settings.php (now: "renews")
+ - added innreach copy limiters in print.php
+
 v. 1.0.9 - 12 June 2013
  - darkened view.php table text using the ajaxCRUD default.css file
  - added missing values to table_config SQL table (fixes bug that prevented some view/print settings from being set.)
