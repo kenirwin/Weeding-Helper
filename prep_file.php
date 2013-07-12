@@ -59,7 +59,6 @@ while ($myrow = mysql_fetch_assoc($r)) {
 
 function PrepFile ($filename) { 
   global $path_main;
-  global $authoritative_callnumber;
   /* SETUP VARIABLES */
   $handle = fopen("$path_main/upload/$filename", "r");
   $output_filename = "$path_main/prepped/$filename";
@@ -98,9 +97,14 @@ function PrepFile ($filename) {
 
       $key = "";
       if (! preg_match ("/CALL/", $call_item)) {//skip headers
-	$key = "${$authoritative_callnumber} v.$volume c.$copy";
+	//index based on item call # if there is one
+	//otherwise, use the bib_call #
+	if ($call_item != "") { $call = $call_item; }
+	else {$call = $call_bib;}
+	
+	$key = "$call v.$volume c.$copy";
 	//	if (! $data[$key]) { $key = "BAD CALL $item_record"; }
-	if ($data[$key] || (${$authoritative_callnumber} == "")) {
+	if ($data[$key] || ($call == "")) {
 	  $key = "ZZZZ $bogus"; //bogus & duplicate keys drop to the bottom
 	  $bogus++;
 	}
