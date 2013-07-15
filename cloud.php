@@ -1,3 +1,6 @@
+<?
+session_start();
+?>
 <html>
 <head>
 <title>Keyword Cloud - Weeding Helper</title>
@@ -5,7 +8,6 @@
 <body>
 <h1>Keyword Cloud</h1>
 <?
-session_start();
 include("nav.php");
 
 //ini_set('display_errors','on');

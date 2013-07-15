@@ -1,3 +1,6 @@
+<?
+session_start();
+?>
 <html>
 <head>
 <title>Display Settings - Weeding Helper</title>
@@ -6,7 +9,6 @@
 </script>
 
 <?
-session_start();
 include ("config.php");
 include ("mysql_connect.php");
 include ("jquery.php");

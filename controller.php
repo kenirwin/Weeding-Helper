@@ -1,3 +1,10 @@
+<?
+session_start();
+require("mysql_connect.php");
+if ($no_config) { 
+  die(); 
+}
+?>
 <html>
 <head>
 <title>All Tables - Weeding Helper</title>
@@ -55,13 +62,6 @@ td.button-cell {
 <? include ("jquery.php"); ?>
 </head>
 <body>
-<?
-session_start();
-require("mysql_connect.php");
-if ($no_config) { 
-  die(); 
-}
-?>
 
 <script>
 $(document).ready(function() {

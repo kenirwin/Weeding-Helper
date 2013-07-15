@@ -1,3 +1,6 @@
+<?
+session_start();
+?>
 <html>
 <head>
 <title>Graph - Weeding Helper</title>
@@ -29,7 +32,6 @@ td { font-size: 80%; }
 
 <body>
 <?
-session_start();
 include ("mysql_connect.php");
 if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
 $table = $_SESSION[weed_table];
