@@ -1,4 +1,7 @@
-v. 2.0.a.01 - 15 July 2013
+v. 2.0.a.03 - 12 July 2013
+ - switched from php short tags (<?) to fully qualified php tags (<?php)
+
+v. 2.0.a.02 - 15 July 2013
  - moved session_start() command to the beginning of each file -- should make some servers happier.
 
 v. 2.0.a.01 - 12 July 2013
