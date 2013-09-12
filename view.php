@@ -116,7 +116,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 </ol>
 </div><!-- /search_hints -->
 
-<?php =$searchform;?>
+  <?php print($searchform);?>
 <input type=submit name="submit_query_builder">
 </form>
 

@@ -63,7 +63,7 @@ else {
 
 function ShowUploadForm() {
   ?>
-<form action="<?php =$PHP_SELF;?>" method="POST" enctype="multipart/form-data">
+<form action="<?php print($PHP_SELF);?>" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 
 <p>

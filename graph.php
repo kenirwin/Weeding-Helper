@@ -50,7 +50,7 @@ $r= mysql_query($q);
 $last_class = "";
 
 ?>
-<h1>Graph: <?php =$title;?></h1>
+<h1>Graph: <?php print($title);?></h1>
 
 <div class="intro">
 <p>This graphs the shelflist: arranged in call number order, the titles in this table are shown with the number of times circulated. Zero circs shown in red.</p>

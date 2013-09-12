@@ -11,7 +11,7 @@ $title = $myrow[0];
 ?>
 <html>
 <head>
-<title>Print View: <?php =$title;?></title>
+<title>Print View: <?php print($title);?></title>
 <style>
 table,td,th { 
   border-collapse: collapse; border: 1px solid black;
@@ -20,7 +20,7 @@ table,td,th {
 
 td:nth-child(5),td:nth-child(6) { text-align: right }
 </style>
-<h1><?php =$title;?> (Print-friendly)</h1>
+<h1><?php print($title);?> (Print-friendly)</h1>
 <?php 
 include("nav.php");
 ?>
@@ -31,7 +31,7 @@ include("nav.php");
   <option value="<=">&lt;= (on or before)</option>
   <option value=">=">&gt;= (on or after)</option>
 </select>
-<input type="text" name="cmp_date" id="cmp_date" placeholder="yyyy-mm-dd" value="<?php =$_REQUEST['cmp_date'];?>" />
+<input type="text" name="cmp_date" id="cmp_date" placeholder="yyyy-mm-dd" value="<?php print($_REQUEST['cmp_date']);?>" />
 <br>
 <label for="circ_count">Total Circs</label>
 <select name="circ_count_operator">
@@ -39,7 +39,7 @@ include("nav.php");
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
-<input type="text" name="circ_count" id="circ_count" placeholder="#" value="<?php =$_REQUEST['circ_count'];?>"/>
+<input type="text" name="circ_count" id="circ_count" placeholder="#" value="<?php print($_REQUEST['circ_count']);?>"/>
 
 <br>
 <label for="innreach_count">Total Innreach Copies</label>
@@ -48,7 +48,7 @@ include("nav.php");
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
-<input type="text" name="innreach_count" id="innreach_count" placeholder="#" value="<?php =$_REQUEST['innreach_count'];?>"/>
+<input type="text" name="innreach_count" id="innreach_count" placeholder="#" value="<?php print($_REQUEST['innreach_count']);?>"/>
 <br>
 <label for="innreach_circ_count">Total Innreach Circ Copies</label>
 <select name="innreach_circ_count_operator">
@@ -56,7 +56,7 @@ include("nav.php");
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
-<input type="text" name="innreach_circ_count" id="inreach_circ_count" placeholder="#" value="<?php =$_REQUEST['innreach_circ_count'];?>"/>
+<input type="text" name="innreach_circ_count" id="inreach_circ_count" placeholder="#" value="<?php print($_REQUEST['innreach_circ_count']);?>"/>
 
 
 <input type="submit" value="Limit Records Displayed">
