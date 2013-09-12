@@ -1,4 +1,4 @@
-v. 2.0.a.03 - 12 July 2013
+v. 2.0.a.03 - 12 July 2013 
  - switched from php short tags (<?) to fully qualified php tags (<?php)
 
 v. 2.0.a.02 - 15 July 2013
