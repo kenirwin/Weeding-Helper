@@ -36,6 +36,7 @@ ol.sublist { list-style: lower-latin; }
 <a name="installation"></a>
 <h3>Installation</h3>
    <ol>
+   <li>Make sure that PHP is running with the <b>short_open_tag</b> option turned on; this can be changed in the php.ini file on your server. This will allow PHP to be invoked using the <b>&lt;?</b> tag rather than the full <b>&lt;?php</b> tag.</li>
    <li>Unzip the file in a directory of its own. (The unzipping process creates a lot of files in the current directory, rather than a new directory with a lot of files in it.)</li>
      <li>Rename or copy the <b>config-sample.php</b> to be <b>config.php</b></li>
 					   <li>Edit the <b>config.php</b> file to include your local MySQL username, password, and the name you wish to use for the msyql database associated with Weeding Helper. If you plan to use the <b>innreach_check.php</b> functions to look up how many copies of your items are available in an InnReach catalog, you will also need to speficy several variables in the $innreach array in <b>config.php</b>.</li>

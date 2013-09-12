@@ -1,3 +1,6 @@
+v. 1.0.9e - 12 September 2013
+ - updated documentation to reflect the need for the short_open_tag php preference to be turned on
+
 v. 1.0.9d - 12 July 2013
  - fixed 'enews' typo in settings.php (now: "renews")
  - added innreach copy limiters in print.php
