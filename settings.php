@@ -1,4 +1,4 @@
-<?
+<?php 
 session_start();
 ?>
 <html>
@@ -8,7 +8,7 @@ session_start();
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js">
 </script>
 
-<?
+<?php 
 include ("config.php");
 include ("mysql_connect.php");
 include ("jquery.php");
@@ -28,7 +28,7 @@ form { display: inline }
 <body>
 <h1>Display Settings</h1>
 
-<?
+<?php 
 
 $_REQUEST['table'] = $_SESSION['weed_table'];
 
@@ -217,6 +217,6 @@ function DisplayTableSettings($table) {
 
 
 ?>
-<? include("license.php"); ?>
+<?php  include("license.php"); ?>
 </body>
 </html>

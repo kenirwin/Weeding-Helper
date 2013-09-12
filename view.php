@@ -1,4 +1,4 @@
-<?php
+<?php 
   /* 
      NOTE: No HTML output may precede the inclusion of:
      preheader.php and ajaxCRUD.class.php
@@ -32,7 +32,7 @@ if ($_SESSION[weed_table]) {
 <html>
 <head>
 <title>View/Edit - Weeding Helper</title>
-    <?  include ("jquery.php"); 
+    <?php   include ("jquery.php"); 
 ?>
 
 <script type="text/javascript">
@@ -64,7 +64,7 @@ margin-bottom: 1em;
 </style>
 </head>
 <body>
-<?
+<?php 
 print "$banner";
 include ("nav.php");
 
@@ -94,7 +94,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 
 <div id="search-form">
 <input type=button id="form-show-hide" value="Show/Hide Advanced Search" />
-<?
+<?php 
   
   if ($_REQUEST[clear_query]) {
     $where = "";
@@ -116,7 +116,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 </ol>
 </div><!-- /search_hints -->
 
-<?=$searchform;?>
+<?php =$searchform;?>
 <input type=submit name="submit_query_builder">
 </form>
 
@@ -124,7 +124,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 </div><!-- id="search-form" -->
 
 
-<?
+<?php 
 
 $q = "SELECT * FROM `table_config` where `table_name` = '$_SESSION[table]'";
 $r = mysql_query($q);
@@ -189,6 +189,6 @@ $bool = array ("Y","N");
 	$tblDemo->showTable();
 
 ?>
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 </body>
 </html>

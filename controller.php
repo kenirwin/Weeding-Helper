@@ -1,4 +1,4 @@
-<?
+<?php 
 session_start();
 require("mysql_connect.php");
 if ($no_config) { 
@@ -59,7 +59,7 @@ td.button-cell {
   padding-right: 1em;
 }
 </style>
-<? include ("jquery.php"); ?>
+<?php  include ("jquery.php"); ?>
 </head>
 <body>
 
@@ -74,7 +74,7 @@ $(document).ready(function() {
 
 <h1>All Tables</h1>
 
-<?include("scripts.php");
+<?php include("scripts.php");
 include("nav.php");
 if ($_REQUEST[action] == "choose_table") {
   print "<div class=\"error\">To edit a table, please select the table from one of the fully loaded tables below</div>\n";
@@ -213,6 +213,6 @@ function MakeButton ($url, $img, $tooltip) {
 
 <p><a href="upload.php">Upload new file</a></p>
 
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 </body>
 </html>

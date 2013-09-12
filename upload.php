@@ -15,7 +15,7 @@ label {
 <body>
 <h1>Upload New Review File</h1>
 
-<?
+<?php 
 ERROR_REPORTING(0);
 include ("config.php");
 include("nav.php");
@@ -63,7 +63,7 @@ else {
 
 function ShowUploadForm() {
   ?>
-<form action="<?=$PHP_SELF;?>" method="POST" enctype="multipart/form-data">
+<form action="<?php =$PHP_SELF;?>" method="POST" enctype="multipart/form-data">
 <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
 
 <p>
@@ -94,7 +94,7 @@ function ShowUploadForm() {
 <input name="upload_button" type="submit" class="box" value=" Upload ">
 </p>
 </form>
-<?
+<?php 
 } //end function ShowUploadForm
 
 
@@ -146,6 +146,6 @@ function HandleUpload () {
 
 ?>
 <p><a href="controller.php">Go to Controller page</a></p>
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 </body>
 </html>

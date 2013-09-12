@@ -1,4 +1,4 @@
-<?
+<?php 
 
 $path_main = ""; //no trailing slash, root relative in your file system, e.g.: "/docs/weed"
 $path_http = ""; //no trailing slash; e.g. "/weed" for a top-level web directory

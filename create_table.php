@@ -1,4 +1,4 @@
-<?
+<?php 
 include ("mysql_connect.php");
 include ("scripts.php");
 //$table = "educ";

@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="style.css" />
-<?
+<?php 
    if ($_SESSION[weed_table] == ""){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",

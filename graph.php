@@ -1,4 +1,4 @@
-<?
+<?php 
 session_start();
 ?>
 <html>
@@ -14,7 +14,7 @@ table.min td { padding: 0; margin: 0; border: none; spacing: 0; }
 table.min img { height: .5em; }
 td { font-size: 80%; }
 </style>
-<? include("jquery.php"); ?>
+<?php  include("jquery.php"); ?>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -31,7 +31,7 @@ td { font-size: 80%; }
 </head>
 
 <body>
-<?
+<?php 
 include ("mysql_connect.php");
 if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
 $table = $_SESSION[weed_table];
@@ -50,13 +50,13 @@ $r= mysql_query($q);
 $last_class = "";
 
 ?>
-<h1>Graph: <?=$title;?></h1>
+<h1>Graph: <?php =$title;?></h1>
 
 <div class="intro">
 <p>This graphs the shelflist: arranged in call number order, the titles in this table are shown with the number of times circulated. Zero circs shown in red.</p>
 <p><input type="checkbox" id="min-max" />Check this box to minimize the graph (hide all but graph; mouseover graph for title info)</p>
 </div>
-<?
+<?php 
 
 $thead = "<thead><tr><td>Title</td><td>Circs</td><td>Graph</td></tr></thead>\n";
 
@@ -84,6 +84,6 @@ while ($myrow = mysql_fetch_assoc($r)) {
 } //end while
 print "<table>$lines</table>\n";
 ?>
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 <div style="width: 200px">
 
-	<?
+	<?php
 
 ini_set('display_errors','on');
 

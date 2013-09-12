@@ -1,4 +1,4 @@
-<?
+<?php 
 //By Hidayat Sagita
 //http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/
 ?>

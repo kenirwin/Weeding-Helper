@@ -1,4 +1,4 @@
-<?
+<?php 
 session_start();
 ?>
 <html>
@@ -7,7 +7,7 @@ session_start();
 </head>
 <body>
 <h1>Keyword Cloud</h1>
-<?
+<?php 
 include("nav.php");
 
 //ini_set('display_errors','on');
@@ -72,7 +72,7 @@ foreach ($top_words as $word=>$v) {
 
 <div style="width: 75%">
 
-	<?
+	<?php 
 
 //print_r($cloud);
 
@@ -86,6 +86,6 @@ foreach ($top_words as $word=>$v) {
 	?>
 
 </div>
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 </body>
 </html>

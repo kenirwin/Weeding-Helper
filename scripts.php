@@ -1,4 +1,4 @@
-<?
+<?php 
 
 function GetTableNames() {
   //returns an array of file_titles by table_name

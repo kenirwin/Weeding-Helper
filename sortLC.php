@@ -1,4 +1,4 @@
-<?
+<?php 
 /********************************************************************
 #
 #  sortLC.php : 2 PHP functions to sort Library of Congress (LC) call numbers

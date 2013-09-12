@@ -12,7 +12,7 @@ table td {padding-right: 2em;  }
 </head>
 <body>
 <h1>Help/Documentation</h1>
-<? include("nav.php"); ?>
+<?php  include("nav.php"); ?>
 
 <div id="main">
 <dl id="toc">
@@ -205,10 +205,10 @@ Max field length: none</p>
    <dd>See also: <a href="http://rocky.uta.edu/doran/sortlc/">http://rocky.uta.edu/doran/sortlc/</a></dd>
 <dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
 									
-<? include("attribution.php"); ?>
+<?php  include("attribution.php"); ?>
 
 </div><!-- id=main -->
-  <? include ("license.php"); ?>
+  <?php  include ("license.php"); ?>
 
 </body>
 </html>

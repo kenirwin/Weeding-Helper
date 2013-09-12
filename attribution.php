@@ -1,4 +1,4 @@
-<?
+<?php 
 $nouns = array ("'Cloud' by The Noun Project" => "Attribution (CC BY 3.0)",
 		"'Printer' by The Noun Project" => "Attribution (CC BY 3.0)",
 		"'Pencil' by d" => "No Rights Reserved (CC0)",
