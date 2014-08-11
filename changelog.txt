@@ -1,3 +1,6 @@
+v 2.0.a.04 - 11 August 2014
+- corrected display of version number in footer
+
 v. 2.0.a.03 - 12 July 2013 
  - switched from php short tags (<?) to fully qualified php tags (<?php)
 
