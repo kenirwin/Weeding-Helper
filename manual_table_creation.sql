@@ -54,26 +54,39 @@ CREATE TABLE IF NOT EXISTS `table_config` (
 --
 
 INSERT INTO `table_config` (`table_name`, `action`, `field`, `printable`) VALUES
-('default', 'omitField', 'publisher', 'Y'),
-('default', 'omitField', 'loc', 'N'),
-('default', 'omitField', 'bcode', 'N'),
-('default', 'omitField', 'mat_type', 'N'),
-('default', 'omitField', 'bib_record', 'N'),
-('default', 'disallowEdit', 'subclass', 'N'),
-('default', 'disallowEdit', 'subj_starts', 'N'),
-('default', 'omitField', 'classic', 'N'),
-('default', 'omitField', 'condition', 'N'),
+('default', 'disallowEdit', 'call_order', 'Y'),
 ('default', 'disallowEdit', 'author', 'Y'),
 ('default', 'disallowEdit', 'title', 'Y'),
+('default', 'omitField', 'publisher', 'Y'),
 ('default', 'disallowEdit', 'year', 'Y'),
 ('default', 'disallowEdit', 'lcsh', 'N'),
 ('default', 'disallowEdit', 'catdate', 'N'),
-('default', 'disallowEdit', 'call', 'Y'),
+('default', 'omitField', 'loc', 'N'),
+('default', 'disallowEdit', 'call_bib', 'Y'),
+('default', 'disallowEdit', 'call_item', 'Y'),
+('default', 'disallowEdit', 'volume', 'Y'),
+('default', 'disallowEdit', 'copy', 'Y'),
+('default', 'omitField', 'bcode', 'N'),
+('default', 'omitField', 'mat_type', 'N'),
+('default', 'omitField', 'bib_record', 'N'),
+('default', 'omitField', 'item_record', 'N'),
+('default', 'omitField', 'oclc', 'N'),
 ('default', 'disallowEdit', 'circs', 'N'),
 ('default', 'disallowEdit', 'renews', 'N'),
 ('default', 'disallowEdit', 'int_use', 'N'),
 ('default', 'disallowEdit', 'last_checkin', 'N'),
-('default', 'disallowEdit', 'items', 'N'),
-('default', 'disallowEdit', 'circ_items', 'N'),
+('default', 'disallowEdit', 'barcode', 'N'),
 ('default', 'disallowEdit', 'subclass', 'N'),
-('default', 'disallowEdit', 'subj_starts', 'N');
+('default', 'disallowEdit', 'subj_starts', 'N'),
+('default', 'omitField', 'classic', 'N'),
+('default', 'omitField', 'best_book', 'N'),
+('default', 'omitField', 'condition', 'N'),
+('default', 'allowEdit', 'notes', 'N'),
+('default', 'allowEdit', 'fate', 'N'),
+('default', 'disallowEdit', 'innreach_circ_copies', 'N'),
+('default', 'disallowEdit', 'innreach_total_copies', 'N');
+
+
+
+
+
