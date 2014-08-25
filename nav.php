@@ -30,4 +30,13 @@ foreach ($nav as $link => $name) {
 }
 
 print "<ul id=\"navlinks\">$navlinks</ul>\n";
+
+if (isset($debug) && ($debug == true)) {
+print "<p>SESSION: ";
+print(htmlentities(print_r ($_SESSION, true)));;
+print "</p>";
+print "<p>REQUEST: ";
+print(htmlentities(print_r ($_REQUEST, true)));;
+print "</p>";
+}
 ?>
