@@ -126,7 +126,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 
 <?php 
 
-$q = "SELECT * FROM `table_config` where `table_name` = '$_SESSION[table]'";
+$q = "SELECT * FROM `table_config` where `table_name` = '$_SESSION[weed_table]'";
 $r = mysql_query($q);
 
 if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
@@ -136,7 +136,16 @@ if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
 
 while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
-    $tblDemo->$action($field);
+    /* get display settings from the table_config query and apply actions
+       to the table obeject foreach field.
+
+      "allowEdit" is a bogus action; that's the default behavior when no
+       other setting is applied. so don't issue a command when that's the 
+       setting to be applied
+    */
+    if ($action != "allowEdit" && $action != "") {
+      $tblDemo->$action($field);
+    }
 } //end while settings
 
 

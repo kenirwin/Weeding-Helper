@@ -29,9 +29,9 @@ form { display: inline }
 <h1>Display Settings</h1>
 
 <?php 
-
-$_REQUEST['table'] = $_SESSION['weed_table'];
-
+if (isset($_SESSION['weed_table']) &! isset($_REQUEST['table'])) {
+  $_REQUEST['table'] = $_SESSION['weed_table'];
+}
 include ("nav.php");
 
 if ($_REQUEST['submit_change_settings']) {
@@ -72,6 +72,7 @@ if ($_REQUEST['choose_table']) {
 
 function CloneSettings($clone_to, $clone_from="default") {
   $q = "SELECT * FROM `table_config` WHERE `table_name` = '$clone_from'";
+  print "<li>$q</li>\n";
   $r = mysql_query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
     $q = "INSERT INTO `table_config` VALUES ('$clone_to','$myrow[action]','$myrow[field]','$myrow[printable]')";
@@ -93,7 +94,6 @@ function CloneSettings($clone_to, $clone_from="default") {
 
 function ChooseTable($last_table_used) {
   $file_titles = GetTableNames();
-  $q = "SELECT distinct(table_name) from `table_config`";
   $r = mysql_query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
