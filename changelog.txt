@@ -1,3 +1,8 @@
+v 2.0.a.05 - 25 August 2014
+- update Display Settings defaults to reflect item-based database fields
+- fixed bug that made some Display Settings defaults unchangeable
+- added $debug variable to config-sample.php; changing to 'true' displays the $_REQUEST and $_SESSION variables in nav.php. Could be later expanded to display other debugging information.
+
 v 2.0.a.04 - 11 August 2014
 - corrected display of version number in footer
 
