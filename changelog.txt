@@ -1,3 +1,8 @@
+v 2.0.a.08 - ???
+- changed css in controller to elimate the blue button border that IE added by default
+- fixed bug that had each column displaying twice in csv.php
+- nav.php never displays all tools in header on index/controller page, only on other pages (avoids confusion about which table is active default)
+
 v 2.0.a.07 - 28 August 2014
 - index.php used to be a copy of controller.php (why?). Now index points to controller so only one needs to be updated. The short lived 2.0.a.06 release had non-matching index and controllers, revealing this long-standing error. Fixed now. 
 - tidied up csv.php -- added attribution for where the code came from, removed an earlier version of the coded that had been commented out
