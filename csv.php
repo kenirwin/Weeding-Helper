@@ -25,6 +25,7 @@ $headers = array();
 for ($i = 0; $i < $num_fields; $i++) {
   $headers[] = mysql_field_name($r , $i);
 }
+
 $fp = fopen('php://output', 'w');
 if ($fp && $r) {
   header('Content-Type: text/csv');
@@ -32,10 +33,9 @@ if ($fp && $r) {
   header('Pragma: no-cache');
   header('Expires: 0');
   fputcsv($fp, $headers);
-  while ($row = mysql_fetch_array($r)) {
+  while ($row = mysql_fetch_array($r, MYSQL_NUM)) {
     fputcsv($fp, array_values($row));
   }
   die;
 }
-
 ?>
