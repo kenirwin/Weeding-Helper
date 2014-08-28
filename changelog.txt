@@ -1,3 +1,7 @@
+v 2.0.a.07 - 28 August 2014
+- index.php used to be a copy of controller.php (why?). Now index points to controller so only one needs to be updated. The short lived 2.0.a.06 release had non-matching index and controllers, revealing this long-standing error. Fixed now. 
+- tidied up csv.php -- added attribution for where the code came from, removed an earlier version of the coded that had been commented out
+
 v 2.0.a.06 - 28 August 2014
 - added the long-awaited CSV download option
 
