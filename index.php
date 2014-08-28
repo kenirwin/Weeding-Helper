@@ -136,6 +136,7 @@ function DisplayProcessTable_v2($sort="filename") {
       $next_action.= MakeButton ("cloud.php?table=$myrow[table_name]","images/tag-cloud.png","Keyword Cloud");
       $next_action.= MakeButton ("graph.php?table=$myrow[table_name]","images/bar-graph.png","Graphs");
       $next_action.= MakeButton ("settings.php?table=$myrow[table_name]","images/checkbox.png","View/Edit Settings");
+      $next_action.= MakeButton ("csv.php?table=$myrow[table_name]","images/download.png","Download as CSV");
       if ($allow_delete) {
 	$next_action.= MakeButton ("controller.php?delete=$myrow[table_name]","images/delete.png","Delete Table");
       } //if allow_delete = true

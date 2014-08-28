@@ -1,5 +1,6 @@
 <?php 
 $nouns = array ("'Cloud' by The Noun Project" => "Attribution (CC BY 3.0)",
+		"'Download' designed by <a href=\"http://www.thenounproject.com/edward\">Edward Boatman</a> from the <a href=\"http://www.thenounproject.com\">Noun Project</a>" => "Attribution (CC BY 3.0)",
 		"'Printer' by The Noun Project" => "Attribution (CC BY 3.0)",
 		"'Pencil' by d" => "No Rights Reserved (CC0)",
 		"'Bar Graph' by Ben King" => "No Rights Reserved (CC0)",
