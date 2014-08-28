@@ -26,6 +26,7 @@ td,th {
 border: 1px solid #ccc;
     padding: .25em
 }
+a.action img { border: none } 
 //td:nth-child(9) { width: 250px }
 # tooltip CSS by: Nikolay Izoderov
 # http://www.splashnology.com/article/tooltips-in-css3-and-html5/4053/
