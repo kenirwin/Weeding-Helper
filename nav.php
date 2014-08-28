@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="style.css" />
 <?php 
-   if ($_SESSION[weed_table] == ""){
+   if ($_SESSION[weed_table] == "" || preg_match("/controller\.php|index\.php/", $_SERVER['SCRIPT_NAME'])){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
 	      "settings.php" => "Display Settings",
@@ -16,6 +16,7 @@ $nav = array ("controller.php" => "All Tables",
 	      "cloud.php" => "Keyword Cloud",
 	      "graph.php" => "Graph",
 	      "settings.php" => "Display Settings",
+	      "csv.php" => "Download CSV",
 	      "documentation.php" => "Help"
 	      );
    }
