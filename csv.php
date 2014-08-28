@@ -28,7 +28,7 @@ for ($i = 0; $i < $num_fields; $i++) {
 $fp = fopen('php://output', 'w');
 if ($fp && $r) {
   header('Content-Type: text/csv');
-  header('Content-Disposition: attachment; filename="export.csv"');
+  header('Content-Disposition: attachment; filename="'.$table.'.csv"');
   header('Pragma: no-cache');
   header('Expires: 0');
   fputcsv($fp, $headers);
