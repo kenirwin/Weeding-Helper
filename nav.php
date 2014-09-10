@@ -3,7 +3,6 @@
    if ($_SESSION[weed_table] == "" || preg_match("/controller\.php|index\.php/", $_SERVER['SCRIPT_NAME'])){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
-	      "settings.php" => "Display Settings",
 	      "documentation.php" => "Help"
 	      );
    }
