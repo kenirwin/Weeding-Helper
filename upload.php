@@ -68,7 +68,7 @@ function ShowUploadForm() {
 
 <p>
     <label for="userfile">File to upload</label>
-			    <input name="userfile" type="file" id="userfile" /> <span class="fieldnote"><a href="http://pcirc.wittenberg.edu/weed/documentation.php#how_to_add_circ_data" target="_new">See documentation for correct file format</a></span>
+			    <input name="userfile" type="file" id="userfile" /> <span class="fieldnote"><a href="documentation.php#how_to_add_circ_data" target="_new">See documentation for correct file format</a></span>
 </p>
 
 <p>
