@@ -1,6 +1,7 @@
-v 2.0.a.09 - ??
+v 2.0.a.09 - 23 October 2014
 
 - removed Display Settings button from nav when no default table selected
+- corrected the link to upload format instructions from upload.php
 
 v 2.0.a.08 - 28 August 2014
 - changed css in controller to elimate the blue button border that IE added by default
