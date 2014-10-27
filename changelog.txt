@@ -1,3 +1,6 @@
+v 2.0.a.10 - 24 October 2014
+- exact match only on integer-type field (so "1" doesn't find "14")
+
 v 2.0.a.09 - 23 October 2014
 
 - removed Display Settings button from nav when no default table selected
