@@ -169,6 +169,13 @@ $bool = array ("Y","N");
     $tblDemo->defineAllowableValues("classic", $bool);
     $tblDemo->defineAllowableValues("best_book", $bool);
 
+#for integer fields, only find exact matches, not partial string matches
+$exact_search_fields = array ("copy","circs","renews","int_use","innreach_circ_
+copies", "innreach_total_copies");
+foreach ($exact_search_fields as $xsf) {
+  $tblDemo->setExactSearchField($xsf);
+}
+
 
     #i can disallow deleting of rows from the table
     #http://ajaxcrud.com/api/index.php?id=disallowDelete
