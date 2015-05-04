@@ -2,7 +2,7 @@ v 2.0.a.12- 4 May 2015
 - switched to google hosted version of jqueryui; removed local jqueryui directory
 - confirm on delete file
 - fixed punctuation on some error_reporting calls
-- use LOAD DATA LOCAL INFILE (instead of LOAD DATA INFILE if the local_infile config is turned on
+- use LOAD DATA LOCAL INFILE (instead of LOAD DATA INFILE) if the local_infile config is turned on
 
 v 2.0.a.11 - 15 April 2015
 - no changes committed. oops.
