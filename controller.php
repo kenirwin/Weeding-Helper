@@ -66,10 +66,17 @@ td.button-cell {
 
 <script>
 $(document).ready(function() {
-    $("a[href]$='unstick']").click(function() {
+    $("a[href*='delete']").click(function (link) { 
+	if (! confirm ("Really delete this file?")) {
+	  link.preventDefault();
+	}
+      }); //end click delete
+    $("a[href$='unstick']").click(function(link) {
 	$(this).hide();
-	confirm("If InnReach checks stall out and aren't getting incrementing, use this to unstick the process: note - this will result in a value of -1 in the innreach fields. Do you wish to proceed?");
-      }); //end click
+	if (! confirm("If InnReach checks stall out and aren't getting incrementing, use this to unstick the process: note - this will result in a value of -1 in the innreach fields. Do you wish to proceed?")) {
+	  link.preventDefault();
+        }
+      }); //end click unstick
   }); //end onload
 </script>
 

@@ -1,3 +1,7 @@
+v 2.0.a.11 - 3 May 2015
+- switched to google hosted version of jqueryui; removed local jqueryui directory
+- confirm on delete file
+
 v 2.0.a.10 - 24 October 2014
 - exact match only on integer-type field (so "1" doesn't find "14")
 
@@ -12,7 +16,7 @@ v 2.0.a.08 - 28 August 2014
 - nav.php never displays all tools in header on index/controller page, only on other pages (avoids confusion about which table is active default)
 
 v 2.0.a.07 - 28 August 2014
-- index.php used to be a copy of controller.php (why?). Now index points to controller so only one needs to be updated. The short lived 2.0.a.06 release had non-matching index and controllers, revealing this long-standing error. Fixed now. 
+- index.php used to be a copy of controller.php (why?). Now index points to controller so only one needs to be updated. The short lived 2.0.a.06 release had non-matching index and controllers, revealing this long-standing error. Fixed now.
 - tidied up csv.php -- added attribution for where the code came from, removed an earlier version of the coded that had been commented out
 
 v 2.0.a.06 - 28 August 2014
@@ -26,65 +30,65 @@ v 2.0.a.05 - 25 August 2014
 v 2.0.a.04 - 11 August 2014
 - corrected display of version number in footer
 
-v. 2.0.a.03 - 12 July 2013 
- - switched from php short tags (<?) to fully qualified php tags (<?php)
+v. 2.0.a.03 - 12 July 2013
+- switched from php short tags (<?) to fully qualified php tags (<?php)
 
 v. 2.0.a.02 - 15 July 2013
- - moved session_start() command to the beginning of each file -- should make some servers happier.
+- moved session_start() command to the beginning of each file -- should make some servers happier.
 
 v. 2.0.a.01 - 12 July 2013
- - major revision! version 2 treats each volume as an individual item, whereas the original version treated each bib record (and all its attached items) as one unit. this should make shelf-list checking more meaningful, and the InnReach checking function attempts to differentiate between volume numbers (including variations like "v.1", "V.1", "vol. 1", etc.)
- - NEW IMPORT FORMAT! version 2 uses different fields than version 1. This means that the fields exported from Millennium/Sierra will be different than before
- - Version 2 is not backward-compatible with version 1; a new installation will be required
- - fixed minor bug: settings.php now handles the "renews" field correctly
+- major revision! version 2 treats each volume as an individual item, whereas the original version treated each bib record (and all its attached items) as one unit. this should make shelf-list checking more meaningful, and the InnReach checking function attempts to differentiate between volume numbers (including variations like "v.1", "V.1", "vol. 1", etc.)
+- NEW IMPORT FORMAT! version 2 uses different fields than version 1. This means that the fields exported from Millennium/Sierra will be different than before
+- Version 2 is not backward-compatible with version 1; a new installation will be required
+- fixed minor bug: settings.php now handles the "renews" field correctly
 
 v. 1.0.9 - 12 June 2013
- - darkened text in the view.php table (using ajaxCRUD css)
- - added missing fields values to table_config setup in mysql_connect.php (this fixes a bug that prevented some settings from being changed)
+- darkened text in the view.php table (using ajaxCRUD css)
+- added missing fields values to table_config setup in mysql_connect.php (this fixes a bug that prevented some settings from being changed)
 
 v. 1.0.8 - 22 April 2013
- - increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions. 
- - added link to export format on upload page, clarified rules on table_name
- - allow user to delete files awaiting cron ingestion, e.g. bad format
- - updated to ajaxCRUD v7.91
- - moved html headers on view.php to lower in the page so as to not conflict with ajaxCRUD's need to do a few things first; this fixes the bug that required a reload of the page to see user-initiated changes to the record information
- - added variables for future FileChucker support to config-sample.php
- - added a "remove conditions" button on view.php & print.php after the user invokes the advanced search
- - prevented duplicate table names on upload
+- increased memory limit on innreach_check to 128MB (was system default); this should prevent many of the hangups that plagued the earlier versions.
+- added link to export format on upload page, clarified rules on table_name
+- allow user to delete files awaiting cron ingestion, e.g. bad format
+- updated to ajaxCRUD v7.91
+- moved html headers on view.php to lower in the page so as to not conflict with ajaxCRUD's need to do a few things first; this fixes the bug that required a reload of the page to see user-initiated changes to the record information
+- added variables for future FileChucker support to config-sample.php
+- added a "remove conditions" button on view.php & print.php after the user invokes the advanced search
+- prevented duplicate table names on upload
 
 v. 1.0.7 - 20 November 2012
- - added GetTableNames() script to scripts.php - return an array of human-friendly names, keyed to mysql table_name
- - fixed bug in settings.php: can now turn off columns in print view (could previously only turn them ON)
- - show human-friendly names in settings.php
- - fixed bug so print settings take effect in print.php
- - if a user clicks the 'edit settings' button on the main page, go straight to those settings or offer them some choices if settings don't exist
+- added GetTableNames() script to scripts.php - return an array of human-friendly names, keyed to mysql table_name
+- fixed bug in settings.php: can now turn off columns in print view (could previously only turn them ON)
+- show human-friendly names in settings.php
+- fixed bug so print settings take effect in print.php
+- if a user clicks the 'edit settings' button on the main page, go straight to those settings or offer them some choices if settings don't exist
 
 v. 1.0.6 - 06 November 2012
- - added backticks to a mysql table call in ajaxcrud.class.php 
- - allowed for user to enter non-allowed characters in upload.php table name (non allowed characters will convert to underscores)
+- added backticks to a mysql table call in ajaxcrud.class.php
+- allowed for user to enter non-allowed characters in upload.php table name (non allowed characters will convert to underscores)
 
 v. 1.0.5 - 29 October 2012
- - change line 180 in prep_file.php to .= instead of = ; this allows for multiple items with the same call number; previous versions disappeared subsequent items with duplicate call numbers
- - update innreach_check.php: call DOM parser with $path_main instead of ./ in the path -- works more reliably in some environments 
- - updated upload.php to fail verbosely when file is empty
- - changed innreach_check.php so that the oldest file is checked first against the InnReach catalog
- - updated config-sample.php to include $innreach[local_display_name] variable
- - updated innreach_check.php to use $innreach[local_display_name] variable
- - added $html->clear() to help manage memory issue on the dom parser in innreach_check.php
- - changed innreach_check.php to enter a value of -1 if innreach check cannot return a value. this should keep the process from stalling out. (this appears not to be working right yet)
- - added unstick.php to get the innreach checks unstuck when they hit a page they can't parse. added a call to this functionality from controller.php
- - updated view.php: show table title  
+- change line 180 in prep_file.php to .= instead of = ; this allows for multiple items with the same call number; previous versions disappeared subsequent items with duplicate call numbers
+- update innreach_check.php: call DOM parser with $path_main instead of ./ in the path -- works more reliably in some environments
+- updated upload.php to fail verbosely when file is empty
+- changed innreach_check.php so that the oldest file is checked first against the InnReach catalog
+- updated config-sample.php to include $innreach[local_display_name] variable
+- updated innreach_check.php to use $innreach[local_display_name] variable
+- added $html->clear() to help manage memory issue on the dom parser in innreach_check.php
+- changed innreach_check.php to enter a value of -1 if innreach check cannot return a value. this should keep the process from stalling out. (this appears not to be working right yet)
+- added unstick.php to get the innreach checks unstuck when they hit a page they can't parse. added a call to this functionality from controller.php
+- updated view.php: show table title
 
 v. 1.0.4
- - added DeleteTable function to controller.php (deletes main data table, plus the associated text files on the server and the related line from the controller mysql table)
- - added delete.png to to the images/ folder
- - added changelog
+- added DeleteTable function to controller.php (deletes main data table, plus the associated text files on the server and the related line from the controller mysql table)
+- added delete.png to to the images/ folder
+- added changelog
 
 v. 1.0.3
- - added a document-relative path where there had been a previously root-relative one in innreach_check.php
+- added a document-relative path where there had been a previously root-relative one in innreach_check.php
 
-v. 1.0.2 
- - fixed a spot where the database name was hard-coded as 'weeding' instead of $MYSQL_DB in line 48 of mysql_connect.php
+v. 1.0.2
+- fixed a spot where the database name was hard-coded as 'weeding' instead of $MYSQL_DB in line 48 of mysql_connect.php
 
 v. 1.0.1
- - first release version, bugs and all!
+- first release version, bugs and all!
