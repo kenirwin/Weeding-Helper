@@ -1,6 +1,6 @@
 #!/usr/bin/php 
 <?php 
-error_reporting(E_ALL);
+error_reporting('E_ALL');
 //display_errors(true);
 /* 
 this script will take a III export and condense the repeatable fields
@@ -16,8 +16,7 @@ include ("sortLC.php");
 include ("config.php");
 require ("mysql_connect.php");
 
-//$log = fopen ("/docs/weed/log.txt", "a+"); 
-
+$log = fopen ("log.txt", "a+"); 
 
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
 $r = mysql_query ($q);
@@ -31,7 +30,7 @@ while ($myrow = mysql_fetch_assoc($r)) {
   //  fwrite ($log, "$now - PrepFile: $filename");
   if (PrepFile ($filename)) {
     print "SUCCESS: Prepped file for database ingestion\n";
-    //  fwrite ($log, "$now - CreateTable: $table_name");
+    //    fwrite ($log, "$now - CreateTable: $table_name");
     if (CreateTable($table_name)) {
       //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
       if (LoadTable($table_name, $filename)) {

@@ -1,6 +1,7 @@
 v 2.0.a.11 - 3 May 2015
 - switched to google hosted version of jqueryui; removed local jqueryui directory
 - confirm on delete file
+-fixed punctuation on some error_reporting calls
 
 v 2.0.a.10 - 24 October 2014
 - exact match only on integer-type field (so "1" doesn't find "14")
