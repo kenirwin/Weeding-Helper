@@ -146,7 +146,9 @@ function CreateTable ($table_name) {
 
 function LoadTable ($table, $file) {
   global $path_main;
-  $q = "LOAD DATA INFILE '$path_main/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
+  $local = "";
+  if (UseLocalInfile()) { $local = "LOCAL"; }
+  $q = "LOAD DATA $local INFILE '$path_main/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
   print $q . "\n";
   $r = mysql_query($q);
   if (mysql_errno() > 0) {
@@ -159,6 +161,24 @@ function LoadTable ($table, $file) {
     return true;
   }
 } //end function LoadFile
+
+function UseLocalInfile () {
+  /*returns true if the MySQL 'local_infile' config is turned on */
+  $q="SHOW VARIABLES LIKE 'local_infile'";
+  $r=mysql_query($q);
+  if (mysql_num_rows($r) == 0) {
+    $use_local_infile = false;
+  }
+  while ($myrow = mysql_fetch_assoc($r)) {
+    if ($myrow['Value'] == "ON") {
+      $use_local_infile = true;
+    }
+    else {
+      $use_local_infile = false;
+    }
+  }
+  return $use_local_infile;
+}
 
 
 
