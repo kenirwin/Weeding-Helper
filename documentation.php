@@ -96,7 +96,9 @@ where "apache" is the name of a permissions group that grants write-permissions 
 <tbody>
 <tr><td>Bibliographic</td> <td>AUTHOR</td></tr>
 <tr><td>Bibliographic</td> <td>TITLE</td></tr>
-<tr><td>Bibliographic</td> <td>IMPRINT</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|a</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|b</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|c</td></tr>
 <tr><td>Bibliographic</td> <td>SUBJECT</td></tr>
 <tr><td>Bibliographic</td> <td>CAT DATE</td></tr>
 <tr><td>Bibliographic</td> <td>LOCATION</td></tr>

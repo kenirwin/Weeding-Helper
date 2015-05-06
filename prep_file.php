@@ -65,9 +65,9 @@ function PrepFile ($filename) {
   if (! $output_handle) { return false; }
   
   // these arrays define variable names to be used later
-  $fields = array ("author","title","pub","lcsh","cat_date","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","total_circ","renews","int_use","last_checkin","barcode");
+  $fields = array ("author","title","pub_place","publisher","pub_date","lcsh","cat_date","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","total_circ","renews","int_use","last_checkin","barcode");
 
-  // Define data condensations/transformations
+  // Define date condensations/transformations
   $date_items = array ("cat_date", "last_checkin");
   /* END SETUP */
 
@@ -84,10 +84,19 @@ function PrepFile ($filename) {
 	$$index = trim($line_fields[$i]);
       }
 
+      
       //grab date from pub field
-      if (preg_match("/(\d\d\d\d)/",$pub,$n)) {
+      if (preg_match("/(\d\d\d\d)/",$pub_date,$n)) {
 	$year = $n[1];
       } //end if numbers in pub info
+      else { $year = ""; }
+
+      // combine publisher and pub_place
+      $pub = $publisher;
+      if (isset($pub_place)) { 
+	$pub .= "($pub_place)";
+      }
+
 
       /* convert fixed-field dates to SQL */
       foreach ($date_items as $field) {
