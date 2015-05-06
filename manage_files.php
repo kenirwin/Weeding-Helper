@@ -1,7 +1,7 @@
 <?
 session_start();
 require("mysql_connect.php");
-error_reporting('E_ALL');
+include("scripts.php");
 ?>
 <h1>Manage Files</h1>
 <link rel="stylesheet" href="style.css" />
@@ -9,23 +9,40 @@ error_reporting('E_ALL');
   <? 
   if (isset($_REQUEST['action'])) {
     print_r($_REQUEST);
-
+    
     switch ($_REQUEST['action']) {
     case ('update_count'):
       if (isset($_REQUEST['table_to_recount'])) {
-	  if (UpdateCount($_REQUEST['table_to_recount'])) {
-	    $success.= '<li class="success">SUCCESS: Updated count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
-	  }
-	  else {
-	    $errors .= '<li class="warn">Could not update count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
-	  }
+	if (UpdateCount($_REQUEST['table_to_recount'])) {
+	  $success.= '<li class="success">SUCCESS: Updated count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
 	}
 	else {
-	  $errors .= '<li class="warn">No table specified to update count</li>'.PHP_EOL;
+	  $errors .= '<li class="warn">Could not update count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
 	}
+      }
+      else {
+	$errors .= '<li class="warn">No table specified to update count</li>'.PHP_EOL;
+      }
       break; 
+      
+    case ('combine'): 
+      $required_fields = array("file_title","table_name","user");
+      foreach ($required_fields as $field) {
+	if (strlen($_REQUEST[$field]) == 0) {
+	  $errors .= '<li class="warn">ERROR: Missing required field: '.$field.''.$_REQUEST[$field].'</li>'.PHP_EOL;
+	}
+      } //end foreach field
 
-    }
+      if (sizeof($_REQUEST['combine_table']) < 2) {
+	$errors .= '<li class="warn">ERROR: You must select at least choose two files in order to combine files</li>'.PHP_EOL;
+      }
+
+      if (! $errors)  { 
+	CombineTables($_REQUEST['combine_table'], $_REQUEST['table_name'], $_REQUEST['file_title'], $_REQUEST['user']);
+      } //end if no errors / combining files
+      break;
+    
+    } //end switch action
     print "$errors";
     print "$success";
   }
@@ -106,5 +123,79 @@ EOT;
 
   return $form;
   }
+
+function CombineTables($tables, $new_table_name, $file_title, $user) {
+  $q = "SHOW TABLES LIKE '$new_table_name'";
+  $r = mysql_query($q);
+  if (mysql_num_rows($r) > 0) {
+    PrintError('ERROR: Table `'.$new_table_name.'` already exists; choose another name');
+  }
+  else { 
+    $calls = array();
+    $content = array();
+    foreach ($tables as $table) {
+      $q = 'SELECT * FROM `'.$table.'`';
+      $r = mysql_query($q);
+      while ($myrow = mysql_fetch_assoc($r)) {
+	extract($myrow);
+	unset($call);
+	if (strlen($call_item)>1) {
+	  $call = $call_item; // item call # supercedes bib # if both present
+	}
+	elseif (strlen($call_bib)>1) { 
+	  $call = $call_bib;
+	}
+	else { $call = ""; }
+
+	$calls[$item_record] = $call;
+	$content[$item_record] .= "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
+      
+      }
+    } //end foreach table
+
+  } //end else if no errors yet
+  print $errors;
+  include("sortLC.php");
+  uasort($calls, "SortLC");
+  $filename = "$new_table_name.txt";
+  $file = fopen("./prepped/$filename","w");
+  if ($file) {
+    foreach($calls as $item=>$call) {
+      fwrite($file, $content[$item]);
+    }
+  } 
+  else { 
+    PrintError('Unable to open file for writing in prepped directory</li>'); 
+  }
+  fclose($file);
+  
+  if (CreateTable($new_table_name)) {
+    //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
+    if (LoadTable($new_table_name, $filename)) {
+  $q = "SELECT count(*) FROM `$new_table_name`";
+  $r = mysql_query($q);
+  $myrow = mysql_fetch_row($r);
+  $records = $myrow[0];
+  
+  print_r($q. ":".$records); 
+
+  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`records`,`upload_date`,`load_date`) VALUES ('".mysql_real_escape_string($filename)."', '".mysql_real_escape_string($file_title)."', '".mysql_real_escape_string($new_table_name)."', '".mysql_real_escape_string($user)."', $records, now(), now())";
+  if (mysql_query($q)) {
+    print "SUCCESS: Added table to controller";
+  }
+  else {
+    print "FAILED: Could not add to controller table: $q\n";
+  }
+
+
+    }
+    else { print "FAILED: Cound not load data from $filename into $table_name\n";}
+  } //end if CreateTable 
+  else { 
+    print "FAILED: Could not create table $new_table_name\n";
+  }
+}
+
+
 ?>
 
