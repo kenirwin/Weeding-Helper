@@ -28,10 +28,20 @@ function MysqlResultsTable ($mysql_results) {
   return ($rows);
 } //end function MysqlResultsTable
 
+function Alert($text, $class) {
+  $alert = '<li class="'.$class.'">'.$text.'</li>'.PHP_EOL;
+  return $alert;
+}
+
 function PrintError($text, $return=false) {
-  $error = '<li class="warn">'.$text.'</li>'.PHP_EOL;
-  if ($return) { return $error; }
-  else { print $error; }
+  $alert = Alert("ERROR: " . $text,"warn");
+  if ($return) { return $alert; }
+  else { print $alert; }
+}
+function PrintSuccess($text, $return=false) {
+  $alert = Alert("SUCCESS: ".$text,"success");
+  if ($return) { return $alert; }
+  else { print $alert; }
 }
 
 function TableTemplate ($table_name) {
@@ -272,12 +282,11 @@ function CreateTable ($table_name) {
   $q = TableTemplate($table_name);
   $r = mysql_query($q);
   if (mysql_errno() > 0) {
-    $error = "ERROR: " . mysql_errno() . ": " . mysql_error(). ": $q\n";
-    print ($error);
+    PrintError(mysql_errno() . ": " . mysql_error(). ": $q");
     return false;
   } //end if error
   else {
-    print ("SUCCESS: Created table: $table_name\n");
+    PrintSuccess("Created table: $table_name");
     return true;
   }
 }
@@ -290,12 +299,11 @@ function LoadTable ($table, $file) {
   print $q . "\n";
   $r = mysql_query($q);
   if (mysql_errno() > 0) {
-    $error = "ERROR: " . mysql_errno() . ": " . mysql_error(). "\n";
-    print ($error);
+    $error = PrintError(mysql_errno() . ": " . mysql_error());;
     return false;
   } //end if error
   else {
-    print ("SUCCESS: LOADED FILE $file\n");
+    PrintSuccess ("LOADED FILE $file\n");
     return true;
   }
 } //end function LoadFile

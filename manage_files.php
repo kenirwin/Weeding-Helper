@@ -1,27 +1,32 @@
+<html>
+<head><title>Upload New Review File - Weeding Helper</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+<h1>Manage Files</h1>
+
+
 <?
-session_start();
 require("mysql_connect.php");
+include("nav.php");
 include("scripts.php");
 ?>
-<h1>Manage Files</h1>
-<link rel="stylesheet" href="style.css" />
 
   <? 
   if (isset($_REQUEST['action'])) {
-    print_r($_REQUEST);
-    
     switch ($_REQUEST['action']) {
     case ('update_count'):
       if (isset($_REQUEST['table_to_recount'])) {
 	if (UpdateCount($_REQUEST['table_to_recount'])) {
-	  $success.= '<li class="success">SUCCESS: Updated count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
+	  $success.= PrintSuccess ('Updated count on '.$_REQUEST['table_to_recount'], true);
 	}
 	else {
-	  $errors .= '<li class="warn">Could not update count on '.$_REQUEST['table_to_recount'].'</li>'.PHP_EOL;
+	  $errors .= PrintError ('Could not update count on '.$_REQUEST['table_to_recount'], true);
 	}
       }
       else {
-	$errors .= '<li class="warn">No table specified to update count</li>'.PHP_EOL;
+	$errors .= PrintError('No table specified to update count',true);
       }
       break; 
       
@@ -29,12 +34,12 @@ include("scripts.php");
       $required_fields = array("file_title","table_name","user");
       foreach ($required_fields as $field) {
 	if (strlen($_REQUEST[$field]) == 0) {
-	  $errors .= '<li class="warn">ERROR: Missing required field: '.$field.''.$_REQUEST[$field].'</li>'.PHP_EOL;
+	  $errors .= PrintError('Missing required field: '.$field.''.$_REQUEST[$field], true);
 	}
       } //end foreach field
 
       if (sizeof($_REQUEST['combine_table']) < 2) {
-	$errors .= '<li class="warn">ERROR: You must select at least choose two files in order to combine files</li>'.PHP_EOL;
+	$errors .= PrintError('You must select at least choose two files in order to combine files', true);
       }
 
       if (! $errors)  { 
@@ -128,7 +133,7 @@ function CombineTables($tables, $new_table_name, $file_title, $user) {
   $q = "SHOW TABLES LIKE '$new_table_name'";
   $r = mysql_query($q);
   if (mysql_num_rows($r) > 0) {
-    PrintError('ERROR: Table `'.$new_table_name.'` already exists; choose another name');
+    PrintError('Table `'.$new_table_name.'` already exists; choose another name');
   }
   else { 
     $calls = array();
@@ -165,7 +170,7 @@ function CombineTables($tables, $new_table_name, $file_title, $user) {
     }
   } 
   else { 
-    PrintError('Unable to open file for writing in prepped directory</li>'); 
+    PrintError('Unable to open file for writing in prepped directory'); 
   }
   fclose($file);
   
@@ -177,14 +182,12 @@ function CombineTables($tables, $new_table_name, $file_title, $user) {
   $myrow = mysql_fetch_row($r);
   $records = $myrow[0];
   
-  print_r($q. ":".$records); 
-
   $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`records`,`upload_date`,`load_date`) VALUES ('".mysql_real_escape_string($filename)."', '".mysql_real_escape_string($file_title)."', '".mysql_real_escape_string($new_table_name)."', '".mysql_real_escape_string($user)."', $records, now(), now())";
   if (mysql_query($q)) {
-    print "SUCCESS: Added table to controller";
+    PrintSuccess("Added table to controller");
   }
   else {
-    print "FAILED: Could not add to controller table: $q\n";
+    PrintError('Could not add to controller table: '.$q);
   }
 
 
