@@ -1,16 +1,6 @@
 <html>
 <head><title>Upload New Review File - Weeding Helper</title>
-<style>
-label {
-  font-weight: bold;
- display: block;
- width: 150px;
-   float: left;
- }
-</style>
 </head>
-
-
 
 <body>
 <h1>Upload New Review File</h1>
