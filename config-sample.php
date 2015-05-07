@@ -17,7 +17,8 @@ $MYSQL_DB = "weeding"; //or whatever else you want to call it
 $innreach = array (
 		   "local_id" => "", //your institutional code, eg "wt3ug"
 		   "local_display_name" => "", // your institution as it displays in the innreach catalog, eg "WITTENBERG"
-		   "url" => "", // InnReach catalog url, e.g. "http://olc1.ohiolink.edu"
+		   "url" => "", // InnReach catalog url with no trailing slash, e.g. "http://olc1.ohiolink.edu"
+		   "local_cat_url" => "", // local catalog url with no trailing slash, e.g. "http://ezra.wittenberg.edu"
 		   "holdings_selector" => "", // CSS-style selector for the holdings table in your InnReach catalog, e.g. "table.centralHoldingsTable" (this is the correct selector for the OhioLINK central catalog
 
 		   /* these next 3 variables have to do with how many times per minute the innreach_check.php will do an innreach lookup */
