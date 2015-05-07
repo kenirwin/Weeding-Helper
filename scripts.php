@@ -201,6 +201,8 @@ function PrepFile ($filename) {
   $handle = fopen("$path_main/upload/$filename", "r");
   $output_filename = "$path_main/prepped/$filename";
   $output_handle = fopen("$output_filename", "w");
+  $data = array();
+  $sort = array();
   if (! $output_handle) { return false; }
   
   // these arrays define variable names to be used later
@@ -248,16 +250,11 @@ function PrepFile ($filename) {
 	//otherwise, use the bib_call #
 	if ($call_item != "") { $call = $call_item; }
 	else {$call = $call_bib;}
-	
-	$key = "$call v.$volume c.$copy";
-	//	if (! $data[$key]) { $key = "BAD CALL $item_record"; }
-	if ($data[$key] || ($call == "")) {
-	  $key = "ZZZZ $bogus"; //bogus & duplicate keys drop to the bottom
-	  $bogus++;
-	}
+
 	if (preg_match("/^i/", $item_record)) {// if there is an item record
-	  if (! $data[$key]) { //if not already used
-	    $data[$key] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
+	  if (! $data[$item_record]) { //if not already used
+	    $data[$item_record] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
+	    $sort[$item_record] = $call;
 	  } //end if already used
 	  else {
 	  print "<li>Duplicate ItemKey: $key</li>\n";
@@ -268,13 +265,14 @@ function PrepFile ($filename) {
     fclose($handle);
     
     //sort and print
-    uksort($data, "SortLC");
-    foreach($data as $call => $info) {
-      fwrite ($output_handle, $info);
+    uasort($sort, "SortLC");
+    foreach($sort as $key => $value) {
+      fwrite ($output_handle, $data[$key]);
     }
+
   } //end if handle
   return true;
-  } //end function PrepFile
+} //end function PrepFile
 
 
 
