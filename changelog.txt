@@ -1,5 +1,8 @@
 v 2.1.a.01 - in progress
 - CHANGED IMPORT FORMAT -- see documentation for new format; previously-imported data will still work
+- CHANGED CONFIG FILE -- added $local_cat_url to $innreach array in config file to allow linking to local catalog record
+- Improved call number sorting on import
+- added an age-of-collection graph to the graph page
 
 
 v 2.0.a.12- 4 May 2015
