@@ -1,8 +1,8 @@
-#!/usr/bin/php 
-<?php 
+#!/usr/bin/env php 
+<?php
 error_reporting('E_ALL');
 //display_errors(true);
-/* 
+/*
 this script will take a III export and condense the repeatable fields
 (e.g. if there are 3 item records, it will combine the circ data)
 
@@ -11,12 +11,12 @@ change the variables in the setup section below to accomodate different formats
 you'll also have to change the reporting output at the end of the script
 */
 
-include ("scripts.php"); 
+include ("scripts.php");
 include ("sortLC.php");
 include ("config.php");
 require ("mysql_connect.php");
 
-$log = fopen ("log.txt", "a+"); 
+$log = fopen ("log.txt", "a+");
 
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
 $r = mysql_query ($q);
@@ -36,14 +36,14 @@ while ($myrow = mysql_fetch_assoc($r)) {
       if (LoadTable($table_name, $filename)) {
       }
       else { print "FAILED: Cound not load data from $filename into $table_name\n";}
-    } //end if CreateTable 
-    else { 
+    } //end if CreateTable
+    else {
       print "FAILED: Could not create table $table_name\n";
-    } 
+    }
   } //end if PrepFile
   else { print "FAILED: Failed to PrepFile $filename; Database table not created\n"; }
 
-  $q = "SELECT count(*) FROM `$table_name`"; 
+  $q = "SELECT count(*) FROM `$table_name`";
   $r = mysql_query($q);
   $row_a = mysql_fetch_array($r);
   $count = $row_a[0];
@@ -56,14 +56,14 @@ while ($myrow = mysql_fetch_assoc($r)) {
 
 
 
-function PrepFile ($filename) { 
+function PrepFile ($filename) {
   global $path_main;
   /* SETUP VARIABLES */
   $handle = fopen("$path_main/upload/$filename", "r");
   $output_filename = "$path_main/prepped/$filename";
   $output_handle = fopen("$output_filename", "w");
   if (! $output_handle) { return false; }
-  
+
   // these arrays define variable names to be used later
   $fields = array ("author","title","pub","lcsh","cat_date","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","total_circ","renews","int_use","last_checkin","barcode");
 
@@ -100,7 +100,7 @@ function PrepFile ($filename) {
 	//otherwise, use the bib_call #
 	if ($call_item != "") { $call = $call_item; }
 	else {$call = $call_bib;}
-	
+
 	$key = "$call v.$volume c.$copy";
 	//	if (! $data[$key]) { $key = "BAD CALL $item_record"; }
 	if ($data[$key] || ($call == "")) {
@@ -118,7 +118,7 @@ function PrepFile ($filename) {
       } //end if not the data headers
     } //end while
     fclose($handle);
-    
+
     //sort and print
     uksort($data, "SortLC");
     foreach($data as $call => $info) {
@@ -183,5 +183,5 @@ function UseLocalInfile () {
 
 
 
-  
+
 ?>
