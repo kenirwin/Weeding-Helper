@@ -1,3 +1,7 @@
 log.txt
 config.php
-
+*~
+*.bak
+upload/*
+prepped/*
+*.zip
