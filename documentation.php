@@ -6,7 +6,7 @@
 <style>
    #main { margin: 0 10% 0 5% }
    ol { list-style: decimal; }
-   ol.sublist { list-style: lower-latin; } 
+   ol.sublist { list-style: lower-latin; }
 table td {padding-right: 2em;  }
 </style>
 </head>
@@ -46,8 +46,6 @@ table td {padding-right: 2em;  }
    <code>&gt; chgrp apache prepped/</code><br />
 </div>
 where "apache" is the name of a permissions group that grants write-permissions to the web server and includes the user who sets up the cron job in the next step.</li>
-									 <li>Make sure the two files <b>prep_file.php</b> and <b>innreach_check.php</b> begin with valid pointers to where PHP is running on your server. By default, they will start with this declaration: <b>#!/usr/bin/php</b> -- that will work on many servers, but not all. To find a valid php path, type on the command line <b>which php</b></li>
-
    <li>Set up the <code>cron</code> jobs that power Weeding Helper&apos;s automated functions. Cron is a unix utility that can run scripts on a regular basis; if you hare unfamiliar with cron, you will want to get help from a system administrator or similar. The two files that will need to be activated by cron jobs are <b>prep_file.php</b> and <b>innreach_check.php</b>. Running the cronjobs once per minute is an effective approach.
    <ol class="sublist">
    <li><b>prep_file.php</b> takes an already-uploaded file loads it into the database. That only needs to happen once per file. If that cron job runs once per minute, it will usually not need to do anything; but when a file is uploaded, it will reliably be added to the database very quickly.</li>
@@ -55,7 +53,7 @@ where "apache" is the name of a permissions group that grants write-permissions 
 </ol>
 
 																																																																											<p>Example of a crontab file; your path may vary:
-<div class="example">	      
+<div class="example">
 <pre><code>
 #|      |       |       |       |       commands
 #|      |       |       |       day of the week (0-6 with 0=Sunday).
@@ -142,7 +140,7 @@ Max field length: none</p>
 <a name="view_edit"></a>
 <h3>View/Edit</h3>
 
-																											The View/Edit function is the meat of Weeding Helper. It uses the AjaxCRUD interface to display selected fields from your data table in an easy-to-read format. With it, you make changes to certain fields -- by default, you may make changes to the "best book", "notes", and "fate" fields. 
+																											The View/Edit function is the meat of Weeding Helper. It uses the AjaxCRUD interface to display selected fields from your data table in an easy-to-read format. With it, you make changes to certain fields -- by default, you may make changes to the "best book", "notes", and "fate" fields.
 <li>"Best book" is intended to indicate whether or not a book is listed in whatever sources your library esteems (e.g. <cite>Books for College Libraries</cite>, subject bibliographies, etc.). It is a Yes/No field.</li>
 																											<li>"Notes" is a free-text field. I use this field most often for notes like "not on shelf", "keep per kri", "last copy", etc. Use it for whatever you like.</li>
 																											<li>"Fate" offers several options you can use to indicate what should happen to a book: weed, de-dup, replace, update, keep.</li>
@@ -156,7 +154,7 @@ Max field length: none</p>
 
 <p>Weeding Helper ships with a set of default settings for what is viewable and editable in the <b>Display Settings</b> function. You can alter the default settings and/or clone the current defaults to apply specific settings to an individual table.</p>
 
-<p>There are two sets of settings: View/Edit Settings and Print Settings. The View/Edit settings specify which fields are <b>visible</b> and/or <b>editable</b> in the View/Edit function. The three settings available for each field are: 
+<p>There are two sets of settings: View/Edit Settings and Print Settings. The View/Edit settings specify which fields are <b>visible</b> and/or <b>editable</b> in the View/Edit function. The three settings available for each field are:
 <li>Display / Editable</li>
 <li>Display / Read-only</li>
 <li>Hide</li>
@@ -164,7 +162,7 @@ Max field length: none</p>
 
 <p>The Print View settings are binary: display on or off.</p>
 
-<hr /> 
+<hr />
 <h2>Credits</h2>
 <a name="main_credits"></a>
 <h3>Main Credits</h3>
@@ -204,7 +202,7 @@ Max field length: none</p>
    <dd>See full license in the sortLC.php file</dd>
    <dd>See also: <a href="http://rocky.uta.edu/doran/sortlc/">http://rocky.uta.edu/doran/sortlc/</a></dd>
 <dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
-									
+
 <?php  include("attribution.php"); ?>
 
 </div><!-- id=main -->
@@ -212,4 +210,3 @@ Max field length: none</p>
 
 </body>
 </html>
-

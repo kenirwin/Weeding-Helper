@@ -1,5 +1,5 @@
-#!/usr/bin/php -e
-<?php 
+#!/usr/bin/env php -e
+<?php
 //error_reporting(E_ALL);
 ini_set("memory_limit", "128M");
 ini_set("display_errors", 1);
@@ -8,8 +8,8 @@ include ("mysql_connect.php");
 include ("$path_main/DOM/simple_html_dom.php");
 
 // Frequency: $hits=hits per minute; $sleep = seconds between hits
-if (date("H")<$innreach['night_ends']) { $hits = $innreach['overnight_hits']; } 
-else { 
+if (date("H")<$innreach['night_ends']) { $hits = $innreach['overnight_hits']; }
+else {
   $hits = $innreach['daytime_hits'];
 }
 
@@ -30,13 +30,13 @@ if (mysql_num_rows($r) > 0) { // if there's work to be done
 }
 
 function BatchCheck ($table, $hits, $sleep) {
-  
+
 
   $q = "SELECT * FROM $table WHERE innreach_total_copies IS NULL limit 0,$hits";
   print "$q\n";
 
   $r = mysql_query($q);
-  
+
   if (mysql_num_rows($r) > 0) {
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
@@ -57,7 +57,7 @@ function BatchCheck ($table, $hits, $sleep) {
     print "done: $q\n";
   }
 
-  
+
 } //end function BatchCheck
 
 function CheckInnReach($bib, $volume="") {
@@ -114,7 +114,7 @@ function CheckInnReach($bib, $volume="") {
 	$status = $line->find('td', 4);
 	$this_stat = $status->innertext;
 	if (preg_match ("/AVAIL|DUE/", $this_stat)) { $this_stat = "CIRC"; }
-	if ($this_stat != "") 
+	if ($this_stat != "")
 	  $statuses[$this_stat]++;
 	} //end if volume matches or vol=""
       }//end if not the local copy
