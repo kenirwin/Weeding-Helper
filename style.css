@@ -7,6 +7,12 @@ h1 { padding-left: 110px;
      background-repeat: no-repeat;
      height: 100px;
    }
+label {
+  font-weight: bold;
+ display: block;
+ width: 150px;
+   float: left;
+ }
 
 .warn, .warning {
     color: red;

@@ -18,6 +18,7 @@ td { font-size: 80%; }
 
 <script type="text/javascript">
   $(document).ready(function() {
+      $("#tabs").tabs();
       $("#min-max").click(function() {
 	  $("td.title").toggle();
 	  $("td.circs").toggle();
@@ -43,14 +44,39 @@ $myrow = mysql_fetch_row($r);
 $title = $myrow[0];
 
 include("nav.php");
+?>
+<h1>Graph: <?php print($title);?></h1>
 
+<div id="tabs">
+<ul>
+  <li><a href="#tabs-age">Age of Collection</a></li>
+  <li><a href="#tabs-title-usage">Usage by Title</a></li>
+</ul>
+
+<div id="tabs-age">
+  <?
+$q = "SELECT `year`,count(*) as `items` FROM `$table` GROUP BY `year` ORDER BY `year` DESC";
+$r = mysql_query($q);
+$rows = "";
+while ($myrow = mysql_fetch_assoc($r)) {
+  extract($myrow);
+  $size = $items * 1;
+  $rows .= '<tr><td>'.$year.'</td> <td>'.$items.'</td><td><img src="'.$imgsrc.'" width="'.$size.'" height="1em" /></td>'.PHP_EOL;
+}
+print '<table>'.PHP_EOL;
+print $rows;
+print '</table>'.PHP_EOL;
+?>
+</div><!--tabs-age-->
+
+
+<div id="tabs-title-usage">
+<?
 $q= "select * from `$table`";
 //print $q;
 $r= mysql_query($q);
 $last_class = "";
-
 ?>
-<h1>Graph: <?php print($title);?></h1>
 
 <div class="intro">
 <p>This graphs the shelflist: arranged in call number order, the titles in this table are shown with the number of times circulated. Zero circs shown in red.</p>
@@ -84,6 +110,10 @@ while ($myrow = mysql_fetch_assoc($r)) {
 } //end while
 print "<table>$lines</table>\n";
 ?>
+</div><!--title-usage-->
+
+</div><!--tabs-->
+
   <?php  include ("license.php"); ?>
 </body>
 </html>

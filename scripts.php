@@ -28,6 +28,21 @@ function MysqlResultsTable ($mysql_results) {
   return ($rows);
 } //end function MysqlResultsTable
 
+function Alert($text, $class) {
+  $alert = '<li class="'.$class.'">'.$text.'</li>'.PHP_EOL;
+  return $alert;
+}
+
+function PrintError($text, $return=false) {
+  $alert = Alert("ERROR: " . $text,"warn");
+  if ($return) { return $alert; }
+  else { print $alert; }
+}
+function PrintSuccess($text, $return=false) {
+  $alert = Alert("SUCCESS: ".$text,"success");
+  if ($return) { return $alert; }
+  else { print $alert; }
+}
 
 function TableTemplate ($table_name) {
   $sql = "CREATE TABLE IF NOT EXISTS `$table_name` (
@@ -173,5 +188,140 @@ function BuildWhereFromSearch($table) {
   $where = "WHERE (".join($wheres," AND ").")";
   return $where;
 } //function BuildWhereFromSearch
+
+
+/**********************
+ * Prep file scripts
+ *******************/
+
+
+function PrepFile ($filename) { 
+  global $path_main;
+  /* SETUP VARIABLES */
+  $handle = fopen("$path_main/upload/$filename", "r");
+  $output_filename = "$path_main/prepped/$filename";
+  $output_handle = fopen("$output_filename", "w");
+  $data = array();
+  $sort = array();
+  if (! $output_handle) { return false; }
+  
+  // these arrays define variable names to be used later
+  $fields = array ("author","title","pub_place","publisher","pub_date","lcsh","cat_date","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","total_circ","renews","int_use","last_checkin","barcode");
+
+  // Define date condensations/transformations
+  $date_items = array ("cat_date", "last_checkin");
+  /* END SETUP */
+
+
+  if ($handle) {
+    while (!feof($handle)) {
+      $line = fgets($handle);
+      //      print "\nNEXT LINE: $line\n";
+      $line_fields = preg_split("/\t/",$line);
+      //      print_r($line_fields);
+
+      for ($i=0; $i<sizeof($fields); $i++) {
+	$index = $fields[$i];
+	$$index = trim($line_fields[$i]);
+      }
+
+      
+      //grab date from pub field
+      if (preg_match("/(\d\d\d\d)/",$pub_date,$n)) {
+	$year = $n[1];
+      } //end if numbers in pub info
+      else { $year = ""; }
+
+      // combine publisher and pub_place
+      $pub = $publisher;
+      if (isset($pub_place)) { 
+	$pub .= "($pub_place)";
+      }
+
+
+      /* convert fixed-field dates to SQL */
+      foreach ($date_items as $field) {
+	$$field = sqlDate(${$field});
+      }
+
+      $key = "";
+      if (! preg_match ("/CALL/", $call_item)) {//skip headers
+	//index based on item call # if there is one
+	//otherwise, use the bib_call #
+	if ($call_item != "") { $call = $call_item; }
+	else {$call = $call_bib;}
+
+	if (preg_match("/^i/", $item_record)) {// if there is an item record
+	  if (! $data[$item_record]) { //if not already used
+	    $data[$item_record] = "$call_order_is_blank\t$author\t$title\t$pub\t$year\t$lcsh\t$cat_date\t$loc\t$call_bib\t$call_item\t$volume\t$copy\t$bcode\t$mat_type\t$bib_record\t$item_record\t$oclc\t$total_circ\t$renews\t$int_use\t$last_checkin\t$barcode\n";
+	    $sort[$item_record] = $call;
+	  } //end if already used
+	  else {
+	  print "<li>Duplicate ItemKey: $key</li>\n";
+	  }
+	} //end if there's an item record
+      } //end if not the data headers
+    } //end while
+    fclose($handle);
+    
+    //sort and print
+    uasort($sort, "SortLC");
+    foreach($sort as $key => $value) {
+      fwrite ($output_handle, $data[$key]);
+    }
+
+  } //end if handle
+  return true;
+} //end function PrepFile
+
+
+
+function CreateTable ($table_name) {
+  $q = TableTemplate($table_name);
+  $r = mysql_query($q);
+  if (mysql_errno() > 0) {
+    PrintError(mysql_errno() . ": " . mysql_error(). ": $q");
+    return false;
+  } //end if error
+  else {
+    PrintSuccess("Created table: $table_name");
+    return true;
+  }
+}
+
+function LoadTable ($table, $file) {
+  global $path_main;
+  $local = "";
+  if (UseLocalInfile()) { $local = "LOCAL"; }
+  $q = "LOAD DATA $local INFILE '$path_main/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
+  print $q . "\n";
+  $r = mysql_query($q);
+  if (mysql_errno() > 0) {
+    $error = PrintError(mysql_errno() . ": " . mysql_error());;
+    return false;
+  } //end if error
+  else {
+    PrintSuccess ("LOADED FILE $file\n");
+    return true;
+  }
+} //end function LoadFile
+
+function UseLocalInfile () {
+  /*returns true if the MySQL 'local_infile' config is turned on */
+  $q="SHOW VARIABLES LIKE 'local_infile'";
+  $r=mysql_query($q);
+  if (mysql_num_rows($r) == 0) {
+    $use_local_infile = false;
+  }
+  while ($myrow = mysql_fetch_assoc($r)) {
+    if ($myrow['Value'] == "ON") {
+      $use_local_infile = true;
+    }
+    else {
+      $use_local_infile = false;
+    }
+  }
+  return $use_local_infile;
+}
 
 ?>
