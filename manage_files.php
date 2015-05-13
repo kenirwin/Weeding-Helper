@@ -57,10 +57,13 @@ else {
 ?>
 
 <h2>Recount File</h2>
+   <p>If you have modified a file on the "back end" of the database by adding or deleting some records, use this function to update the count of records in a file.</p>
+
 <? print (UpdateCountForm()); ?>
 
-
+<hr />
 <h2>Combine Files</h2>
+   <p>To combine two or more files into a single file, select the files and add appropriate metadata below.<//p>
 <? print (CombineForm()); ?>
    <? } //end else if allow_manage == true ?>
 <?php  include ("license.php"); ?>
