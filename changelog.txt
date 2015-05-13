@@ -1,9 +1,10 @@
-v 2.1.a.01 - in progress
+v 2.1.01
 - CHANGED IMPORT FORMAT -- see documentation for new format; previously-imported data will still work
 - CHANGED CONFIG FILE -- added $local_cat_url to $innreach array in config file to allow linking to local catalog record
 - Improved call number sorting on import
 - added an age-of-collection graph to the graph page
-
+- added .gitignore
+- switched to generalized '/usr/bin/env php' instead of '/usr/bin/php' in cronjobs
 
 v 2.0.a.12- 4 May 2015
 - switched to google hosted version of jqueryui; removed local jqueryui directory
