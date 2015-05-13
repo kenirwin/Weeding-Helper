@@ -1,4 +1,9 @@
-v 2.1.01
+v 2.1.02 - 12 May 2015
+- added config setting to allow/disallow managing files
+- changed default settings in config-sample.php to disallow upload, manage, delete files
+- added explanatory text to the file management page
+
+v 2.1.01 - 12 May 2015
 - CHANGED IMPORT FORMAT -- see documentation for new format; previously-imported data will still work
 - CHANGED CONFIG FILE -- added $local_cat_url to $innreach array in config file to allow linking to local catalog record
 - Improved call number sorting on import
