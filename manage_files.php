@@ -8,12 +8,15 @@
 
 
 <?
+   include ("config.php");
 require("mysql_connect.php");
 include("nav.php");
 include("scripts.php");
-?>
 
-  <? 
+if (! isset($allow_manage) || $allow_manage != true) {
+  print '<p class="warn">File Management not allowed. Set <strong><code>$allow_manage = true;</code></strong> in config.php to allow file management.</p>'.PHP_EOL;
+}
+else {
   if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
     case ('update_count'):
@@ -59,7 +62,7 @@ include("scripts.php");
 
 <h2>Combine Files</h2>
 <? print (CombineForm()); ?>
-
+   <? } //end else if allow_manage == true ?>
 <?php  include ("license.php"); ?>
 </body>
 </html>

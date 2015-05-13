@@ -6,8 +6,9 @@ $path_http = ""; //no trailing slash; e.g. "/weed" for a top-level web directory
 $path_crud = $path_main . '/ajaxcrud'; //don't change
 $htpath_crud = $path_http . '/ajaxcrud/'; //don't change
 
-$allow_uploads = true;
-$allow_delete = true; 
+$allow_uploads = false;
+$allow_delete = false; 
+$allow_manage = false; // allow file management functions
 
 $MYSQL_HOST = "localhost"; // probably but not necessarily "localhost"
 $MYSQL_LOGIN = ""; // mysql username, needs create/replace/update/delete perm

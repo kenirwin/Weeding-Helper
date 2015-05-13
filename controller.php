@@ -218,11 +218,15 @@ function MakeButton ($url, $img, $tooltip) {
 
 
 
+if (isset($allow_uploads) && $allow_uploads == true) {
+  print '<p><a href="upload.php">Upload new file</a></p>'.PHP_EOL;
+}
+
+if (isset($allow_manage) && $allow_manage == true) {
+  print '<p><a href="manage_files.php">Manage files</a></p>'.PHP_EOL;
+}
+
+include ("license.php"); 
 ?>
-
-<p><a href="upload.php">Upload new file</a></p>
-<p><a href="manage_files.php">Manage files</a></p>
-
-  <?php  include ("license.php"); ?>
 </body>
 </html>
