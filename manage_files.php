@@ -14,7 +14,8 @@ include("nav.php");
 include("scripts.php");
 
 if (! isset($allow_manage) || $allow_manage != true) {
-  print '<p class="warn">File Management not allowed. Set <strong><code>$allow_manage = true;</code></strong> in config.php to allow file management.</p>'.PHP_EOL;
+  print "<h3>This function is not enabled.</h3>";
+  print "<p>To enable this function, change the \$allow_manage setting to TRUE in config.php</p>"; 
 }
 else {
   if (isset($_REQUEST['action'])) {

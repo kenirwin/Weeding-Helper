@@ -3,6 +3,7 @@
    if ($_SESSION[weed_table] == "" || preg_match("/controller\.php|index\.php/", $_SERVER['SCRIPT_NAME'])){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
+	      "manage_files.php" => "Manage Files",
 	      "documentation.php" => "Help"
 	      );
    }
@@ -20,12 +21,26 @@ $nav = array ("controller.php" => "All Tables",
 	      );
    }
 foreach ($nav as $link => $name) {
-  if (($link == "upload.php") && ($allow_uploads !== true)) {
-    $class = 'class="turned-off"';
-  } 
-  else { // if upload is turned on
-    $class = "";
+  if ($link == "upload.php") {
+    if ($allow_uploads !== true) {
+      $class = 'class="turned-off"';
+    } 
+    else { // if upload is turned on
+      $class = "";
+    }
   }
+
+  elseif ($link == "manage_files.php") {
+    if ($allow_manage !== true) {
+      $class = 'class="turned-off"';
+    } 
+    else { // if upload is turned on
+      $class = "";
+    }
+  }
+  
+  else { $class = ""; }
+
   $navlinks .= "<li $class><a href=\"$link\">$name</a></li>\n";
 }
 
