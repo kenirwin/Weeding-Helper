@@ -51,6 +51,7 @@ include("nav.php");
 <ul>
   <li><a href="#tabs-age">Age of Collection</a></li>
   <li><a href="#tabs-title-usage">Usage by Title</a></li>
+  <li><a href="#tabs-recency-of-circ">Recency of Circulation</a></li>
 </ul>
 
 <div id="tabs-age">
@@ -112,6 +113,20 @@ print "<table>$lines</table>\n";
 ?>
 </div><!--title-usage-->
 
+<div id="tabs-recency-of-circ">
+  <p>Year in which items last circulated, by number of items per year</p>
+  <?
+  $q= "select count(*) as YearCount, year(`last_checkin`) as `LastCirc` from `$table` group by `LastCirc` order by `LastCirc` DESC";
+$r = mysql_query($q);
+while ($myrow = mysql_fetch_assoc($r)) {
+  extract($myrow);
+$circ_rows .= "<tr><td>$LastCirc</td> <td>$YearCount</td> <td><img src=\"$imgsrc\" width=\"$YearCount\" title=\"Last Circ in $LastCirc: $YearCount\"></td></tr>\n";
+}
+print '<table id="recency-of-circ">'.PHP_EOL;
+print $circ_rows;
+print '</table>'.PHP_EOL;
+?>
+</div><!--recency-of-circ-->
 </div><!--tabs-->
 
   <?php  include ("license.php"); ?>
