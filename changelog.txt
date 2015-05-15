@@ -1,3 +1,8 @@
+v 2.1.03 - 15 May 2015
+- added recency-of-circulation graph
+- moved Manage Files to button instead of link
+
+
 v 2.1.02 - 12 May 2015
 - added config setting to allow/disallow managing files
 - changed default settings in config-sample.php to disallow upload, manage, delete files
