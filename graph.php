@@ -89,6 +89,11 @@ $thead = "<thead><tr><td>Title</td><td>Circs</td><td>Graph</td></tr></thead>\n";
 
 while ($myrow = mysql_fetch_assoc($r)) {
   extract ($myrow);
+
+  if (isset($call_item) && $call_item != "") { $call = $call_item; }
+  elseif (isset($call_bib) && $call_bib != "") { $call = $call_bib; }
+  else { $call = ""; }
+
   if (preg_match("/^([a-zA-Z]+)/",$call,$m)) { 
     $class = $m[1]; 
     if ($class != $last_class) {
