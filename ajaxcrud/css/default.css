@@ -3,11 +3,6 @@
 	Try a few demos using the style dropdown box for our demo here - http://www.ajaxcrud.com/
 */
 
-.hand_cursor{
-	cursor: pointer; /* hand-shaped cursor */
-	cursor: hand; /* for IE 5.x */
-}
-
 .paging_links{
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:10px;
@@ -73,15 +68,6 @@ table td.odd, table tr.odd, tr.odd td, tbody tr.odd th{
 	text-align:left;
 }
 
-/* this will only work when your HTML doctype is in "strict" mode. took forever to figure that out...
-In other words - put this in your header:
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-*/
-
-.editable:hover, p.editable:hover{
-	background-color: #FFFF99;
-}
-
 input, select, textarea{
 	font-size: 100%;
 	border-top: 1px solid #7c7c7c;
@@ -96,7 +82,7 @@ input, select, textarea{
 .btn{
 	font-size: 11px;
 }
-.report {
+.report, .alertgood {
 	text-align: left;
 	border-top: 1px solid #9c9;
 	border-bottom: 1px solid #9c9;
@@ -107,7 +93,7 @@ input, select, textarea{
 	background: url("checkicon.gif") #e2f9e3 left no-repeat;
 }
 
-.error {
+.error, .alertbad {
 	text-align: left;
 	font-weight: bold;
 	border-top: 1px solid #c99;
