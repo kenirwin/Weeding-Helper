@@ -41,10 +41,10 @@ if ($_SESSION[weed_table]) {
 	$("#form-show-hide").click(function() {
 	    $("#search-form form").toggle("#search-form form");
 	  });
-<?
+<?php
 	  if (isset($innreach['local_cat_url']) && ($innreach['local_cat_url'] != "")) {
 ?>
-	var local_cat_url = '<? print $innreach['local_cat_url']; ?>';
+	var local_cat_url = '<?php print $innreach['local_cat_url']; ?>';
 	var bib_index = $("table.ajaxCRUD th:contains('bib_record')").index()+1;
 	$('table.ajaxCRUD tr td:nth-child('+bib_index+')').each(function() {
 	    var this_bib = $(this).text();
@@ -52,7 +52,7 @@ if ($_SESSION[weed_table]) {
 	    this_bib = this_bib.substring(0,this_length-1);
 	    $(this).append('<a href="'+local_cat_url+'/record='+this_bib+'"><img src="images/icon-rightarrow.png" style="height: 1em" alt="See in local catalog"></a>');
 	  });
-<?
+<?php
 	  }
 ?>
       });

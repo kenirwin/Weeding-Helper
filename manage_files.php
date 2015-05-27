@@ -7,7 +7,7 @@
 <h1>Manage Files</h1>
 
 
-<?
+<?php
    include ("config.php");
 require("mysql_connect.php");
 include("nav.php");
@@ -60,18 +60,18 @@ else {
 <h2>Recount File</h2>
    <p>If you have modified a file on the "back end" of the database by adding or deleting some records, use this function to update the count of records in a file.</p>
 
-<? print (UpdateCountForm()); ?>
+<?php print (UpdateCountForm()); ?>
 
 <hr />
 <h2>Combine Files</h2>
    <p>To combine two or more files into a single file, select the files and add appropriate metadata below.<//p>
-<? print (CombineForm()); ?>
-   <? } //end else if allow_manage == true ?>
+<?php print (CombineForm()); ?>
+   <?php } //end else if allow_manage == true ?>
 <?php  include ("license.php"); ?>
 </body>
 </html>
 
-<?
+<?php
 function UpdateCount($table_name) {
   $q = "UPDATE `controller` SET `records` = (SELECT count(*) FROM `$table_name` WHERE 1) WHERE `table_name` = '$table_name'";
   $r = mysql_query($q);

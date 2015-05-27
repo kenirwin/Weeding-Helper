@@ -55,7 +55,7 @@ include("nav.php");
 </ul>
 
 <div id="tabs-age">
-  <?
+  <?php
 $q = "SELECT `year`,count(*) as `items` FROM `$table` GROUP BY `year` ORDER BY `year` DESC";
 $r = mysql_query($q);
 $rows = "";
@@ -72,7 +72,7 @@ print '</table>'.PHP_EOL;
 
 
 <div id="tabs-title-usage">
-<?
+<?php
 $q= "select * from `$table`";
 //print $q;
 $r= mysql_query($q);
@@ -115,7 +115,7 @@ print "<table>$lines</table>\n";
 
 <div id="tabs-recency-of-circ">
   <p>Year in which items last circulated, by number of items per year</p>
-  <?
+  <?php
   $q= "select count(*) as YearCount, year(`last_checkin`) as `LastCirc` from `$table` group by `LastCirc` order by `LastCirc` DESC";
 $r = mysql_query($q);
 while ($myrow = mysql_fetch_assoc($r)) {
