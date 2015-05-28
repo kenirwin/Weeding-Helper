@@ -15,7 +15,7 @@ include ("mysql_connect.php");
 
 if ($allow_uploads == true) { 
   // update table structure if necessary 
-  // this should only happen once, upgrading controller to version 2.0.04
+  // this should only happen once, upgrading controller to version 2.1.04
   $q = 'ALTER TABLE `controller` ADD `call_type` VARCHAR( 5 ) NOT NULL AFTER `table_name`';
   $r = mysql_query($q);
 
