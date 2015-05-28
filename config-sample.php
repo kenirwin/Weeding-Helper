@@ -10,6 +10,8 @@ $allow_uploads = false;
 $allow_delete = false; 
 $allow_manage = false; // allow file management functions
 
+$default_call_type = "LC"; // allowed: "LC", "DDC"
+
 $MYSQL_HOST = "localhost"; // probably but not necessarily "localhost"
 $MYSQL_LOGIN = ""; // mysql username, needs create/replace/update/delete perm
 $MYSQL_PASS = ""; //mysql password
