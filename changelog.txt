@@ -1,7 +1,13 @@
+v 2.1.04 - 28 May 2015
+- changed all <? shorttags to <?php
+- updated ajaxCRUD to version 9.0
+- Usage By Title graph groups titles by LC call number class 
+- Allow Dewey (DDC) or Library of Congress (LC) call number
+  - NOTE: New config variable $defaul_call_type to set default call number type
+
 v 2.1.03 - 15 May 2015
 - added recency-of-circulation graph
 - moved Manage Files to button instead of link
-
 
 v 2.1.02 - 12 May 2015
 - added config setting to allow/disallow managing files
