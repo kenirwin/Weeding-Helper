@@ -14,6 +14,12 @@ include ("mysql_connect.php");
 
 
 if ($allow_uploads == true) { 
+  // update table structure if necessary 
+  // this should only happen once, upgrading controller to version 2.0.04
+  $q = 'ALTER TABLE `controller` ADD `call_type` VARCHAR( 5 ) NOT NULL AFTER `table_name`';
+  $r = mysql_query($q);
+
+
   if ($_REQUEST[upload_button]) { 
     $q = "SELECT * FROM `controller` WHERE table_name = '$_REQUEST[table_name]'";
     $r = mysql_query($q);
@@ -81,13 +87,33 @@ function ShowUploadForm() {
 </p>
 
 <p>
+<label for="call_type">Call # Type</label>
+<select name="call_type">
+<?php print(CallTypePulldown());?>
+</select>
+</p>
+
+<p>
 <input name="upload_button" type="submit" class="box" value=" Upload ">
 </p>
 </form>
 <?php 
 } //end function ShowUploadForm
 
-
+function CallTypePulldown() {
+  global $default_call_type;
+  $opts = '';
+  $call_types = array ('LC' => 'Library of Congress',
+		       'DDC' => 'Dewey Decimal');
+  foreach ($call_types as $type => $name) {
+    if ($default_call_type == $type) {
+      $selected = ' selected';
+    }
+    else { $selected = ''; }
+    $opts .= "<option value=\"$type\"$selected>$name</option>\n";
+  }
+  return $opts;
+}
 
 function HandleUpload () {
   if(isset($_POST['upload_button']) && $_FILES['userfile']['size'] >  0)
@@ -109,7 +135,7 @@ function HandleUpload () {
 	    $_REQUEST[table_name] = $fileName;
 	  }
 	  $_REQUEST[table_name] = preg_replace("/[^a-zA-Z0-9]+/","_",$_REQUEST[table_name]);
-	  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`upload_date`) VALUES ('$fileName', '$_REQUEST[file_title]', '$_REQUEST[table_name]', '$_REQUEST[user]', now())";
+	  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`call_type`,`user`,`upload_date`) VALUES ('$fileName', '$_REQUEST[file_title]', '$_REQUEST[table_name]', '$_REQUEST[call_type]', '$_REQUEST[user]', now())";
 	  $r = mysql_query($q);
 	  if (mysql_errno() == 0) {
 	    print "<li class=\"success\">SUCCESS: added file to master database</li>\n";
