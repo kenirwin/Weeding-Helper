@@ -28,7 +28,7 @@ $now = date ("Y-m-d h:i:s");
 while ($myrow = mysql_fetch_assoc($r)) {
   extract($myrow);
   //  fwrite ($log, "$now - PrepFile: $filename");
-  if (PrepFile ($filename)) {
+  if (PrepFile ($filename, $call_type)) {
     print "SUCCESS: Prepped file for database ingestion\n";
     //    fwrite ($log, "$now - CreateTable: $table_name");
     if (CreateTable($table_name)) {

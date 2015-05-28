@@ -195,7 +195,7 @@ function BuildWhereFromSearch($table) {
  *******************/
 
 
-function PrepFile ($filename) { 
+function PrepFile ($filename, $call_type="LC") { 
   global $path_main;
   /* SETUP VARIABLES */
   $handle = fopen("$path_main/upload/$filename", "r");
@@ -265,7 +265,12 @@ function PrepFile ($filename) {
     fclose($handle);
     
     //sort and print
-    uasort($sort, "SortLC");
+    if ($call_type == "DDC") {
+      asort($sort); //sort numerically if DDC
+    }
+    else { 
+      uasort($sort, "SortLC"); //sort by LC Call Number
+    }
     foreach($sort as $key => $value) {
       fwrite ($output_handle, $data[$key]);
     }
