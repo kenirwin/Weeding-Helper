@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 ?>
 <html>
@@ -7,7 +7,7 @@ session_start();
 </head>
 <body>
 <h1>Keyword Cloud</h1>
-<?php 
+<?php
 include("nav.php");
 
 //ini_set('display_errors','on');
@@ -40,7 +40,7 @@ while ($myrow = mysql_fetch_assoc($r)) {
     if (preg_match("/[a-z]/",$word) && (! in_array($word, $stopwords))) {
       //      print "<li>$word: $pcircs</li>\n";
       $all_words[$word] += $circs;
-    } //end if 
+    } //end if
   } //end foreach
 } //end while
 
@@ -68,11 +68,11 @@ foreach ($top_words as $word=>$v) {
 
 ?>
 
-<link rel="stylesheet" type="text/css" href="/lib/include/tagcloud/css/tagcloud.css" />
+<link rel="stylesheet" type="text/css" href="tagcloud/css/tagcloud.css" />
 
 <div style="width: 75%">
 
-	<?php 
+	<?php
 
 //print_r($cloud);
 
