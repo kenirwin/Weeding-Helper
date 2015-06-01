@@ -38,6 +38,7 @@ else { // if config.php
     . " CREATE TABLE IF NOT EXISTS `$MYSQL_DB`.`controller` ( `filename` varchar( 255 ) NOT NULL ,\n"
     . " `file_title` varchar( 255 ) NOT NULL ,\n"
     . " `table_name` varchar( 25 ) NOT NULL ,\n"
+    . " `call_type` varchar ( 5 ) ,\n"
     . " `user` varchar( 50 ) NOT NULL ,\n"
     . " `records` int( 11 ) DEFAULT NULL ,\n"
     . " `upload_date` datetime NOT NULL ,\n"
