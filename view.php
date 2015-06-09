@@ -42,6 +42,7 @@ if ($_SESSION[weed_table]) {
 	    $("#search-form form").toggle("#search-form form");
 	  });
 <?php
+
 	  if (isset($innreach['local_cat_url']) && ($innreach['local_cat_url'] != "")) {
 ?>
 	var local_cat_url = '<?php print $innreach['local_cat_url']; ?>';
@@ -150,6 +151,7 @@ if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
 
 while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
+
     /* get display settings from the table_config query and apply actions
        to the table obeject foreach field.
 
@@ -202,6 +204,7 @@ foreach ($exact_search_fields as $xsf) {
     #i can add a button that performs some action deleting of rows for the entire table
     #http://ajaxcrud.com/api/index.php?id=addButtonToRow
     //$tblDemo->addButtonToRow("Add", "add_item.php", "all");
+$tblDemo->addButtonToRow("View Record", "to_local_cat.php", "bib_record", "", "local_cat_window");
 
     #set the number of rows to display (per page)
     $tblDemo->setLimit(100);
