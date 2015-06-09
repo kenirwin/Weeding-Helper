@@ -1,3 +1,6 @@
+v. 2.1.06 -- not yet released
+* added link to local catalog record at beginning of row & end, instead of appended to bib_record column (which only worked when that column was set to show
+
 v 2.1.05 - 1 June 2015
 * fixed broken css call
 * added call_type column to controller table creation 
