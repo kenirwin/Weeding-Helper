@@ -17,6 +17,7 @@ include ("./tagcloud/stopwords.php"); //defines $stopwords array
 include ("./tagcloud/classes/tagcloud.php");
 $cloud_weighted = new tagcloud();
 $cloud_unweighted = new tagcloud();
+$max = 100; //max size of tag cloud
 
 if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
 $q = "SELECT * FROM `$_SESSION[weed_table]` WHERE title != ''" or lcsh != '';
@@ -47,13 +48,16 @@ while ($myrow = mysql_fetch_assoc($r)) {
   } //end foreach
 } //end while
 
-DisplayCloud($cloud_unweighted, $unweighted_words, $max, "Unweighted");
+DisplayCloud($cloud_unweighted, $unweighted_words, $max, "Tagcloud of words appearing in title and subject");
+DisplayCloud($cloud_unweighted, $weighted_words, $max, "Words in title and subject, weighted by frequency of circulation");
 
 function DisplayCloud($cloud, $all_words, $max, $header) {
   arsort($all_words);
   $top_words = array();
-  
+  $i = 0;
+
   while (($i < $max) && ($a = each($all_words))) {
+
     extract($a);
     $top_words[$key] = $value;
     $i++;
@@ -68,10 +72,11 @@ function DisplayCloud($cloud, $all_words, $max, $header) {
   }
   
   print '<link rel="stylesheet" type="text/css" href="tagcloud/css/tagcloud.css" />'.PHP_EOL;
+  print '<h3 style="margin-top: 3em; margin-bottom: 1em">'.$header.'</h3>'.PHP_EOL;
   
   print '<div style="width: 75%">'.PHP_EOL;
   
-  print_r($cloud);
+  //  print_r($cloud);
   
 /* set the minimum length required */
   $cloud->setMinLength(3);
