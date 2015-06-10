@@ -1,5 +1,6 @@
 <?php
 session_start();
+ini_set("display_errors",true);
 ?>
 <html>
 <head>
@@ -14,14 +15,15 @@ include("nav.php");
 include ("mysql_connect.php");
 include ("./tagcloud/stopwords.php"); //defines $stopwords array
 include ("./tagcloud/classes/tagcloud.php");
-$cloud = new tagcloud();
-$max = 100;
+$cloud_weighted = new tagcloud();
+$cloud_unweighted = new tagcloud();
 
 if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
 $q = "SELECT * FROM `$_SESSION[weed_table]` WHERE title != ''" or lcsh != '';
 $r = mysql_query($q);
 
-$all_words = $top_words = array();
+$weighted_words = array();
+$unweighted_words = array();
 
 while ($myrow = mysql_fetch_assoc($r)) {
   extract ($myrow);
@@ -40,53 +42,49 @@ while ($myrow = mysql_fetch_assoc($r)) {
     if (preg_match("/[a-z]/",$word) && (! in_array($word, $stopwords))) {
       //      print "<li>$word: $pcircs</li>\n";
       $weighted_words[$word] += $circs;
-      $all_words[$word] += 1;
+      $unweighted_words[$word] += 1;
     } //end if
   } //end foreach
 } //end while
 
-arsort($all_words);
-//print_r($all_words);
+DisplayCloud($cloud_unweighted, $unweighted_words, $max, "Unweighted");
 
-while (($i < $max) && ($a = each($all_words))) {
-  extract($a);
-  $top_words[$key] = $value;
-  $i++;
+function DisplayCloud($cloud, $all_words, $max, $header) {
+  arsort($all_words);
+  $top_words = array();
+  
+  while (($i < $max) && ($a = each($all_words))) {
+    extract($a);
+    $top_words[$key] = $value;
+    $i++;
+  }
+  
+  asort($top_words);
+  
+  foreach ($top_words as $word=>$v) {
+    for ($i=0; $i<$v; $i++) { // add once per instance of word
+      $cloud->addTag($word);
+    }
+  }
+  
+  print '<link rel="stylesheet" type="text/css" href="tagcloud/css/tagcloud.css" />'.PHP_EOL;
+  
+  print '<div style="width: 75%">'.PHP_EOL;
+  
+  print_r($cloud);
+  
+/* set the minimum length required */
+  $cloud->setMinLength(3);
+  
+  /* limiting the output */
+  $cloud->setLimit(1000);
+  
+  echo $cloud->render();
+  
+  print '</div>'.PHP_EOL;
+  
 }
-
-asort($top_words);
-//print_r($top_words);
-
-
-foreach ($top_words as $word=>$v) {
-	for ($i=0; $i<$v; $i++) { // add once per instance of word
-		$cloud->addTag($word);
-	}
-}
-
-
-//print "<div id=\"cloud\">$tags</div>\n";
-
 ?>
-
-<link rel="stylesheet" type="text/css" href="tagcloud/css/tagcloud.css" />
-
-<div style="width: 75%">
-
-	<?php
-
-//print_r($cloud);
-
-		/* set the minimum length required */
-		$cloud->setMinLength(3);
-
-		/* limiting the output */
-		$cloud->setLimit(1000);
-
-		echo $cloud->render();
-	?>
-
-</div>
-  <?php  include ("license.php"); ?>
+<?php  include ("license.php"); ?>
 </body>
 </html>
