@@ -17,7 +17,7 @@ include ("./tagcloud/classes/tagcloud.php");
 $cloud = new tagcloud();
 $max = 100;
 
-if ($_REQUEST[weed_table]) { $_SESSION[weed_table] = $_REQUEST[weed_table]; }
+if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
 $q = "SELECT * FROM `$_SESSION[weed_table]` WHERE title != ''" or lcsh != '';
 $r = mysql_query($q);
 
@@ -39,7 +39,8 @@ while ($myrow = mysql_fetch_assoc($r)) {
     $word = strtolower($word);
     if (preg_match("/[a-z]/",$word) && (! in_array($word, $stopwords))) {
       //      print "<li>$word: $pcircs</li>\n";
-      $all_words[$word] += $circs;
+      $weighted_words[$word] += $circs;
+      $all_words[$word] += 1;
     } //end if
   } //end foreach
 } //end while
