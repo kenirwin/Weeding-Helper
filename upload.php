@@ -28,13 +28,13 @@ if ($allow_uploads == true) {
     } //end else if tablename is ok
   }
   
-  if (! isset($upload_parent_dir)) {
-      print '<div class="warning"><h3>Upload Directory not Defined</h3><p>You must define the $upload_parent_dir variable in the config file. For security, this file should be outside the webserver directory (often <i>/var/www/html</i> or <i>public_html/</i>) but should be writeable by the webserver process.</p></div>'.PHP_EOL;
+  if (! isset($secure_outside_path)) {
+      print '<div class="warning"><h3>Upload Directory not Defined</h3><p>You must define the $secure_outside_path variable in the config file. For security, this file should be outside the webserver directory (often <i>/var/www/html</i> or <i>public_html/</i>) but should be writeable by the webserver process.</p></div>'.PHP_EOL;
   }
 
-  elseif (fopen("$upload_parent_dir/upload/temp","x")) { // try to make a file to test write permissions
-    fclose ("$upload_parent_dir/upload/temp");
-    unlink ("$upload_parent_dir/upload/temp");
+  elseif (fopen("$secure_outside_path/upload/temp","x")) { // try to make a file to test write permissions
+    fclose ("$secure_outside_path/upload/temp");
+    unlink ("$secure_outside_path/upload/temp");
     ShowUploadForm();
   } // end if web server has write permissions
 
@@ -117,7 +117,7 @@ function CallTypePulldown() {
 }
 
 function HandleUpload () {
-    global $upload_parent_dir;
+    global $secure_outside_path;
     if(isset($_POST['upload_button']) && $_FILES['userfile']['size'] >  0)
     {
       $fileName = $_FILES['userfile']['name'];
@@ -125,7 +125,7 @@ function HandleUpload () {
       $fileSize = $_FILES['userfile']['size'];
       $fileType = $_FILES['userfile']['type'];
       
-      if (move_uploaded_file($tmpName, "$upload_parent_dir/upload/".$fileName)) 
+      if (move_uploaded_file($tmpName, "$secure_outside_path/upload/".$fileName)) 
 	{
 	  include ("mysql_connect.php");
 	  foreach ($_REQUEST as $k=>$v) { 

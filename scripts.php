@@ -196,10 +196,10 @@ function BuildWhereFromSearch($table) {
 
 
 function PrepFile ($filename, $call_type="LC") { 
-  global $upload_parent_dir;
+  global $secure_outside_path;
   /* SETUP VARIABLES */
-  $handle = fopen("$upload_parent_dir/upload/$filename", "r");
-  $output_filename = "$upload_parent_dir/prepped/$filename";
+  $handle = fopen("$secure_outside_path/upload/$filename", "r");
+  $output_filename = "$secure_outside_path/prepped/$filename";
   $output_handle = fopen("$output_filename", "w");
   $data = array();
   $sort = array();
@@ -295,10 +295,10 @@ function CreateTable ($table_name) {
 }
 
 function LoadTable ($table, $file) {
-  global $upload_parent_dir;
+  global $secure_outside_path;
   $local = "";
   if (UseLocalInfile()) { $local = "LOCAL"; }
-  $q = "LOAD DATA $local INFILE '$upload_parent_dir/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
+  $q = "LOAD DATA $local INFILE '$secure_outside_path/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
   print $q . "\n";
   $r = mysql_query($q);
   if (mysql_errno() > 0) {

@@ -5,7 +5,7 @@ $path_main = ""; //no trailing slash, root relative in your file system, e.g.: "
 $path_http = ""; //no trailing slash; e.g. "/weed" for a top-level web directory
 $path_crud = $path_main . '/ajaxcrud'; //don't change
 $htpath_crud = $path_http . '/ajaxcrud/'; //don't change
-$upload_parent_dir = ''; // no trailing slash - should be outside the web space (not in public_html, /var/www/html or equivalent)
+$secure_outside_path = ''; // no trailing slash - should be outside the web space (not in public_html, /var/www/html or equivalent)
 
 $allow_uploads = false;
 $allow_delete = false; 
