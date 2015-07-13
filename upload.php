@@ -8,7 +8,7 @@
 <?php 
 include ("config.php");
 include ("nav.php");
-include ("mysql_connect.php")||die();
+include ("mysql_connect.php");
 
 if ($allow_uploads == true) { 
   // update table structure if necessary 
