@@ -6,12 +6,9 @@
 <h1>Upload New Review File</h1>
 
 <?php 
-ERROR_REPORTING(0);
 include ("config.php");
-include("nav.php");
-include ("mysql_connect.php");
-//include ("scripts.php");
-
+include ("nav.php");
+include ("mysql_connect.php")||die();
 
 if ($allow_uploads == true) { 
   // update table structure if necessary 
@@ -31,14 +28,18 @@ if ($allow_uploads == true) {
     } //end else if tablename is ok
   }
   
-  if (fopen("upload/temp","x")) { // try to make a file to test write permissions
-    fclose ("upload/temp");
-    unlink ("upload/temp");
+  if (! isset($upload_parent_dir)) {
+      print '<div class="warning"><h3>Upload Directory not Defined</h3><p>You must define the $upload_parent_dir variable in the config file. For security, this file should be outside the webserver directory (often <i>/var/www/html</i> or <i>public_html/</i>) but should be writeable by the webserver process.</p></div>'.PHP_EOL;
+  }
+
+  elseif (fopen("$upload_parent_dir/upload/temp","x")) { // try to make a file to test write permissions
+    fclose ("$upload_parent_dir/upload/temp");
+    unlink ("$upload_parent_dir/upload/temp");
     ShowUploadForm();
   } // end if web server has write permissions
 
   else { // if web server doesn't have write permissions
-    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the upload/ directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the upload/ directory. (<a href=\"documentation.php#installation\">See Installation documentation, step 4</a>).</p>";
+    print "<div class=warning><h3>This Function is Unavailable</h3><p>The web server does not have write permissions to the upload directory, so this function is unavailable. To allow direct file uploads, talk with your system administrator about granting write permission to the upload directory. (<a href=\"documentation.php#installation\">See Installation documentation, step 4</a>).</p>";
  
     /*
       Don't know the username for your webserver's process? 
@@ -116,15 +117,15 @@ function CallTypePulldown() {
 }
 
 function HandleUpload () {
-  if(isset($_POST['upload_button']) && $_FILES['userfile']['size'] >  0)
+    global $upload_parent_dir;
+    if(isset($_POST['upload_button']) && $_FILES['userfile']['size'] >  0)
     {
       $fileName = $_FILES['userfile']['name'];
       $tmpName  = $_FILES['userfile']['tmp_name'];
       $fileSize = $_FILES['userfile']['size'];
       $fileType = $_FILES['userfile']['type'];
-
-
-      if (move_uploaded_file($tmpName, "upload/".$fileName)) 
+      
+      if (move_uploaded_file($tmpName, "$upload_parent_dir/upload/".$fileName)) 
 	{
 	  include ("mysql_connect.php");
 	  foreach ($_REQUEST as $k=>$v) { 
@@ -144,9 +145,9 @@ function HandleUpload () {
 	    print "<li class=\"error\">$q -- ERROR: could not add file to master database:". mysql_errno() . mysql_error() ."</li>\n";
 	  } //end else
 	}
-      else
-        print "<p class=warning>failed to upload file: check to be sure web server has write permissions to the upload/ directory</p>";
-
+      else {
+        print "<p class=warning>failed to upload file: check to be sure web server has write permissions to the upload directory. $errno</p>";
+      }
 
       $path = preg_replace ("/[^\/]+$/", "", $_SERVER[SCRIPT_FILENAME]);
       

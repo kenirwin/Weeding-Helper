@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="style.css" />
 <?php 
-   if ($_SESSION[weed_table] == "" || preg_match("/controller\.php|index\.php/", $_SERVER['SCRIPT_NAME'])){
+   if ($_SESSION['weed_table'] == "" || preg_match("/controller\.php|index\.php/", $_SERVER['SCRIPT_NAME'])){
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
 	      "manage_files.php" => "Manage Files",
@@ -20,6 +20,7 @@ $nav = array ("controller.php" => "All Tables",
 	      "documentation.php" => "Help"
 	      );
    }
+$navlinks = "";
 foreach ($nav as $link => $name) {
   if ($link == "upload.php") {
     if ($allow_uploads !== true) {
