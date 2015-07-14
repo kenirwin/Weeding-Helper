@@ -12,7 +12,10 @@ table td {padding-right: 2em;  }
 </head>
 <body>
 <h1>Help/Documentation</h1>
-<?php  include("nav.php"); ?>
+<?php  
+include("config.php");
+include("nav.php"); 
+?>
 
 <div id="main">
 <dl id="toc">
