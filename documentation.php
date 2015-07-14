@@ -40,12 +40,19 @@ table td {padding-right: 2em;  }
    <li>Unzip the file in a directory of its own. (The unzipping process creates a lot of files in the current directory, rather than a new directory with a lot of files in it.)</li>
      <li>Rename or copy the <b>config-sample.php</b> to be <b>config.php</b></li>
 					   <li>Edit the <b>config.php</b> file to include your local MySQL username, password, and the name you wish to use for the msyql database associated with Weeding Helper. If you plan to use the <b>innreach_check.php</b> functions to look up how many copies of your items are available in an InnReach catalog, you will also need to speficy several variables in the $innreach array in <b>config.php</b>. <b>Note:</b> There are three config settings that are set to <b>false</b> by default($allow_uploads, $allow_manage, $allow_delete); in most cases, they should be set to <b>true</b> once server security has been established; see "Security" below.</li>
-					   <li>On the Linux command-line, change the permissions on the <b>upload/</b> and <b>prepped/</b> directories to be writeable by the web server AND by the user who under whose name the <b>cron</b> processes will run (see step 6). In our library, this has been achieved by making a permission group called &quot;apache&quot;, containing both the web-process-user and the chief implementor&#39;s own username; This command will probably look something like: <br />
+                                                                         <li>Create a secure upload folder outside the webroot. 
+<ol class="sublist">
+<li>On the Linux command-line, create a folder OUTSIDE the webroot (on many systems, the webroot may be the <b>public_html</b> or <b>/var/www/html</b> folder). You may wish to create the folder in someplace like <b>/var/www/app/weeding</b>.</li>
+<li>Once you have created that folder, create two subfoldersin in it: <b>upload</b> and <b>prepped</b>.</li>
+<li>Change the permissions on the <b>upload/</b> and <b>prepped/</b> directories to be writeable by the web server AND by the user who under whose name the <b>cron</b> processes will run (see step 6). In our library, this has been achieved by making a permission group called &quot;apache&quot;, containing both the web-process-user and the chief implementor&#39;s own username; This command will probably look something like: <br />
 <div class="example">
    <code>&gt; chgrp apache upload/</code><br />
    <code>&gt; chgrp apache prepped/</code><br />
 </div>
 where "apache" is the name of a permissions group that grants write-permissions to the web server and includes the user who sets up the cron job in the next step.</li>
+                                                                         <li>In the config.php file, set <b>$secure_upload_path</b> to point the path that contains the <b>upload</b> and <b>prepped</b> folders (e.g. /var/www/app/weeding).</li>
+</ol>
+</li>
    <li>Set up the <code>cron</code> jobs that power Weeding Helper&apos;s automated functions. Cron is a unix utility that can run scripts on a regular basis; if you hare unfamiliar with cron, you will want to get help from a system administrator or similar. The two files that will need to be activated by cron jobs are <b>prep_file.php</b> and <b>innreach_check.php</b>. Running the cronjobs once per minute is an effective approach.
    <ol class="sublist">
    <li><b>prep_file.php</b> takes an already-uploaded file loads it into the database. That only needs to happen once per file. If that cron job runs once per minute, it will usually not need to do anything; but when a file is uploaded, it will reliably be added to the database very quickly.</li>
