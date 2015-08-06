@@ -32,9 +32,9 @@ if ($allow_uploads == true) {
       print '<div class="warning"><h3>Upload Directory not Defined</h3><p>You must define the $secure_outside_path variable in the config file. For security, this file should be outside the webserver directory (often <i>/var/www/html</i> or <i>public_html/</i>) but should be writeable by the webserver process.</p></div>'.PHP_EOL;
   }
 
-  elseif (fopen("$secure_outside_path/upload/temp","x")) { // try to make a file to test write permissions
-    fclose ("$secure_outside_path/upload/temp");
-    unlink ("$secure_outside_path/upload/temp");
+  elseif (fopen("$secure_outside_path/temp","x")) { // try to make a file to test write permissions
+    fclose ("$secure_outside_path/temp");
+    unlink ("$secure_outside_path/temp");
     ShowUploadForm();
   } // end if web server has write permissions
 
@@ -125,7 +125,7 @@ function HandleUpload () {
       $fileSize = $_FILES['userfile']['size'];
       $fileType = $_FILES['userfile']['type'];
       
-      if (move_uploaded_file($tmpName, "$secure_outside_path/upload/".$fileName)) 
+      if (move_uploaded_file($tmpName, "$secure_outside_path/". $fileName)) 
 	{
 	  include ("mysql_connect.php");
 	  foreach ($_REQUEST as $k=>$v) { 
