@@ -1,3 +1,7 @@
+v 2.2.2 - 10 August 2015
+* updated broken files paths to $secure_outside_path to fix ingestion issues
+* switched to Semantic Versioning compliant version numbering (no leading zeros)
+
 v. 2.2.01 - 14 July 2015
 * IMPORTANT SECURITY UPDATE & CONFIG CHANGE: new config variable $secure_upload_path identifies a path outside the webroot for the 'upload' and 'prepped' directories. Please see item 4 in the "Installation" section of the Documentation for details on implementation
 * added link to local catalog record at beginning of row & end, instead of appended to bib_record column (which only worked when that column was set to show
