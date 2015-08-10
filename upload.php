@@ -125,7 +125,7 @@ function HandleUpload () {
       $fileSize = $_FILES['userfile']['size'];
       $fileType = $_FILES['userfile']['type'];
       
-      if (move_uploaded_file($tmpName, "$secure_outside_path/". $fileName)) 
+      if (move_uploaded_file($tmpName, "$secure_outside_path/upload/". $fileName)) 
 	{
 	  include ("mysql_connect.php");
 	  foreach ($_REQUEST as $k=>$v) { 
