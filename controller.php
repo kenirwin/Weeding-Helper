@@ -163,6 +163,7 @@ function DisplayProcessTable_v2($sort="filename") {
 }
 
 function DeleteTable ($table) {
+    global $secure_outside_path;
   /* DELETE CONTROLLER ENTRY */
   $q1 = "SELECT * FROM `controller` WHERE `table_name` = '$table'";
   $r1 = mysql_query($q1);
@@ -182,7 +183,7 @@ function DeleteTable ($table) {
   if ($filename) {
     $dirs = array ("upload", "prepped");
     foreach ($dirs as $dir) {
-      $file = "./$dir/$filename";
+      $file = "$secure_outside_path/$dir/$filename";
       //print "<li>trying to delete: $file</li>\n";
       if (file_exists($file)) {
 	//print "<li>found: $file</li>\n";
