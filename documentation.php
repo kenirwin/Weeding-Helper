@@ -95,7 +95,8 @@ where "apache" is the name of a permissions group that grants write-permissions 
 <h2>Using Weeding Helper</h2>
 <a name="how_to_add_circ_data"></a>
 <h3>How to Upload Files</h3>
-																											<p>To upload new data from a III Review File, export the data in this format (order matters!):</p>
+			
+<p>Create a list of ITEM records in III Millennium or Sierra.</p>																								<p>To upload new data from a III Review File, export the data in this format (order matters!):</p>
 <div class="example">
 <table>
 <thead>
