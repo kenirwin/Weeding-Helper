@@ -75,16 +75,16 @@ include("nav.php");
 <td><label for="fate_operator">Fate</label></td>
 <td><select name="fate_operator">
     <option value="">--Select One--</option>
-    <option value="=">= (equals)</option>
-    <option value="!=">!= (not equals)</option>
+    <option value="=" <?php if ($_REQUEST['fate_operator'] == "=") { print "SELECTED"; }?>>= (equals)</option>
+    <option value="!=" <?php if ($_REQUEST['fate_operator'] == "!=") { print "SELECTED"; }?>>!= (not equals)</option>
 </select></td>
 <td><select name="fate_value">
     <option value="">None Selected</option>
-    <option value="weed">weed</option>
-    <option value="de-dup">de-dup</option>
-    <option value="replace">replace</option>
-    <option value="update">update</option>
-    <option value="keep">keep</option>
+    <option value="weed" <?php if ($_REQUEST['fate_value'] == "weed") { print "SELECTED"; }?>>weed</option>
+<option value="de-dup" <?php if ($_REQUEST['fate_value'] == "de-dup") { print "SELECTED"; }?>>de-dup</option>
+<option value="replace" <?php if ($_REQUEST['fate_value'] == "replace") { print "SELECTED"; }?>>replace</option>
+<option value="update" <?php if ($_REQUEST['fate_value'] == "update") { print "SELECTED"; }?>>update</option>
+<option value="keep" <?php if ($_REQUEST['fate_value'] == "keep") { print "SELECTED"; }?>>keep</option>
 <select>
 </td>
 </tr>
