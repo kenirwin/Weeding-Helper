@@ -26,37 +26,69 @@ include("nav.php");
 ?>
 
 <form action="">
-<label for="cmp_date">Show items with CATDATE</label>
-<select name="before_after">
+<table>
+<tr>
+<td><label for="cmp_date">Show items with CATDATE</label></td>
+<td><select name="before_after">
   <option value="<=">&lt;= (on or before)</option>
   <option value=">=">&gt;= (on or after)</option>
-</select>
-<input type="text" name="cmp_date" id="cmp_date" placeholder="yyyy-mm-dd" value="<?php print($_REQUEST['cmp_date']);?>" />
-<br>
-<label for="circ_count">Total Circs</label>
+</select></td>
+
+<td><input type="text" name="cmp_date" id="cmp_date" placeholder="yyyy-mm-dd" value="<?php print($_REQUEST['cmp_date']);?>" /></td>
+</tr>
+
+<tr>
+<td><label for="circ_count">Total Circs</label></td>
+<td>
 <select name="circ_count_operator">
   <option value="<=">&lt;= (less than or equal to)</option>
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
+</td>
+<td>
 <input type="text" name="circ_count" id="circ_count" placeholder="#" value="<?php print($_REQUEST['circ_count']);?>"/>
+</td>
+</tr>
 
-<br>
-<label for="innreach_count">Total Innreach Copies</label>
-<select name="innreach_count_operator">
+<tr>
+<td><label for="innreach_count">Total Innreach Copies</label></td>
+<td><select name="innreach_count_operator">
   <option value="<=">&lt;= (less than or equal to)</option>
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
 </select>
-<input type="text" name="innreach_count" id="innreach_count" placeholder="#" value="<?php print($_REQUEST['innreach_count']);?>"/>
-<br>
-<label for="innreach_circ_count">Total Innreach Circ Copies</label>
-<select name="innreach_circ_count_operator">
+</td>
+<td><input type="text" name="innreach_count" id="innreach_count" placeholder="#" value="<?php print($_REQUEST['innreach_count']);?>"/></td>
+</tr>
+
+<tr>
+<td><label for="innreach_circ_count">Total Innreach Circ Copies</label></td>
+<td><select name="innreach_circ_count_operator">
   <option value="<=">&lt;= (less than or equal to)</option>
   <option value="=">= (equal to)</option>
   <option value=">=">&gt;= (greater than or equal to)</option>
-</select>
-<input type="text" name="innreach_circ_count" id="inreach_circ_count" placeholder="#" value="<?php print($_REQUEST['innreach_circ_count']);?>"/>
+</select></td>
+<td><input type="text" name="innreach_circ_count" id="inreach_circ_count" placeholder="#" value="<?php print($_REQUEST['innreach_circ_count']);?>"/></td>
+</tr>
+<tr>
+<td><label for="fate_operator">Fate</label></td>
+<td><select name="fate_operator">
+    <option value="">--Select One--</option>
+    <option value="=">= (equals)</option>
+    <option value="!=">!= (not equals)</option>
+</select></td>
+<td><select name="fate_value">
+    <option value="">None Selected</option>
+    <option value="weed">weed</option>
+    <option value="de-dup">de-dup</option>
+    <option value="replace">replace</option>
+    <option value="update">update</option>
+    <option value="keep">keep</option>
+<select>
+</td>
+</tr>
+</table>
 
 
 <input type="submit" value="Limit Records Displayed">
@@ -80,6 +112,12 @@ if (is_numeric($_REQUEST['innreach_circ_count']) and (in_array($_REQUEST['innrea
 if (preg_match("/\d\d\d\d-\d\d-\d\d/", $_REQUEST['cmp_date']) and (in_array($_REQUEST['before_after'], $valid_operators))) {
   $added_query .= "AND `catdate`" . $_REQUEST['before_after'] . "'" . $_REQUEST['cmp_date'] . "'";
 } //end if date cmp
+
+$allowed_fate_ops = array("=", "!=");
+if (isset($_REQUEST['fate_operator']) && in_array($_REQUEST['fate_operator'], $allowed_fate_ops)) {
+    $added_query .= 'AND `fate` '. $_REQUEST['fate_operator'] . '"'. $_REQUEST['fate_value'] .'" '; 
+}
+
 
 /* Find out if there are special settings for this table */
 $q = "SELECT distinct `table_name` from `table_config` where `table_name`= '$table'"; 
