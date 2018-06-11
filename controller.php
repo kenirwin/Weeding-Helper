@@ -141,6 +141,7 @@ function DisplayProcessTable_v2($sort="filename") {
     if ($myrow[load_date] != "") {
       $next_action = MakeButton ("view.php?table=$myrow[table_name]", "images/edit.png", "View/Edit");
       $next_action.= MakeButton ("print.php?table=$myrow[table_name]", "images/printer.png", "Print View");
+      $next_action.= MakeButton ("copytwo.php?table=$myrow[table_name]", "", "c.2");
       $next_action.= MakeButton ("cloud.php?table=$myrow[table_name]","images/tag-cloud.png","Keyword Cloud");
       $next_action.= MakeButton ("graph.php?table=$myrow[table_name]","images/bar-graph.png","Graphs");
       $next_action.= MakeButton ("settings.php?table=$myrow[table_name]","images/checkbox.png","View/Edit Settings");
