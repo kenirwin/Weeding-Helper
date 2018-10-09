@@ -16,7 +16,13 @@ elseif (isset($_REQUEST['table'])) {
 
 $table = $_REQUEST['table'];
 $output = "";
-$q = "SELECT * FROM `$table`";
+if (isset($_REQUEST['copytwo']) && ($_REQUEST['copytwo'] == true)) {
+    $whereCopyTwo = "WHERE call_bib IN (SELECT * FROM (SELECT `call_bib` FROM $_SESSION[weed_table] Group by `call_bib` having count(*)> 1 ) AS subquery)";
+}
+else {
+    $whereCopyTwo = '';
+}
+$q = "SELECT * FROM `$table` $whereCopyTwo";
 $r = mysql_query($q);
 
 

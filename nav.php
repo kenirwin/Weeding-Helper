@@ -7,7 +7,20 @@ $nav = array ("controller.php" => "All Tables",
 	      "documentation.php" => "Help"
 	      );
    }
-   
+
+     elseif (isset($copytwo) && $copytwo == true) {
+$nav = array ("controller.php" => "All Tables",
+	      "upload.php" => "Upload New File",
+	      "view.php" => "View/Edit",
+	      "print.php" => "Print View",
+          "copytwo.php" => "c.2",
+          "cloud.php" => "Keyword Cloud",
+	      "graph.php" => "Graph",
+	      "settings.php" => "Display Settings",
+	      "csv.php?copytwo=true" => "Download c.2 CSV",
+	      "documentation.php" => "Help"
+	      );
+     }
    else {
 $nav = array ("controller.php" => "All Tables",
 	      "upload.php" => "Upload New File",
@@ -40,7 +53,7 @@ foreach ($nav as $link => $name) {
       $class = "";
     }
   }
-  
+
   else { $class = ""; }
 
   $navlinks .= "<li $class><a href=\"$link\">$name</a></li>\n";

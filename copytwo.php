@@ -72,6 +72,7 @@ margin-bottom: 1em;
 <body>
 <?php 
 print "$banner";
+$copytwo = true;
 include ("nav.php");
 
     #this one line of code is how you implement the class
@@ -159,6 +160,7 @@ while ($myrow = mysql_fetch_assoc($r)) {
 // This is the main copytwo business: 
     #i can use a where field to better-filter my table
     $whereCopyTwo = "WHERE call_bib IN (SELECT * FROM (SELECT `call_bib` FROM $_SESSION[weed_table] Group by `call_bib` having count(*)> 1 ) AS subquery)";
+// How'd we get that? See: https://stackoverflow.com/questions/6135376/mysql-select-where-field-in-subquery-extremely-slow-why
     $tblDemo->addWhereClause($whereCopyTwo);
 
 
