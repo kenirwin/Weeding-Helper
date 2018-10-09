@@ -26,9 +26,9 @@ ini_set('display_errors','on');
 		$cloud->setRemoveTags(array('del','harvey'));
 
 		/* more complex adding */
-		$cloud->addTag(array('tag' => 'php', 'url' => 'http://www.php.net', 'colour' => 1));
-		$cloud->addTag(array('tag' => 'ajax', 'url' => 'http://www.php.net', 'colour' => 2));
-		$cloud->addTag(array('tag' => 'css', 'url' => 'http://www.php.net', 'colour' => 3));
+		$cloud->addTag(array('tag' => 'php', 'url' => 'https://www.php.net', 'colour' => 1));
+		$cloud->addTag(array('tag' => 'ajax', 'url' => 'https://www.php.net', 'colour' => 2));
+		$cloud->addTag(array('tag' => 'css', 'url' => 'https://www.php.net', 'colour' => 3));
 
 		/* set the minimum length required */
 		$cloud->setMinLength(3);
