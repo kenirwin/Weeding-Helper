@@ -41,13 +41,24 @@ if ($_SESSION[weed_table]) {
 	$("#form-show-hide").click(function() {
 	    $("#search-form form").toggle("#search-form form");
 	  });
-	
-	$('table.ajaxCRUD tr td:first-child').each(function() {
-	    $(this).append(' <img src="images/icon-rightarrow.png" style="height: 1em">').click(function() {
-		$(this).parent().children().last().find('input').click();
-	      });
-	  });
-      });
+    LoadArrows();
+    window.setInterval(function() {
+        //every 2 secs, see if the catalog arrows are there
+        //they go away on ajax reload (search, next page, etc)
+        //add them again if necessary
+        if ($('.catalog-arrow').length == 0) {
+            LoadArrows();
+        }
+    }, 2000);
+
+    });
+    function LoadArrows() {
+        $('table.ajaxCRUD tr td:first-child').each(function() {
+            $(this).append(' <img src="images/icon-rightarrow.png" style="height: 1em" class="catalog-arrow">').click(function() {
+                $(this).parent().children().last().find('input').click();
+            });
+        });
+    }
 </script>
 
 <style>
