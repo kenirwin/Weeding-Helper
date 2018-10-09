@@ -196,7 +196,7 @@ Max field length: none</p>
    <dd>Licensed free-of-charge for <strong>non-commercial use</strong> only</dd>
    <dd>ajaxCRUD(tm) by Loud Canvas Media is licensed under a
    Creative Commons Attribution-Share Alike 3.0 United States License</dd>
-																											<dd>See: <a href="http://www.ajaxCRUD.com">http://www.ajaxCRUD.com</a></dd>
+																											<dd>See: <a href="https://www.ajaxCRUD.com">https://www.ajaxCRUD.com</a></dd>
 
 <dt>Simple HTML DOM Parser:</dt>
    <dd>Used for parsing III catalog pages</dd>
@@ -207,13 +207,13 @@ Max field length: none</p>
 <dt>iPhone-style Checkboxes</dt>
  <dd>By Hidayat Sagita</dd>
  <dd>Shared without mention of a specific license, used as if under a non-commercial share-alike license.</dd>
- <dd>See: <a href="http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/">http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/</a></dd>
+ <dd>See: <a href="https://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/">https://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/</a></dd>
 
 <dt>sortLC.php: </dt>
    <dd>Based on sortLC.pl (version 1.2) by Michael Doran, doran@uta.edu</dd>
    <dd>Used in accordance with the non-commercial license </dd>
    <dd>See full license in the sortLC.php file</dd>
-   <dd>See also: <a href="http://rocky.uta.edu/doran/sortlc/">http://rocky.uta.edu/doran/sortlc/</a></dd>
+   <dd>See also: <a href="https://rocky.uta.edu/doran/sortlc/">https://rocky.uta.edu/doran/sortlc/</a></dd>
 <dd>Ported to PHP by Ken Irwin, kirwin@wittenberg.edu</dd>
 
 <?php  include("attribution.php"); ?>

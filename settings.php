@@ -5,7 +5,7 @@ session_start();
 <head>
 <title>Display Settings - Weeding Helper</title>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js">
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js">
 </script>
 
 <?php 
@@ -21,7 +21,7 @@ include ("scripts.php");
 form { display: inline }
 
 # stylized checkboxes by: Hidayat Sagita 
-# http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/
+# https://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/
 
 </style>
 </head>

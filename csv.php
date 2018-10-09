@@ -1,7 +1,7 @@
 <?php 
   /*
     The CSV generating code here is a modified version of Jrgns's code:
-    http://stackoverflow.com/a/125578
+    https://stackoverflow.com/a/125578
    */
 
 session_start();

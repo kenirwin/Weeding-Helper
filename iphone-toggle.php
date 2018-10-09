@@ -1,6 +1,6 @@
 <?php 
 //By Hidayat Sagita
-//http://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/
+//https://www.webstuffshare.com/2010/03/stylize-your-own-checkboxes/
 ?>
 		<link rel="stylesheet" type="text/css" media="screen, projection" href="iphone-toggle.css" />
 		<script type="text/javascript" src="jquery.backgroundPosition.js"></script>

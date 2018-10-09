@@ -29,7 +29,7 @@ border: 1px solid #ccc;
 a.action img { border: none } 
 //td:nth-child(9) { width: 250px }
 # tooltip CSS by: Nikolay Izoderov
-# http://www.splashnology.com/article/tooltips-in-css3-and-html5/4053/
+# https://www.splashnology.com/article/tooltips-in-css3-and-html5/4053/
 .tooltip {
   border-bottom: 1px dotted #0077AA;
 cursor: help;

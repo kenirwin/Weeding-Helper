@@ -89,11 +89,11 @@ else {
     ########################################################
 
     ## all that follows is setup configuration for your fields....
-    ## full API reference material for all functions can be found here - http://ajaxcrud.com/api/
+    ## full API reference material for all functions can be found here - https://ajaxcrud.com/api/
     ## note: many functions below are commented out (with //). note which ones are and which are not
 
     #i could omit a field if I wanted
-    #http://ajaxcrud.com/api/index.php?id=omitField
+    #https://ajaxcrud.com/api/index.php?id=omitField
 
 $searchform = BuildSearchForm ($_SESSION[weed_table]);
 ?>
@@ -165,7 +165,7 @@ if ($where) {
     //$tblDemo->addOrderBy("ORDER BY fldField1 ASC");
 
     #i can set certain fields to only allow certain values
-    #http://ajaxcrud.com/api/index.php?id=defineAllowableValues
+    #https://ajaxcrud.com/api/index.php?id=defineAllowableValues
     $conditionValues = array("poor","ok","excellent");
     $tblDemo->defineAllowableValues("condition", $conditionValues);
 
@@ -185,15 +185,15 @@ foreach ($exact_search_fields as $xsf) {
 
 
     #i can disallow deleting of rows from the table
-    #http://ajaxcrud.com/api/index.php?id=disallowDelete
+    #https://ajaxcrud.com/api/index.php?id=disallowDelete
     $tblDemo->disallowDelete();
 
     #i can disallow adding rows to the table
-    #http://ajaxcrud.com/api/index.php?id=disallowAdd
+    #https://ajaxcrud.com/api/index.php?id=disallowAdd
     $tblDemo->disallowAdd();
 
     #i can add a button that performs some action deleting of rows for the entire table
-    #http://ajaxcrud.com/api/index.php?id=addButtonToRow
+    #https://ajaxcrud.com/api/index.php?id=addButtonToRow
     //$tblDemo->addButtonToRow("Add", "add_item.php", "all");
 $tblDemo->addButtonToRow("View Record", "to_local_cat.php", "bib_record", "", "local_cat_window");
 
