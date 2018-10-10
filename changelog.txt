@@ -1,3 +1,9 @@
+v 2.3.0 - 10 October 2018
+* fixed issue 8: advanced search + ajaxcrud filter -- forgets advanced search
+* fixed issue 9: losing catalog-link arrows on AJAX data reload
+* added copy-two detection
+* HTTPS-friendly -- use https for CDN calls, etc. 
+
 v 2.2.2 - 10 August 2015
 * updated broken files paths to $secure_outside_path to fix ingestion issues
 * switched to Semantic Versioning compliant version numbering (no leading zeros)
