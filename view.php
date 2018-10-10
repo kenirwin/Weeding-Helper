@@ -92,7 +92,7 @@ include ("nav.php");
     // args: ( ? , table name, primarykey name, path)
 
   $tblDemo = new ajaxCRUD("Item", "$_SESSION[weed_table]", "call_order", $htpath);
-}
+} //end if $_SESSION['weed_table']
 else {
   header ("Location: controller.php?action=choose_table");
 }
@@ -125,7 +125,7 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 } //end else
 ?>
 
-<form method="post" action="view.php">
+<form method="get" action="view.php">
 <div id="search-hints">
 <ol>
   <li>Wildcard character: <b>%</b> can be used in "LIKE" and "NOT LIKE" search, <br />e.g.: <b>%Norton%</b> will find "H.W. Norton", "Norton & Co", etc.</li>
