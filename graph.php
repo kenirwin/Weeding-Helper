@@ -1,4 +1,9 @@
 <?php 
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
 session_start();
 ?>
 <html>
@@ -34,13 +39,16 @@ td { font-size: 80%; }
 <body>
 <?php 
 include ("mysql_connect.php");
-if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
-$table = $_SESSION[weed_table];
+if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
+$table = $_SESSION['weed_table'];
 $imgsrc = "images/greenblock.gif";
 $redimg = "images/redblock.gif";
-$q = "SELECT file_title from `controller` where table_name = '$table'";
-$r = mysql_query($q);
-$myrow = mysql_fetch_row($r);
+$q = "SELECT file_title from `controller` where table_name = ?";
+$params = array($table);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
+if ($stmt->rowCount() == 1) { $verified_table_name = $table; }
+$myrow = $stmt->fetch(PDO::FETCH_NUM);
 $title = $myrow[0];
 
 include("nav.php");
@@ -56,10 +64,12 @@ include("nav.php");
 
 <div id="tabs-age">
   <?php
-$q = "SELECT `year`,count(*) as `items` FROM `$table` GROUP BY `year` ORDER BY `year` DESC";
-$r = mysql_query($q);
+    if (isset($verified_table_name)) {
+$q = "SELECT `year`,count(*) as `items` FROM $verified_table_name GROUP BY `year` ORDER BY `year` DESC";
+$stmt = $db->query($q);
+
 $rows = "";
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract($myrow);
   $size = $items * 1;
   $rows .= '<tr><td>'.$year.'</td> <td>'.$items.'</td><td><img src="'.$imgsrc.'" width="'.$size.'" height="1em" /></td>'.PHP_EOL;
@@ -67,16 +77,18 @@ while ($myrow = mysql_fetch_assoc($r)) {
 print '<table>'.PHP_EOL;
 print $rows;
 print '</table>'.PHP_EOL;
+} //if $verified_table_name
 ?>
 </div><!--tabs-age-->
 
 
 <div id="tabs-title-usage">
 <?php
-$q= "select * from `$table`";
-//print $q;
-$r= mysql_query($q);
+    if (isset($verified_table_name)) {
+$q= "select * from $verified_table_name";
+$stmt = $db->query($q);
 $last_class = "";
+}
 ?>
 
 <div class="intro">
@@ -87,7 +99,7 @@ $last_class = "";
 
 $thead = "<thead><tr><td>Title</td><td>Circs</td><td>Graph</td></tr></thead>\n";
 
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract ($myrow);
 
   if (isset($call_item) && $call_item != "") { $call = $call_item; }
@@ -122,8 +134,11 @@ print "<table>$lines</table>\n";
   <p>Year in which items last circulated, by number of items per year</p>
   <?php
   $q= "select count(*) as YearCount, year(`last_checkin`) as `LastCirc` from `$table` group by `LastCirc` order by `LastCirc` DESC";
-$r = mysql_query($q);
-while ($myrow = mysql_fetch_assoc($r)) {
+$params = array($table);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
+
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract($myrow);
 $circ_rows .= "<tr><td>$LastCirc</td> <td>$YearCount</td> <td><img src=\"$imgsrc\" width=\"$YearCount\" title=\"Last Circ in $LastCirc: $YearCount\"></td></tr>\n";
 }
