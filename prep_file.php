@@ -19,13 +19,13 @@ require ("mysql_connect.php");
 $log = fopen ("log.txt", "a+");
 
 $q = "SELECT * FROM controller WHERE filename != '' and load_date IS NULL";
-$r = mysql_query ($q);
-$rows = mysql_num_rows($r);
+$stmt = $db->query($q);
+$rows = $stmt->rowCount();
 $now = date ("Y-m-d h:i:s");
 //fwrite ($log, "$now - $q\n$now - Rows waiting: $rows\n");
 
 /* for each waiting file, prep it, load to mysql, update controller */
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract($myrow);
   //  fwrite ($log, "$now - PrepFile: $filename");
   if (PrepFile ($filename, $call_type)) {
@@ -44,12 +44,12 @@ while ($myrow = mysql_fetch_assoc($r)) {
   else { print "FAILED: Failed to PrepFile $filename; Database table not created\n"; }
 
   $q = "SELECT count(*) FROM `$table_name`";
-  $r = mysql_query($q);
-  $row_a = mysql_fetch_array($r);
+  $stmt = $db->query($q);
+  $row_a = $stmt->fetch(PDO::FETCH_NUM);
   $count = $row_a[0];
   if ($count > 0) {
     $q2 = "UPDATE `controller` SET `load_date` = now(), `records`= $count WHERE `table_name` = '$table_name'";
-    mysql_query($q2);
+    $db->query($q2);
     //    fwrite ($log, "$now - $q2\n");
   }
 } //end while processing files

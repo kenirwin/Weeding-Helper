@@ -14,13 +14,16 @@ if ($allow_uploads == true) {
   // update table structure if necessary 
   // this should only happen once, upgrading controller to version 2.1.04
   $q = 'ALTER TABLE `controller` ADD `call_type` VARCHAR( 5 ) NOT NULL AFTER `table_name`';
-  $r = mysql_query($q);
+  $r = $db->query($q);
 
 
-  if ($_REQUEST[upload_button]) { 
-    $q = "SELECT * FROM `controller` WHERE table_name = '$_REQUEST[table_name]'";
-    $r = mysql_query($q);
-    if (mysql_num_rows($r) > 0) {
+  if ($_REQUEST['upload_button']) { 
+    $q = "SELECT * FROM `controller` WHERE table_name = ?";
+    $params = array($_REQUEST['table_name']);
+    $stmt = $db->prepare($q);
+    $stmt->execute($params);
+    
+    if ($stmt->rowCount() > 0) {
       print '<p class="warning">There is already a database table named <strong>$_REQUEST[table_name]</strong>. Please choose a different table name for this file.</p>';
     }
     else {
@@ -129,27 +132,28 @@ function HandleUpload () {
 	{
 	  include ("mysql_connect.php");
 	  foreach ($_REQUEST as $k=>$v) { 
-	    $_REQUEST[$k] = mysql_real_escape_string($v);
+	    $_REQUEST[$k] = $v;
 	  }
 	  print "<li class=\"success\">SUCCESS: file uploaded</li>\n";
-	  if (! $_REQUEST[table_name]) {
-	    $_REQUEST[table_name] = $fileName;
+	  if (! $_REQUEST['table_name']) {
+	    $_REQUEST['table_name'] = $fileName;
 	  }
-	  $_REQUEST[table_name] = preg_replace("/[^a-zA-Z0-9]+/","_",$_REQUEST[table_name]);
-	  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`call_type`,`user`,`upload_date`) VALUES ('$fileName', '$_REQUEST[file_title]', '$_REQUEST[table_name]', '$_REQUEST[call_type]', '$_REQUEST[user]', now())";
-	  $r = mysql_query($q);
-	  if (mysql_errno() == 0) {
-	    print "<li class=\"success\">SUCCESS: added file to master database</li>\n";
-	  }
-	  else { 
-	    print "<li class=\"error\">$q -- ERROR: could not add file to master database:". mysql_errno() . mysql_error() ."</li>\n";
-	  } //end else
-	}
+	  $_REQUEST['table_name'] = preg_replace("/[^a-zA-Z0-9]+/","_",$_REQUEST['table_name']);
+      try { 
+    $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`call_type`,`user`,`upload_date`) VALUES (?,?,?,?,?,now())";
+    $params = array($fileName, $_REQUEST['file_title'], $_REQUEST['table_name'], $_REQUEST['call_type'], $_REQUEST['user']);
+    $stmt = $db->prepare($q);
+    $stmt->execute($params);
+    print "<li class=\"success\">SUCCESS: added file to master database</li>\n";
+} catch (PDOException $e) {
+    print "<li class=\"error\">$q -- ERROR: could not add file to master database:". mysql_errno() . mysql_error() ."</li>\n";
+}
+}
       else {
         print "<p class=warning>failed to upload file: check to be sure web server has write permissions to the upload directory. $errno</p>";
       }
 
-      $path = preg_replace ("/[^\/]+$/", "", $_SERVER[SCRIPT_FILENAME]);
+      $path = preg_replace ("/[^\/]+$/", "", $_SERVER['SCRIPT_FILENAME']);
       
       
     } //end if upload file isset and is larger than 0

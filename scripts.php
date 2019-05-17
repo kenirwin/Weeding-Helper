@@ -304,8 +304,10 @@ function PrepFile ($filename, $call_type="LC") {
 
 
 function CreateTable ($table_name) {
+    global $db;
+    if (!ValidateTableName($table_name)) { die ('Invalid Table Name: ' .$table_name); }
   $q = TableTemplate($table_name);
-  $r = mysql_query($q);
+  $stmt = $db->query($q);
   if (mysql_errno() > 0) {
     PrintError(mysql_errno() . ": " . mysql_error(). ": $q");
     return false;
