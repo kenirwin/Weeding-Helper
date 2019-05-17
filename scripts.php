@@ -307,42 +307,42 @@ function CreateTable ($table_name) {
     global $db;
     if (!ValidateTableName($table_name)) { die ('Invalid Table Name: ' .$table_name); }
   $q = TableTemplate($table_name);
-  $stmt = $db->query($q);
-  if (mysql_errno() > 0) {
-    PrintError(mysql_errno() . ": " . mysql_error(). ": $q");
-    return false;
-  } //end if error
-  else {
-    PrintSuccess("Created table: $table_name");
-    return true;
+  try { 
+      $stmt = $db->query($q);
+      PrintSuccess("Created table: $table_name");
+      return true;
+  } catch (PDOException $e) {
+      PrintError($stmt->getMessage());
+      return false;
   }
 }
 
 function LoadTable ($table, $file) {
-  global $secure_outside_path;
+    global $secure_outside_path, $db;
   $local = "";
   if (UseLocalInfile()) { $local = "LOCAL"; }
   $q = "LOAD DATA $local INFILE '$secure_outside_path/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
   print $q . "\n";
-  $r = mysql_query($q);
-  if (mysql_errno() > 0) {
-    $error = PrintError(mysql_errno() . ": " . mysql_error());;
-    return false;
-  } //end if error
-  else {
-    PrintSuccess ("LOADED FILE $file\n");
-    return true;
+  
+  try{ 
+      $db->query($q);
+      PrintSuccess ("LOADED FILE $file\n");
+      return true;
+  } catch (PDOException $e) {
+      return false;
   }
+
 } //end function LoadFile
 
 function UseLocalInfile () {
   /*returns true if the MySQL 'local_infile' config is turned on */
+    global $db;
   $q="SHOW VARIABLES LIKE 'local_infile'";
-  $r=mysql_query($q);
-  if (mysql_num_rows($r) == 0) {
+  $stmt = $db->query($q);
+  if ($stmt->rowCount() == 0) {
     $use_local_infile = false;
   }
-  while ($myrow = mysql_fetch_assoc($r)) {
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if ($myrow['Value'] == "ON") {
       $use_local_infile = true;
     }

@@ -10,7 +10,11 @@ more detail.</p>\n";
 
 else { // if config.php
     if (! isset($MYSQL_CHARSET)) { $MYSQL_CHARSET = 'utf8'; }
-    $db = new PDO("mysql:host=$MYSQL_HOST;dbname=$MYSQL_DB;charset=$MYSQL_CHARSET", $MYSQL_LOGIN, $MYSQL_PASS);
+    $pdo_params = array(
+        PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    );
+    $db = new PDO("mysql:host=$MYSQL_HOST;dbname=$MYSQL_DB;charset=$MYSQL_CHARSET", $MYSQL_LOGIN, $MYSQL_PASS, $pdo_params);
   if (!$db) {
       die('Could not connect to database');
   }

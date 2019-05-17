@@ -120,27 +120,35 @@ function DisplayProcessTable_v2($sort="filename") {
     foreach ($headers_array as $k=>$v) {
       $headers_array[$k] = str_replace ("_", " ", $v);
     }
-    if ($myrow[upload_date]) { 
-      $myrow[upload_date] = date("Y-m-d",strtotime($myrow[upload_date]));
+    if ($myrow['upload_date']) { 
+      $myrow['upload_date'] = date("Y-m-d",strtotime($myrow['upload_date']));
     }
-    if ($myrow[load_date]) { 
-      $myrow[load_date] = date("Y-m-d",strtotime($myrow[load_date]));
+    if ($myrow['load_date']) { 
+      $myrow['load_date'] = date("Y-m-d",strtotime($myrow['load_date']));
     }
-    if ($myrow[innreach_finished]) {
-      $myrow[innreach_finished] = "Y";
+    if ($myrow['innreach_finished']) {
+      $myrow['innreach_finished'] = "Y";
     }
 
     else {
       $ct_q = "SELECT count(*) FROM $myrow[table_name] WHERE innreach_circ_copies IS NOT NULL";
-      $ct_r = mysql_query($ct_q);
-      $ct_myrow=mysql_fetch_row($ct_r);
-      $innr_count = $ct_myrow[0];
+
+      $ct_stmt = $db->query($ct_q);
+
+      if ($ct_stmt && $ct_stmt->rowCount() > 0) {
+          $ct_myrow=$ct_stmt->fetch(PDO::FETCH_NUM);
+          $innr_count = $ct_myrow[0];
+      }
+      else {
+          $ct_myrow = 0;
+      }
+      
       if ($innr_count > 0) {
-	$myrow[innreach_finished] =  "$innr_count of $myrow[records]";
+	$myrow['innreach_finished'] =  "$innr_count of $myrow[records]";
 	$unstick = MakeButton("unstick.php?table=$myrow[table_name]","","Unstick");
       }
       else {
-	$myrow[innreach_finished] = "In Queue";
+	$myrow['innreach_finished'] = "In Queue";
       }
     }
     

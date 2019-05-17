@@ -1,7 +1,11 @@
 #!/usr/bin/env php 
 <?php
-error_reporting('E_ALL');
-//display_errors(true);
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
+
 /*
 this script will take a III export and condense the repeatable fields
 (e.g. if there are 3 item records, it will combine the circ data)
@@ -32,9 +36,10 @@ while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     print "SUCCESS: Prepped file for database ingestion\n";
     //    fwrite ($log, "$now - CreateTable: $table_name");
     if (CreateTable($table_name)) {
-      //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
-      if (LoadTable($table_name, $filename)) {
-      }
+        print "SUCCESS: Created table\n";
+        if (LoadTable($table_name, $filename)) {
+            print "SUCCESS: Loaded Table\n";
+        }
       else { print "FAILED: Cound not load data from $filename into $table_name\n";}
     } //end if CreateTable
     else {
