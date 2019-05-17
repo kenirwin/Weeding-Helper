@@ -23,6 +23,14 @@ function VerifyTableName($table) {
     }
 }
 
+function ValidateTableName($name) {
+    //reject as valid if non alpha-numeric or underscore chars
+    if (preg_match('/[^a-zA-Z0-9_]/',$name)) {
+        return false;
+    }
+    else { return true; }
+}
+
 function MysqlResultsTable ($stmt) {
     while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if (! ($headers))
