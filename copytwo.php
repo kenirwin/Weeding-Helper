@@ -16,9 +16,11 @@ $htpath = $htpath_crud;
 
 if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
 $table = $_SESSION[weed_table];
-$q = "SELECT file_title from `controller` where table_name = '$table'";
-$r = mysql_query($q);
-$myrow = mysql_fetch_row($r);
+$q = "SELECT file_title from `controller` where table_name = ?";
+$params = array($table);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
+$myrow = $stmt->fetch(PDO::FETCH_NUM);
 $title = $myrow[0];
 
 require_once($path . '/preheader.php');
@@ -27,7 +29,7 @@ include ($path . '/ajaxCRUD.class.php');
 
 $banner = "<h1>View/Edit: $title</h1>\n";
 
-if ($_SESSION[weed_table]) {
+if ($_SESSION['weed_table']) {
 ?>
 <html>
 <head>
@@ -133,15 +135,17 @@ $searchform = BuildSearchForm ($_SESSION[weed_table]);
 
 <?php 
 
-$q = "SELECT * FROM `table_config` where `table_name` = '$_SESSION[weed_table]'";
-$r = mysql_query($q);
+$q = "SELECT * FROM `table_config` where `table_name` = ?";
+$params = array($_SESSION['weed_table']);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
 
-if (mysql_num_rows($r) == 0) { // use defaults if no table-specific settings
+if ($stmt->rowCount() == 0) { // use defaults if no table-specific settings
   $q = "SELECT * FROM `table_config` where `table_name` = 'default'";
-  $r = mysql_query($q);
+  $stmt = $db->query($q);
 }
 
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
 
     /* get display settings from the table_config query and apply actions

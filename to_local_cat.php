@@ -1,4 +1,4 @@
-<?
+<?php
 include("config.php");
 if (isset($innreach['local_cat_url'])) {
   if (isset($_REQUEST['bib_record'])) {
