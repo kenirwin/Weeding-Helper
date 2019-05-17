@@ -1,12 +1,20 @@
 <?php  
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
+
 session_start();
 if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
 $table = $_SESSION[weed_table];
 include('scripts.php');
 include('mysql_connect.php');
-$q = "SELECT file_title from `controller` where table_name = '$table'";
-$r = mysql_query($q);
-$myrow = mysql_fetch_row($r);
+$q = "SELECT file_title from `controller` where table_name = ?";
+$params = array($table);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
+$myrow = $stmt->fetch(PDO::FETCH_ASSOC);
 $title = $myrow[0];
 ?>
 <html>
@@ -94,35 +102,44 @@ include("nav.php");
 <input type="submit" value="Limit Records Displayed">
 </form>
 
-<?php 
+<?php
+    $print_params = array();
+ 
   $valid_operators = array ("<=", "=", ">=");
 if (is_numeric($_REQUEST['circ_count']) and (in_array($_REQUEST['circ_count_operator'], $valid_operators))) {
-  $added_query = " AND `circs`" . $_REQUEST['circ_count_operator'].  $_REQUEST['circ_count'] . " ";
+    array_push($print_params, $_REQUEST['circ_count']);
+  $added_query = " AND `circs`" . $_REQUEST['circ_count_operator']. " ? ";
 } //end if circ cmp
 
 if (is_numeric($_REQUEST['innreach_count']) and (in_array($_REQUEST['innreach_count_operator'], $valid_operators))) {
-  $added_query .= " AND `innreach_total_copies`" . $_REQUEST['innreach_count_operator'].  $_REQUEST['innreach_count'] . " ";
+    array_push($print_params, $_REQUEST['innreach_count']);
+  $added_query .= " AND `innreach_total_copies`" . $_REQUEST['innreach_count_operator'].  " ? ";
 } //end if circ cmp
 
 if (is_numeric($_REQUEST['innreach_circ_count']) and (in_array($_REQUEST['innreach_circ_count_operator'], $valid_operators))) {
-  $added_query .= " AND `innreach_circ_copies`" . $_REQUEST['innreach_circ_count_operator'].  $_REQUEST['innreach_circ_count'] . " ";
+    array_push($print_params, $_REQUEST['innreach_circ_count']);
+  $added_query .= " AND `innreach_circ_copies`" . $_REQUEST['innreach_circ_count_operator']. " ? ";
 } //end if circ cmp
 
 
 if (preg_match("/\d\d\d\d-\d\d-\d\d/", $_REQUEST['cmp_date']) and (in_array($_REQUEST['before_after'], $valid_operators))) {
-  $added_query .= "AND `catdate`" . $_REQUEST['before_after'] . "'" . $_REQUEST['cmp_date'] . "'";
+    array_push($print_params,$_REQUEST['cmp_date']);
+  $added_query .= "AND `catdate`" . $_REQUEST['before_after'] . " ? ";
 } //end if date cmp
 
 $allowed_fate_ops = array("=", "!=");
 if (isset($_REQUEST['fate_operator']) && in_array($_REQUEST['fate_operator'], $allowed_fate_ops)) {
-    $added_query .= 'AND `fate` '. $_REQUEST['fate_operator'] . '"'. $_REQUEST['fate_value'] .'" '; 
+    array_push($print_params,$_REQUEST['fate_value']);
+    $added_query .= 'AND `fate` '. $_REQUEST['fate_operator'] . " ? "; 
 }
 
 
 /* Find out if there are special settings for this table */
-$q = "SELECT distinct `table_name` from `table_config` where `table_name`= '$table'"; 
-$r = mysql_query($q);
-if (mysql_num_rows($r) > 0 ) {
+$q = "SELECT distinct `table_name` from `table_config` where `table_name`= ?"; 
+$params = array($table);
+$stmt = $db->prepare($q);
+$stmt->execute($params);
+if ($stmt->rowCount() > 0 ) {
   $print_settings = $table;
 }
 else {
@@ -130,29 +147,35 @@ else {
 }
 
 
-$q1 = "SELECT field from `table_config` where `printable` = 'Y' and `table_name` = '$print_settings'";
-$r1 = mysql_query($q1);
+$q1 = "SELECT field from `table_config` where `printable` = 'Y' and `table_name` = ?";
+$params = array($print_settings);
+$stmt = $db->prepare($q1);
+$stmt->execute($params);
+
 $fields = array();
-while ($myrow = mysql_fetch_assoc($r1)) {
-  array_push ($fields, $myrow[field]);
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
+  array_push ($fields, $myrow['field']);
 }
 $fields = "`". join ("`,`", $fields) . "`";
 
+$verified_table = VerifyTableName($table);
 
 $q = "SELECT $fields
-FROM `$table`
+FROM `$verified_table`
 where 1 $added_query
 ORDER BY call_order";
 //ORDER BY subclass,subj_starts";
 
-if ($_REQUEST[before_after] || $_REQUEST[circ_count]) {
+if ($_REQUEST['before_after'] || $_REQUEST['circ_count']) {
     $clear_button = '<a href="print.php?"><button><img src="images/delete.png" style="height: .75em">&nbsp;Remove Conditions</button></a>';
 }
 print "<div class=\"example\">$q<br>$clear_button</div>\n";
-$r = mysql_query($q);
-print ("<h3>".mysql_num_rows($r)." items</h3>\n");
+$stmt = $db->prepare($q);
+$stmt->execute($print_params);
+
+print ("<h3>".$stmt->rowCount()." items</h3>\n");
 if (function_exists("MysqlResultsTable")) {
-  print(MysqlResultsTable($r));
+  print(MysqlResultsTable($stmt));
 }
 else {
   print "no function";

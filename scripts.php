@@ -6,7 +6,7 @@ function GetTableNames() {
     global $db;
   $q = "SELECT `table_name`,`file_title` FROM `controller` WHERE 1";
   $stmt = $db->query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $file_titles[$table_name] = $file_title;
   }
@@ -23,8 +23,8 @@ function VerifyTableName($table) {
     }
 }
 
-function MysqlResultsTable ($mysql_results) {
-  while ($myrow = mysql_fetch_assoc($mysql_results)) {
+function MysqlResultsTable ($stmt) {
+    while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if (! ($headers))
     if (! ($headers))
       $headers = array_keys($myrow);
