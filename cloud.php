@@ -1,6 +1,10 @@
 <?php
+//$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
 session_start();
-//ini_set("display_errors",true);
 ?>
 <html>
 <head>
@@ -13,6 +17,7 @@ include("nav.php");
 
 //ini_set('display_errors','on');
 include ("mysql_connect.php");
+include ("scripts.php");
 include ("./tagcloud/stopwords.php"); //defines $stopwords array
 include ("./tagcloud/classes/tagcloud.php");
 $cloud_weighted = new tagcloud();
@@ -20,13 +25,15 @@ $cloud_unweighted = new tagcloud();
 $max = 100; //max size of tag cloud
 
 if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
-$q = "SELECT * FROM `$_SESSION[weed_table]` WHERE title != ''" or lcsh != '';
-$r = mysql_query($q);
+$verified_table_name = VerifyTableName($_SESSION['weed_table']);
+if (isset($verified_table_name)) {
+$q = "SELECT * FROM `$verified_table_name` WHERE title != ''" or lcsh != '';
+$stmt = $db->query($q);
 
 $weighted_words = array();
 $unweighted_words = array();
 
-while ($myrow = mysql_fetch_assoc($r)) {
+while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
   extract ($myrow);
 
   if (preg_match("/(.*)\/(.*)/", $title, $m)) { // separate title & author
@@ -47,6 +54,8 @@ while ($myrow = mysql_fetch_assoc($r)) {
     } //end if
   } //end foreach
 } //end while
+
+} //end if verified
 
 DisplayCloud($cloud_unweighted, $unweighted_words, $max, "Tagcloud of words appearing in title and subject");
 DisplayCloud($cloud_unweighted, $weighted_words, $max, "Words in title and subject, weighted by frequency of circulation");
