@@ -13,6 +13,16 @@ function GetTableNames() {
   return $file_titles;
 }
 
+function VerifyTableName($table) {
+    $array = GetTableNames(); 
+    if (array_key_exists($table,$array)) {
+        return $table;
+    }
+    else {
+        return null;
+    }
+}
+
 function MysqlResultsTable ($mysql_results) {
   while ($myrow = mysql_fetch_assoc($mysql_results)) {
     if (! ($headers))
