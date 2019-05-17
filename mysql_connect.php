@@ -1,7 +1,4 @@
 <?php 
-error_reporting('E_WARN');
-ini_set("display_errors", 1);
-
 if (! include("config.php")) {
   print "<h1>Weeding Helper Installation</h1>\n";
   print '<link rel="stylesheet" href="style.css" />';
@@ -12,23 +9,18 @@ more detail.</p>\n";
 }
 
 else { // if config.php
-  $link = mysql_connect ($MYSQL_HOST, $MYSQL_LOGIN, $MYSQL_PASS);
-  if (!$link) {
-    die('Could not connect: ' . mysql_error());
+    if (! isset($MYSQL_CHARSET)) { $MYSQL_CHARSET = 'utf8'; }
+    $db = new PDO("mysql:host=$MYSQL_HOST;dbname=$MYSQL_DB;charset=$MYSQL_CHARSET", $MYSQL_LOGIN, $MYSQL_PASS);
+  if (!$db) {
+      die('Could not connect to database');
   }
   
-  mysql_query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB") || print "<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>";
+  $db->query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB") || print "<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>";
   
-    // make foo the current db
-  $db_selected = mysql_select_db($MYSQL_DB, $link);
-  if (!$db_selected) {
-    die ('Can\'t use $MYSQL_DB : ' . mysql_error());
-  }
-
   $extant_tables = array();
   $q = "SHOW TABLES"; 
-  $r = mysql_query($q); 
-  while ($myrow = mysql_fetch_row($r)) {
+  $stmt = $db->query($q); 
+  while ($myrow = $stmt->fetch(PDO::FETCH_NUM)) {
     array_push ($extant_tables, $myrow[0]);
   } //while checking rows 
   
@@ -44,7 +36,7 @@ else { // if config.php
     . " `upload_date` datetime NOT NULL ,\n"
     . " `load_date` datetime DEFAULT NULL ,\n"
     . " `innreach_finished` date DEFAULT NULL ) COMMENT = 'track weeding progress';";
-  (mysql_query ($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`controller`: <b>$sql</b></p>\n";
+  ($db->query($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`controller`: <b>$sql</b></p>\n";
   } //end if no controller table  
 
   if (! in_array("table_config", $extant_tables)) {
@@ -53,7 +45,7 @@ else { // if config.php
       . " `action` varchar( 255 ) NOT NULL ,\n"
       . " `field` varchar( 255 ) DEFAULT NULL ,\n"
       . " `printable` char( 1 ) DEFAULT NULL )";
-    (mysql_query ($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`table_config`: <b>$sql</b></p>\n";
+    ($db->query ($sql)) || print "<p class=\"warn\">Unable to create table `$MYSQL_DB`.`table_config`: <b>$sql</b></p>\n";
     
     $sql = "\n"
       . "INSERT INTO `table_config` (`table_name`, `action`, `field`, `printable`) VALUES"
@@ -86,7 +78,7 @@ else { // if config.php
 
 
 
-    (mysql_query ($sql)) || print "<p class=\"warn\">Unable to populate the table `$MYSQL_DB`.`table_config` with default settings</p>\n";    
+    ($db->query ($sql)) || print "<p class=\"warn\">Unable to populate the table `$MYSQL_DB`.`table_config` with default settings</p>\n";    
 
   } //end if no table_config table  
 } //end else if config exists

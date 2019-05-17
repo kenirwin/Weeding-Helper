@@ -2,18 +2,22 @@
 	/*
 		Basic users should not need to edit this file
 		Instead - post questions or feature requests to our forum -
-		https://ajaxcrud.com/forum/viewforum.php?f=2
+		http://ajaxcrud.com/forum/viewforum.php?f=2
 	*/
 
 	/************************************************************************/
-	/* ajaxCRUD.class.php	v9.1                                            */
+	/* ajaxCRUD.class.php	v9.2                                            */
 	/* ===========================                                          */
-	/* Copyright (c) 2013 by Loud Canvas Media (arts@loudcanvas.com)        */
-	/* https://www.ajaxcrud.com by https://www.loudcanvas.com               */
+	/* Copyright (c) 2017 by Loud Canvas Media (arts@loudcanvas.com)        */
+	/* http://www.ajaxcrud.com by https://www.loudcanvas.com                */
 	/*                                                                      */
-	/* This program is free software. You can redistribute it and/or modify */
-	/* it under the terms of the GNU General Public License as published by */
-	/* the Free Software Foundation; either version 2 of the License.       */
+	/* This program is free software for PERSONAL or EDUCATION use only.    */
+	/* Commercial (for profit) use is allowed but a license must be attained*/
+	/* Per Section 7 of the GNU, further licensing reqirements for          */
+	/* the commercial/business use of ajaxCRUD is further defined here:     */
+	/* http://ajaxcrud.com/license.php. You may redistribute and/or modify  */
+	/* this software under the terms of the GNU General Public License as   */
+	/* published by LCM and the Free Software Foundation                    */
 	/************************************************************************/
 	# thanks to the following for help on v6.0:
 	# Mariano Monta�ez Ureta, from Argentina; twitter: @nanomo
@@ -549,8 +553,8 @@ class ajaxCRUD{
     /*	added in R8.7
     	uses a user-defined function which will return true or false re whether THAT ROW
     	is deletable (validateDeleteWithFunction)  or any any field in that row is editable (validateUpdateWithFunction)
-    	Example and Documentation: https://ajaxcrud.com/api/index.php?id=validateDeleteWithFunction
-    	Example and Documentation: https://ajaxcrud.com/api/index.php?id=validateUpdateWithFunction
+    	Example and Documentation: http://ajaxcrud.com/api/index.php?id=validateDeleteWithFunction
+    	Example and Documentation: http://ajaxcrud.com/api/index.php?id=validateUpdateWithFunction
     */
     function validateDeleteWithFunction($function_name){
     	$this->validate_delete_with_function = $function_name;
@@ -781,16 +785,16 @@ class ajaxCRUD{
 
 		/* Load Javascript dependencies */
 		if ($this->includeJQuery){
-			//echo "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>\n"; //rel 3.5 - using jquery instead of protoculous
-    		//echo "<script type=\"text/javascript\" src=\"https://code.jquery.com/jquery-latest.min.js\"></script>\n"; //rel 6 - using latest version of jquery from jquery site (https://docs.jquery.com/Plugins/Validation/Validator)
+			//echo "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js\"></script>\n"; //rel 3.5 - using jquery instead of protoculous
+    		//echo "<script type=\"text/javascript\" src=\"//code.jquery.com/jquery-latest.min.js\"></script>\n"; //rel 6 - using latest version of jquery from jquery site (http://docs.jquery.com/Plugins/Validation/Validator)
 			if (isset($LOCAL_JS) && $LOCAL_JS) {
 				echo "<script type=\"text/javascript\" src=\"" . $this->ajaxcrud_root . "js/jquery.min.js\"></script>\n";          // EDITED 1/16/2012 - library on code.jquery site stopped working correctly!! (giving error TypeError: $.browser is undefined)
 				echo "<script type=\"text/javascript\" src=\"" . $this->ajaxcrud_root . "js/jquery.validate.min.js\"></script>\n"; //rel 6 - added ability to validate forms fields
-				echo "<script type=\"text/javascript\" src=\"" . $this->ajaxcrud_root . "js/jquery.maskedinput.js\"></script>\n";  //rel 6 - ability to mask fields (https://digitalbush.com/projects/masked-input-plugin/)
+				echo "<script type=\"text/javascript\" src=\"" . $this->ajaxcrud_root . "js/jquery.maskedinput.js\"></script>\n";  //rel 6 - ability to mask fields (http://digitalbush.com/projects/masked-input-plugin/)
 			} else {
-				echo "<script type=\"text/javascript\" src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js\"></script>\n"; // EDITED 1/16/2012 - library on code.jquery site stopped working correctly!! (giving error TypeError: $.browser is undefined)
-				echo "<script type=\"text/javascript\" src=\"https://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js\"></script>\n"; //rel 6 - added ability to validate forms fields
-				echo "<script type=\"text/javascript\" src=\"https://ajaxcrud.com/code/jquery.maskedinput.js\"></script>\n"; //rel 6 - ability to mask fields (https://digitalbush.com/projects/masked-input-plugin/)
+				echo "<script type=\"text/javascript\" src=\"//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js\"></script>\n"; // EDITED 1/16/2012 - library on code.jquery site stopped working correctly!! (giving error TypeError: $.browser is undefined)
+				echo "<script type=\"text/javascript\" src=\"//ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js\"></script>\n"; //rel 6 - added ability to validate forms fields
+				echo "<script type=\"text/javascript\" src=\"//ajaxcrud.com/code/jquery.maskedinput.js\"></script>\n"; //rel 6 - ability to mask fields (http://digitalbush.com/projects/masked-input-plugin/)
 			}
 			echo "<script type=\"text/javascript\" src=\"" . $this->ajaxcrud_root . "js/validation.js\"></script>\n";
 		}
@@ -835,7 +839,7 @@ class ajaxCRUD{
 			<style>
 				/* this will only work when your HTML doctype is in \"strict\" mode.
 					In other words - put this in your header:
-				   <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
+				   <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">
 				*/
 
 				.hand_cursor{

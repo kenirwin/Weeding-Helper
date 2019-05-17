@@ -3,8 +3,9 @@
 function GetTableNames() {
   //returns an array of file_titles by table_name
   //e.g. $file_titles = array("econ" => "Economics Books");
+    global $db;
   $q = "SELECT `table_name`,`file_title` FROM `controller` WHERE 1";
-  $r = mysql_query($q);
+  $stmt = $db->query($q);
   while ($myrow = mysql_fetch_assoc($r)) {
     extract($myrow);
     $file_titles[$table_name] = $file_title;
@@ -127,15 +128,18 @@ function DisplayProcessTable($sort="filename") {
 }
 
 function BuildSearchForm($table) {
-  $q = "SHOW COLUMNS FROM `$table`";
-  $r = mysql_query($q);
+    global $db;
+  $q = "SHOW COLUMNS FROM ?";
+  $params = ($table);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
   
-  while ($myrow = mysql_fetch_assoc($r)) {
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $type_info = preg_split("/[\(\)]/", $Type);
     $type = $type_info[0];
-    $rows[$Field][name] = $Field;
-    $rows[$Field][type] = $type;
+    $rows[$Field]['name'] = $Field;
+    $rows[$Field]['type'] = $type;
     if ($Null == "YES") { $rows[$Field][null] = true; }
     else { $rows[$Field][null] = false; } 
   } //end while

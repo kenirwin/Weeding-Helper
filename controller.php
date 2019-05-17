@@ -1,4 +1,10 @@
 <?php 
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
+
 session_start();
 require("mysql_connect.php");
 if ($no_config) { 
@@ -100,10 +106,12 @@ if ($_SESSION[unstuck] != "") {
 DisplayProcessTable_v2();
 
 function DisplayProcessTable_v2($sort="filename") {
-  global $allow_delete;
-  $q = "SELECT * FROM `controller` ORDER BY `$sort`";
-  $r = mysql_query($q);
-  while ($myrow=mysql_fetch_assoc($r)) {
+    global $allow_delete, $db;
+  $q = "SELECT * FROM `controller` ORDER BY ?";
+  $params = array($sort);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+  while ($myrow=$stmt->fetch(PDO::FETCH_ASSOC)) {
     //    extract($myrow);
     $unstick = "";
     $headers_array = array_keys($myrow);
