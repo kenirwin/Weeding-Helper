@@ -4,6 +4,12 @@
     https://stackoverflow.com/a/125578
    */
 
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
+
 session_start();
 include ("config.php");
 include ("mysql_connect.php");
@@ -23,23 +29,21 @@ else {
     $whereCopyTwo = '';
 }
 $q = "SELECT * FROM `$table` $whereCopyTwo";
-$r = mysql_query($q);
-
-
-$num_fields = mysql_num_fields($r);
+$stmt = $db->query($q);
 $headers = array();
-for ($i = 0; $i < $num_fields; $i++) {
-  $headers[] = mysql_field_name($r , $i);
+for ($i = 0; $i < $stmt->columnCount(); $i++) {
+  $headers[] = $stmt->getColumnMeta($i);
 }
 
 $fp = fopen('php://output', 'w');
-if ($fp && $r) {
-  header('Content-Type: text/csv');
-  header('Content-Disposition: attachment; filename="'.$table.'.csv"');
+if ($fp && $stmt) {
+      header('Content-Type: text/csv');
+      header('Content-Disposition: attachment; filename="'.$table.'.csv"');
   header('Pragma: no-cache');
   header('Expires: 0');
-  fputcsv($fp, $headers);
-  while ($row = mysql_fetch_array($r, MYSQL_NUM)) {
+    fputcsv($fp, $headers);
+
+  while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
     fputcsv($fp, array_values($row));
   }
   die;
