@@ -90,15 +90,15 @@ $(document).ready(function() {
 
 <?php include("scripts.php");
 include("nav.php");
-if ($_REQUEST[action] == "choose_table") {
+if ($_REQUEST['action'] == "choose_table") {
   print "<div class=\"error\">To edit a table, please select the table from one of the fully loaded tables below</div>\n";
 }
 
-if ($_REQUEST[delete]) {
-  DeleteTable($_REQUEST[delete]);
+if ($_REQUEST['delete']) {
+  DeleteTable($_REQUEST['delete']);
 }
 
-if ($_SESSION[unstuck] != "") { 
+if ($_SESSION['unstuck'] != "") { 
   print "<li class=\"success\">Set InnReach info to -1 for record $_SESSION[unstuck]; InnReach checks should now continue normally</li>\n";
   $_SESSION[unstuck] = "";
 }
@@ -154,7 +154,7 @@ function DisplayProcessTable_v2($sort="filename") {
     
     $row = join ("</td><td>", array_values($myrow));
     $next_action = "";
-    if ($myrow[load_date] != "") {
+    if ($myrow['load_date'] != "") {
       $next_action = MakeButton ("view.php?table=$myrow[table_name]", "images/edit.png", "View/Edit");
       $next_action.= MakeButton ("print.php?table=$myrow[table_name]", "images/printer.png", "Print View");
       $next_action.= MakeButton ("copytwo.php?table=$myrow[table_name]", "", "c.2");
@@ -180,21 +180,31 @@ function DisplayProcessTable_v2($sort="filename") {
 }
 
 function DeleteTable ($table) {
-    global $secure_outside_path;
+    global $secure_outside_path, $db;
   /* DELETE CONTROLLER ENTRY */
-  $q1 = "SELECT * FROM `controller` WHERE `table_name` = '$table'";
-  $r1 = mysql_query($q1);
-  $myrow = mysql_fetch_assoc($r1);
-  extract($myrow); //this will get the $filename variable
-  
-  /* DROP THE MAIN DATA TABLE */
-  $q2 = "DROP TABLE `$table`";
-  if (mysql_query($q2)) { 
-    $success .= "<li class=\"success\">Dropped table <b>`$table`</b> from database</li>\n";
+  $q1 = "SELECT * FROM `controller` WHERE `table_name` = ?";
+  $params = array($table);
+  $stmt = $db->prepare($q);
+  $myrow = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($myrow) {
+      extract($myrow); //this will get the $filename variable
   }
-  else { 
-    $fail .= "<li class=\"warn\">Could not drop table <b>`$table`</b> from database: ". mysql_error();
-  } 
+
+  /* DROP THE MAIN DATA TABLE */
+  if (ValidateTableName($table)) {
+      $validated_table_name = $table;
+      $q2 = "DROP TABLE `$validated_table_name`";
+      try { 
+          $stmt = $db->query($q2);
+          $success .= "<li class=\"success\">Dropped table <b>`$validated_table_name`</b> from database</li>\n";
+      } catch (PDOException $e) {
+          $fail .= "<li class=\"warn\">Could not drop table <b>`$validated_table_name`</b> from database: ". $stmt->errorInfo();
+      } 
+  }
+  else {
+      $fail .= '<li class="\warn\">Invalid table name: '.$table.'</li>';
+  }
+
   
   /* DELETE THE UPLOAD AND PREP FILES */
   if ($filename) {
@@ -216,12 +226,13 @@ function DeleteTable ($table) {
 
   /* DELETE LINE FROM THE CONTROLLER TABLE */
   
-  $q5 = "DELETE FROM `controller` WHERE `table_name` = '$table'";
-  if (mysql_query($q5)) { 
-    $success .= "<li class=\"success\">Deleted <b>$table</b> from controller table</li>\n";
+  $q5 = "DELETE FROM `controller` WHERE `table_name` = '$validated_table_name'";
+  $stmt = $db->query($q5);
+  if ($stmt) { 
+    $success .= "<li class=\"success\">Deleted <b>$validated_table_name</b> from controller table</li>\n";
   }
   else { 
-    $fail .= "<li class=\"warn\">Could not delete <b>$table</b> from controller table: ". mysql_error();
+    $fail .= "<li class=\"warn\">Could not delete <b>$validated_table_name</b> from controller table: ". $stmt->errorInfo();
   }
 
   print "$success$fail";
