@@ -146,7 +146,7 @@ function HandleUpload () {
     $stmt->execute($params);
     print "<li class=\"success\">SUCCESS: added file to master database</li>\n";
 } catch (PDOException $e) {
-    print "<li class=\"error\">$q -- ERROR: could not add file to master database:". mysql_errno() . mysql_error() ."</li>\n";
+    print "<li class=\"error\">$q -- ERROR: could not add file to master database:". $e->getMessage()."</li>\n";
 }
 }
       else {
