@@ -1,10 +1,9 @@
 <?php 
-$debug = true;
+include("config.php");
 if ($debug){ 
     error_reporting(E_ALL & ~E_NOTICE);
     ini_set('display_errors', 1);
 }
-
 session_start();
 require("mysql_connect.php");
 if ($no_config) { 
@@ -88,7 +87,8 @@ $(document).ready(function() {
 
 <h1>All Tables</h1>
 
-<?php include("scripts.php");
+<?php 
+include("scripts.php");
 include("nav.php");
 if ($_REQUEST['action'] == "choose_table") {
   print "<div class=\"error\">To edit a table, please select the table from one of the fully loaded tables below</div>\n";
