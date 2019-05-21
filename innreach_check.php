@@ -18,27 +18,27 @@ $sleep = round(55/$hits); //space hits over 55 seconds, sleep between them
 
 // get the first table needing check
 $q = "SELECT table_name FROM `controller` where `innreach_finished` IS NULL and `load_date` IS NOT NULL ORDER BY `upload_date` ASC LIMIT 0,1";
-$r = mysql_query($q);
+$stmt = $db->query($q);
 
 print "$q\n";
 
 
-if (mysql_num_rows($r) > 0) { // if there's work to be done
-  $myrow = mysql_fetch_row($r);
-  $table = $myrow[0];
-  BatchCheck($table, $hits, $sleep);
+if ($stmt->rowCount() > 0) { // if there's work to be done
+    $myrow = $stmt->fetch(PDO::FETCH_NUM);
+    $table = $myrow[0];
+    BatchCheck($table, $hits, $sleep);
 }
 
 function BatchCheck ($table, $hits, $sleep) {
 
-
+    global $db;
   $q = "SELECT * FROM $table WHERE innreach_total_copies IS NULL limit 0,$hits";
   print "$q\n";
 
-  $r = mysql_query($q);
+  $stmt = $db->query($q);
 
-  if (mysql_num_rows($r) > 0) {
-  while ($myrow = mysql_fetch_assoc($r)) {
+  if ($stmt->rowCount() > 0) {
+    while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     print "<h4>$bib_record: $title</h4>\n";
     $innreach_count = CheckInnReach($bib_record, $volume);
@@ -47,13 +47,13 @@ function BatchCheck ($table, $hits, $sleep) {
       //  print "<p>$innreach[CIRC] / ". array_sum($innreach) ."</p>\n";
     $uq = "UPDATE $table SET innreach_circ_copies = '$innreach_count[CIRC]', innreach_total_copies = '". array_sum($innreach_count) ."' WHERE bib_record = '$bib_record'";
     print "<p>$uq</p>\n";
-    $ur = mysql_query($uq);
+    $db->query($uq);
     sleep($sleep);
   } //end while
   } //end if still lines to check
   else  { //if the current file is finished, mark it as done in the controller
     $q = "UPDATE `controller` SET `innreach_finished` = now() WHERE `table_name` = '$table'";
-    mysql_query($q);
+    $db->query($q);
     print "done: $q\n";
   }
 
@@ -66,20 +66,21 @@ function CheckInnReach($bib, $volume="") {
     $volume = $m[2];
   }
   $bib = substr($bib, 0, -1);
-  $bibcode = $innreach[local_id] . "+$bib";
-  $base = $innreach[url] . "/search/z?" . $innreach[local_id] ."+";
+  $bibcode = $innreach['local_id'] . "+$bib";
+  $base = $innreach['url'] . "/search/z?" . $innreach['local_id'] ."+";
   $url = $base . $bib;
   print "<p>Looking for volume: $volume</p>\n";
   print "<p>URL1: $url</p>\n";
 
-  if ($html) { $html->clear(); } //helps manage memory leaks
-  $html = file_get_html($url);
+  if (isset($html)) { $html->clear(); } //helps manage memory leaks
+  $str = file_get_contents($url);
+  $html = str_get_html($str);
 
   // if holdings block found, size = 1
   // if holdings block requires follow_through, size = 0
   // if unable to parse, size = -1
   if ($holdings) { $holdings->clear();}
-  ($holdings = $html->find($innreach[holdings_selector])) || $size = -1;
+  ($holdings = $html->find($innreach['holdings_selector'])) || $size = -1;
   if (is_array($holdings)) { $size = sizeof($holdings); }
   //print "SIZE: $size\n";
 
