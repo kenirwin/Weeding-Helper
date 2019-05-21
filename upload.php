@@ -6,17 +6,17 @@
 <h1>Upload New Review File</h1>
 
 <?php 
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
+
 include ("config.php");
 include ("nav.php");
 include ("mysql_connect.php");
 
 if ($allow_uploads == true) { 
-  // update table structure if necessary 
-  // this should only happen once, upgrading controller to version 2.1.04
-  $q = 'ALTER TABLE `controller` ADD `call_type` VARCHAR( 5 ) NOT NULL AFTER `table_name`';
-  $r = $db->query($q);
-
-
   if ($_REQUEST['upload_button']) { 
     $q = "SELECT * FROM `controller` WHERE table_name = ?";
     $params = array($_REQUEST['table_name']);
@@ -35,8 +35,8 @@ if ($allow_uploads == true) {
       print '<div class="warning"><h3>Upload Directory not Defined</h3><p>You must define the $secure_outside_path variable in the config file. For security, this file should be outside the webserver directory (often <i>/var/www/html</i> or <i>public_html/</i>) but should be writeable by the webserver process.</p></div>'.PHP_EOL;
   }
 
-  elseif (fopen("$secure_outside_path/temp","x")) { // try to make a file to test write permissions
-    fclose ("$secure_outside_path/temp");
+  elseif ($link = fopen("$secure_outside_path/temp","x")) { // try to make a file to test write permissions
+    fclose ($link);
     unlink ("$secure_outside_path/temp");
     ShowUploadForm();
   } // end if web server has write permissions
