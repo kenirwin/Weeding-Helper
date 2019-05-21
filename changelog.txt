@@ -1,3 +1,9 @@
+v 2.4.0 - 21 May 2019
+* updated to PDO + PHP 7.x
+* updated simple_html_dom parser for php7
+* updated ajaxCRUD to 9.2
+* fixed bug in keeping previous operators after advanced search
+
 v 2.3.0 - 10 October 2018
 * fixed issue 8: advanced search + ajaxcrud filter -- forgets advanced search
 * fixed issue 9: losing catalog-link arrows on AJAX data reload
