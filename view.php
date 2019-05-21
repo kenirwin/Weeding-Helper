@@ -107,19 +107,19 @@ else {
     #i could omit a field if I wanted
     #https://ajaxcrud.com/api/index.php?id=omitField
 
-$searchform = BuildSearchForm ($_SESSION[weed_table]);
+$searchform = BuildSearchForm ($_SESSION['weed_table']);
 ?>
 
 <div id="search-form">
 <input type=button id="form-show-hide" value="Show/Hide Advanced Search" />
 <?php 
   
-  if ($_REQUEST[clear_query]) {
+  if ($_REQUEST['clear_query']) {
     $where = "";
   } // end if clearing query conditions
   else {
     $clear_button = '<a href="view.php?clear_query=true"><button><img src="images/delete.png" style="height: .75em">&nbsp;Remove Conditions</button></a>';
-   if ($_REQUEST[submit_query_builder]) {
+   if ($_REQUEST['submit_query_builder']) {
      $where = BuildWhereFromSearch ($table);
      print "$where $clear_button"; 
    } //end if 
