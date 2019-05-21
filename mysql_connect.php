@@ -14,12 +14,17 @@ else { // if config.php
         PDO::MYSQL_ATTR_LOCAL_INFILE => true,
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     );
-    $db = new PDO("mysql:host=$MYSQL_HOST;dbname=$MYSQL_DB;charset=$MYSQL_CHARSET", $MYSQL_LOGIN, $MYSQL_PASS, $pdo_params);
-  if (!$db) {
-      die('Could not connect to database');
+    try {
+        $db = new PDO("mysql:host=$MYSQL_HOST;dbname=$MYSQL_DB;charset=$MYSQL_CHARSET", $MYSQL_LOGIN, $MYSQL_PASS, $pdo_params);
+    } catch (PDOException $e) {
+        die('Could not connect to database. ' . $e->getMessage());
+}
+
+  try {
+      $db->query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB"); 
+  } catch (PDOException $e) {
+      die("<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>");
   }
-  
-  $db->query("CREATE DATABASE IF NOT EXISTS $MYSQL_DB") || print "<p class=\"warn\">Unable to create database $MYSQL_DB. Please create the database manually before proceeding.</p>";
   
   $extant_tables = array();
   $q = "SHOW TABLES"; 
