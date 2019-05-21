@@ -100,7 +100,7 @@ if ($_REQUEST['delete']) {
 
 if ($_SESSION['unstuck'] != "") { 
   print "<li class=\"success\">Set InnReach info to -1 for record $_SESSION[unstuck]; InnReach checks should now continue normally</li>\n";
-  $_SESSION[unstuck] = "";
+  $_SESSION['unstuck'] = "";
 }
 
 DisplayProcessTable();

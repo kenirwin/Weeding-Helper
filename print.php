@@ -6,8 +6,8 @@ if ($debug){
 }
 
 session_start();
-if ($_REQUEST[table]) { $_SESSION[weed_table] = $_REQUEST[table]; }
-$table = $_SESSION[weed_table];
+if ($_REQUEST['table']) { $_SESSION['weed_table'] = $_REQUEST['table']; }
+$table = $_SESSION['weed_table'];
 include('scripts.php');
 include('mysql_connect.php');
 $q = "SELECT file_title from `controller` where table_name = ?";
