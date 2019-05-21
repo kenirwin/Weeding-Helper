@@ -369,13 +369,13 @@ function CreateTable ($table_name) {
 }
 
 function LoadTable ($table, $file) {
-    global $secure_outside_path, $db;
+    global $secure_outside_path, $db, $debug;
   $local = "";
   if (UseLocalInfile()) { $local = "LOCAL"; }
   $q = "LOAD DATA $local INFILE '$secure_outside_path/prepped/$file' INTO TABLE `$table` FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n'";
-  print $q . "\n";
+  if ($debug) { print $q . "\n"; }
   
-  try{ 
+  try { 
       $db->query($q);
       PrintSuccess ("LOADED FILE $file\n");
       return true;

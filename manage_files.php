@@ -8,7 +8,7 @@
 
 
 <?php
-   include ("config.php");
+include ("config.php");
 require("mysql_connect.php");
 include("nav.php");
 include("scripts.php");
@@ -73,16 +73,21 @@ else {
 
 <?php
 function UpdateCount($table_name) {
-  $q = "UPDATE `controller` SET `records` = (SELECT count(*) FROM `$table_name` WHERE 1) WHERE `table_name` = '$table_name'";
-  $r = mysql_query($q);
-  return $r; 
+    global $db;
+    $verified_table_name = VerifyTableName($table_name);
+  $q = "UPDATE `controller` SET `records` = (SELECT count(*) FROM `$verified_table_name` WHERE 1) WHERE `table_name` = ?";
+  $params = array($table_name);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+  return $stmt; 
   } //end UpdateCount
 
 function UpdateCountForm() {
+    global $db;
   $options = '<option value="">Update the record count for a selected file';
   $q="SELECT * FROM `controller` ORDER BY `filename` ASC";
-  $r=mysql_query($q);
-  while ($myrow=mysql_fetch_assoc($r)) {
+  $stmt = $db->query($q);
+  while ($myrow=$stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $options .= '<option value="'.$table_name.'">'.$file_title.' ('.$table_name.')</option>'.PHP_EOL;
   }
@@ -98,10 +103,11 @@ function UpdateCountForm() {
 }
 
 function CombineForm() {
+    global $db;
   $options = "";
   $q="SELECT * FROM `controller` ORDER BY `filename` ASC";
-  $r=mysql_query($q);
-  while ($myrow=mysql_fetch_assoc($r)) {
+  $stmt = $db->query($q);
+  while ($myrow=$stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $options .= '<tr><td><input type="checkbox" name="combine_table[]" value="'.$table_name.'" /></td> <td>'.$file_title.'</td> <td>'.$table_name.'</td> <td>'.$records.' records</td></tr>'.PHP_EOL;
   }
@@ -137,18 +143,40 @@ EOT;
   }
 
 function CombineTables($tables, $new_table_name, $file_title, $user) {
-  $q = "SHOW TABLES LIKE '$new_table_name'";
-  $r = mysql_query($q);
-  if (mysql_num_rows($r) > 0) {
-    PrintError('Table `'.$new_table_name.'` already exists; choose another name');
+    global $db, $secure_outside_path;
+    $placeholders = '';
+    for ($i = 0; $i<sizeof($tables); $i++) {
+        $placeholders .= '?';
+        if ($i+1 < sizeof($tables)) {
+            $placeholders .= ',';
+        }
+    }
+    try {
+    $q = 'SELECT DISTINCT `call_type` FROM `controller` WHERE `table_name` in ('.$placeholders.')';
+    $stmt = $db->prepare($q);
+    $stmt->execute($tables);
+    $myrow = $stmt->fetch(PDO::FETCH_NUM);
+    $call_type = $myrow[0];
+    } catch (PDOException $e) {
+        print ($e->getMessage);
+    }
+
+    $fail = false;
+    if (! ValidateTableName($new_table_name)) { die (PrintError('Invalid New Table Name')); }
+    $q = "SHOW TABLES LIKE '$new_table_name'";
+    $stmt = $db->query($q);
+    if ($stmt->rowCount() > 0) {
+        PrintError('Table `'.$new_table_name.'` already exists; choose another name');
+        $fail = true;
   }
   else { 
     $calls = array();
     $content = array();
     foreach ($tables as $table) {
+    if (! ValidateTableName($table)) { die (PrintError('Invalid Table Name: '.$table)); }
       $q = 'SELECT * FROM `'.$table.'`';
-      $r = mysql_query($q);
-      while ($myrow = mysql_fetch_assoc($r)) {
+      $stmt = $db->query($q);
+      while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
 	extract($myrow);
 	unset($call);
 	if (strlen($call_item)>1) {
@@ -170,32 +198,37 @@ function CombineTables($tables, $new_table_name, $file_title, $user) {
   include("sortLC.php");
   uasort($calls, "SortLC");
   $filename = "$new_table_name.txt";
-  $file = fopen("./prepped/$filename","w");
+  $filepath = "$secure_outside_path/prepped/$filename";
+  $file = fopen($filepath,"w");
   if ($file) {
     foreach($calls as $item=>$call) {
       fwrite($file, $content[$item]);
     }
   } 
   else { 
-    PrintError('Unable to open file for writing in prepped directory'); 
+      PrintError('Unable to open file for writing in "prepped" directory '); 
   }
   fclose($file);
   
   if (CreateTable($new_table_name)) {
+      global $db;
     //  fwrite ($log, "$now - LoadTable: $table_name, $filename");
     if (LoadTable($new_table_name, $filename)) {
-  $q = "SELECT count(*) FROM `$new_table_name`";
-  $r = mysql_query($q);
-  $myrow = mysql_fetch_row($r);
-  $records = $myrow[0];
-  
-  $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`records`,`upload_date`,`load_date`) VALUES ('".mysql_real_escape_string($filename)."', '".mysql_real_escape_string($file_title)."', '".mysql_real_escape_string($new_table_name)."', '".mysql_real_escape_string($user)."', $records, now(), now())";
-  if (mysql_query($q)) {
-    PrintSuccess("Added table to controller");
-  }
-  else {
-    PrintError('Could not add to controller table: '.$q);
-  }
+        if (! ValidateTableName($new_table_name)) { die (PrintError('Invalid New Table Name')); }
+        $q = "SELECT count(*) FROM `$new_table_name`";
+        $stmt = $db->query($q);
+        $myrow = $stmt->fetch(PDO::FETCH_NUM);
+        $records = $myrow[0];
+        try {
+            $q = "INSERT INTO `controller` (`filename`,`file_title`,`table_name`,`user`,`records`,`call_type`,`upload_date`,`load_date`) VALUES (?, ?, ?, ?, ?, ?, now(), now())";
+            $params = array ($filename,$file_title,$new_table_name,$user,$records, $call_type);
+            $stmt = $db->prepare($q);
+            if ($stmt->execute($params)) {
+                PrintSuccess("Added table to controller");
+            }
+        } catch (PDOException $e) {
+            PrintError('Could not add to controller table: '.$e->getMessage());
+        }
 
 
     }
