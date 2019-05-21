@@ -1,4 +1,9 @@
 <?php 
+$debug = true;
+if ($debug){ 
+    error_reporting(E_ALL & ~E_NOTICE);
+    ini_set('display_errors', 1);
+}
 session_start();
 ?>
 <html>
@@ -37,7 +42,6 @@ include ("nav.php");
 if ($_REQUEST['submit_change_settings']) {
   //  print_r($_REQUEST);
   UpdateSettingsTable();
-  print (ChooseTable());
 }
 
 elseif ($_REQUEST['clone_settings_submit']) {
@@ -49,11 +53,13 @@ elseif ($_REQUEST['clone_settings_submit']) {
 elseif ($_REQUEST['table']) {  
   /* this is invoked if coming to this page from a button on the main page
      FIRST: determine if table already has settings*/
-  $q = "SELECT * FROM table_config WHERE `table_name` = '".$_REQUEST['table']. "'";
-  $r = mysql_query($q);
-
+  $q = "SELECT * FROM table_config WHERE `table_name` = ?";
+  $params = array($_REQUEST['table']);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+  
   /* if settings, show settings*/
-  if (mysql_num_rows($r) > 0) {
+  if ($stmt->rowCount() > 0) {
     print (ChooseTable());
     DisplayTableSettings($_REQUEST['table']);
   }
@@ -71,18 +77,28 @@ if ($_REQUEST['choose_table']) {
 }
 
 function CloneSettings($clone_to, $clone_from="default") {
+    global $db;
+    $errors = 0;
+    $error_messages = '';
   $q = "SELECT * FROM `table_config` WHERE `table_name` = '$clone_from'";
-  print "<li>$q</li>\n";
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
-    $q = "INSERT INTO `table_config` VALUES ('$clone_to','$myrow[action]','$myrow[field]','$myrow[printable]')";
-    mysql_query($q);
-    if (mysql_errno() > 0) {
-      $errors++;
-      $error_messages .= "<li>Error #".mysql_errno().": ". mysql_error()."</li>\n";
-    }
+  $params = array($clone_from);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+  //  print "<li>$q</li>\n";
+
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
+      try {
+    $q = "INSERT INTO `table_config` VALUES (?,?,?,?)";
+    $params = array($clone_to,$myrow['action'],$myrow['field'],$myrow['printable']);
+    $stmt2 = $db->prepare($q);
+    $stmt2->execute($params);
+      } catch (PDOException $e) {
+          $errors++;
+          $error_messages.= '<li>'.$e->getMessage().'</li>'.PHP_EOL;
+      }
+    
   } // end while
-  if ($errors) {
+  if ($errors > 0) {
     print "<h2 class=\"warn\">$errors Errors!</h2>";
     print "<ul>$error_messages</ul>\n";
   } //end if errors
@@ -92,18 +108,17 @@ function CloneSettings($clone_to, $clone_from="default") {
 
 } //end function CloneSettings
 
-function ChooseTable($last_table_used) {
+function ChooseTable($last_table_used = '') {
+    global $db;
   $file_titles = GetTableNames();
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
-    extract($myrow);
-    $opts .= "<option value=\"$table_name\">$file_titles[$table_name] ($table_name)</option>\n";
+  foreach ($file_titles as $table_name => $display_name) {
+    $opts .= "<option value=\"$table_name\">$display_name ($table_name)</option>\n";
   }
   $form1 =  "<form id=\"choose\" method=\"post\" action=\"settings.php\"><select name=\"choose_table\"><option>Choose a table to edit</option>$opts</select><input type=\"submit\"></form>\n";
   
   $q = "SELECT table_name,file_title FROM `controller` WHERE table_name NOT IN (SELECT distinct(table_name) FROM table_config)";
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  $stmt = $db->query($q);
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $opts2 .= "<option value=\"$table_name\">$table_name ($file_title)</option>\n";
 
@@ -118,38 +133,49 @@ function ChooseTable($last_table_used) {
 function UpdateSettingsTable() {
   //print_r ( $_REQUEST);
   /* Set all printable values to NO; all yeses will be activated below */
-  $q = "UPDATE `table_config` SET printable='N' WHERE `table_name`='$_REQUEST[table_name]'";
-  mysql_query($q);
-  if (mysql_errno() > 0) {
-    $errors++;
-    $error_messages .= "<li>Error #".mysql_errno().": ". mysql_error()."</li>\n";
-  }
-  
+    global $db;
+    $errors = 0; $error_messages = '';
+    try { 
+  $q = "UPDATE `table_config` SET printable='N' WHERE `table_name`= ?";
+  $params = array($_REQUEST['table_name']);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+    } catch (PDOException $e) {
+        $errors++;
+        $error_messages .= '<li>'.$e->getMessage().'</li>'.PHP_EOL;
+    }
   foreach ($_REQUEST as $k=>$v) {
     if (preg_match("/^value_(.*)/", $k, $m)) {
+        try {
       $q = "UPDATE `table_config` SET action='$v' WHERE `table_name`='$_REQUEST[table_name]' AND field = '$m[1]'";
-      mysql_query($q);
-      if (mysql_errno() > 0) {
-	$errors++;
-	$error_messages .= "<li>Error #".mysql_errno().": ". mysql_error()."</li>\n";
-      }
+      $params = array($_REQUEST['table_name']);
+      $stmt = $db->prepare($q);
+      $stmt->execute($params);
+    } catch (PDOException $e) {
+        $errors++;
+        $error_messages .= '<li>'.$e->getMessage().'</li>'.PHP_EOL;
+    }
+
     } //end if value
 
 
     elseif (preg_match("/^print_(.*)/", $k, $m)) {
       if ($v == "on") { $p = "Y"; }
       else { $p = "N"; }
-      $q = "UPDATE `table_config` SET printable='$p' WHERE `table_name`='$_REQUEST[table_name]' AND field = '$m[1]'";
-      //print "<p>$q</p>\n";
-      mysql_query($q);
-      if (mysql_errno() > 0) {
-	$errors++;
-	$error_messages .= "<li>Error #".mysql_errno().": ". mysql_error()."</li>\n";
-      }
+      try { 
+      $q = "UPDATE `table_config` SET printable=? WHERE `table_name`=? AND field = ?";
+      $params = array($p, $_REQUEST['table_name'], $m[1]);
+      $stmt = $db->prepare($q);
+      $stmt->execute($params);
+    } catch (PDOException $e) {
+        $errors++;
+        $error_messages .= '<li>'.$e->getMessage().'</li>'.PHP_EOL;
+    }
+
     } //end if value
   }//end foreach Request value
 
-  if ($errors) {
+  if ($errors > 0) {
     print "<h2 class=\"warn\">$errors Errors!</h2>";
     print "<ul>$error_messages</ul>\n";
   } //end if errors
@@ -161,11 +187,15 @@ function UpdateSettingsTable() {
 
 
 function DisplayTableSettings($table) {
+    global $db;
   $file_titles = GetTableNames();
   print "<h2>Table Settings: $file_titles[$table] ($table)</h2>\n";
-  $q = "SELECT * FROM `table_config` WHERE `table_name` = '$table'";
-  $r = mysql_query($q);
-  while ($myrow = mysql_fetch_assoc($r)) {
+  $q = "SELECT * FROM `table_config` WHERE `table_name` = ?";
+  $params = array($table);
+  $stmt = $db->prepare($q);
+  $stmt->execute($params);
+
+  while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
     $settings[$field] = $action;
     $print[$field] = $printable;
@@ -176,11 +206,12 @@ function DisplayTableSettings($table) {
     $fields = array("call_order","author","title","publisher","year","lcsh","catdate","loc","call_bib","call_item","volume","copy","bcode","mat_type","bib_record","item_record","oclc","circs","renews","int_use","last_checkin","barcode","subclass","subj_starts","classic","best_book","condition","notes","fate","innreach_circ_copies","innreach_total_copies");
   }
   else {
-
-    $q = "SHOW COLUMNS FROM `$table`";
-    $r= mysql_query($q);
+      $verified_table_name = VerifyTableName($table);
+    $q = "SHOW COLUMNS FROM $verified_table_name";
+    print $q;
+    $stmt = $db->query($q);
     $fields = array();
-    while ($myrow=mysql_fetch_assoc($r)) {
+    while ($myrow=$stmt->fetch(PDO::FETCH_ASSOC)) {
       extract($myrow);
       array_push($fields, $Field);
     } //end while
