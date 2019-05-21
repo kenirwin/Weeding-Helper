@@ -215,25 +215,33 @@ function BuildSearchForm($table) {
   
   foreach ($rows as $field => $a) {
     $line = "";
-    if ($a[type] == "int") { 
+    if ($a['type'] == "int") { 
       $opts = array("=",">","<","!=","IS NULL","IS NOT NULL");
     }
-    elseif ($a[type] == "varchar") {
+    elseif ($a['type'] == "varchar") {
       $opts = array("LIKE","NOT LIKE","=","!=","IS NULL","IS NOT NULL");
     }
-    elseif ($a[type] == "date") {
+    elseif ($a['type'] == "date") {
       $opts = array("=",">","<","!=","IS NULL","IS NOT NULL");
     }
-    elseif ($a[type] == "char") {
+    elseif ($a['type'] == "char") {
       $opts = array("LIKE","NOT LIKE","=","!=","IS NULL","IS NOT NULL");
     }
     else {$opts = array(); }
-    $fieldname = $a[name];
+    $fieldname = $a['name'];
     $line = "<tr><td>$fieldname</td><td><select name=\"operators[$fieldname]\">";
     foreach ($opts as $code) { 
-      $line .= "<option value=\"$code\">$code</option>\n";
+        if (array_key_exists($fieldname, $_REQUEST['operators'])) {
+            if ($code == $_REQUEST['operators'][$fieldname]) {
+                $selected = "selected";
+            }
+            else {
+                $selected = "";
+            }
+        }
+      $line .= "<option value=\"$code\" $selected>$code</option>\n";
     } //end foreach option
-    $line .= "</select></td> <td><input type=\"text\" name=\"values[$fieldname]\" value=\"".$_REQUEST[values][$fieldname]."\"></td></tr>\n";
+    $line .= "</select></td> <td><input type=\"text\" name=\"values[$fieldname]\" value=\"".$_REQUEST['values'][$fieldname]."\"></td></tr>\n";
     $lines .= $line;
   } //end foreach row
   
