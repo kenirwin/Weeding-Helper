@@ -199,10 +199,9 @@ function DisplayProcessTable ($sort="filename") {
 
 function BuildSearchForm($table) {
     global $db;
-  $q = "SHOW COLUMNS FROM ?";
-  $params = ($table);
-  $stmt = $db->prepare($q);
-  $stmt->execute($params);
+    $verified_table_name = VerifyTableName($table);
+  $q = "SHOW COLUMNS FROM $verified_table_name";
+  $stmt = $db->query($q);
   
   while ($myrow = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($myrow);
@@ -248,10 +247,10 @@ function BuildWhereFromSearch($table) {
   $wheres = array();
   /* Creating an object for the SELECT query */
   //print_r($_REQUEST[value]);
-  $operators = $_REQUEST[operators];
+  $operators = $_REQUEST['operators'];
   //print_r($operators);
   foreach ($operators as $field => $operator) {
-    $value = $_REQUEST[values][$field];
+    $value = $_REQUEST['values'][$field];
     if (($value != '') || (preg_match("/IS/",$operator))) {
       // if there's a value or the operator uses words like 'IS NULL'
       //    print "<br>$field|$operator|$value|\n";
