@@ -14,7 +14,8 @@ See a limited [demo instance of Weeding Helper](http://www6.wittenberg.edu/lib/i
 It runs in a LAMP environment: Linux, Apache, MySQL, PHP; it also uses a good 
 bit of JavaScript. It relies on Linux's cron process for some jobs. It relies 
 on several pre-existing open-source tools, all of which are included in this 
-installation. 
+installation. Version 2.4.x and up require the PDO PHP library and are 
+designed for PHP 7.x. 
 
 ## Installation
 
