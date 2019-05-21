@@ -123,7 +123,7 @@ function sqlDate ($date) {
 } //end function sqlDate
 
 function DisplayProcessTable ($sort="filename") {
-    global $allow_delete, $db;
+    global $allow_delete, $db, $debug;
   $q = "SELECT * FROM `controller` ORDER BY ?";
   $params = array($sort);
   $stmt = $db->prepare($q);
@@ -149,28 +149,29 @@ function DisplayProcessTable ($sort="filename") {
 
     else {
       $ct_q = "SELECT count(*) FROM $myrow[table_name] WHERE innreach_circ_copies IS NOT NULL";
-
-      $ct_stmt = $db->query($ct_q);
-
-      if ($ct_stmt && $ct_stmt->rowCount() > 0) {
-          $ct_myrow=$ct_stmt->fetch(PDO::FETCH_NUM);
-          $innr_count = $ct_myrow[0];
+      try { 
+          $ct_stmt = $db->query($ct_q);
+          if ($ct_stmt && $ct_stmt->rowCount() > 0) {
+              $ct_myrow=$ct_stmt->fetch(PDO::FETCH_NUM);
+              $innr_count = $ct_myrow[0];
+          }
+          else {
+              $ct_myrow = 0;
+          }
+      } catch (PDOException $e) {
+          if ($debug) { PrintError('Some details unavailable for '.$myrow['table_name']. '. If this persists, you may need to check to be sure that the prep_file.php script is running as a cron job. See Documentation Install instructions, <a href="documentation.php#installation">Step 4</a>'); } 
       }
-      else {
-          $ct_myrow = 0;
+          if ($innr_count > 0) {
+              $myrow['innreach_finished'] =  "$innr_count of $myrow[records]";
+              $unstick = MakeButton("unstick.php?table=$myrow[table_name]","","Unstick");
+          }
+          else {
+              $myrow['innreach_finished'] = "In Queue";
+          }
       }
-      
-      if ($innr_count > 0) {
-	$myrow['innreach_finished'] =  "$innr_count of $myrow[records]";
-	$unstick = MakeButton("unstick.php?table=$myrow[table_name]","","Unstick");
-      }
-      else {
-	$myrow['innreach_finished'] = "In Queue";
-      }
-    }
     
-    $row = join ("</td><td>", array_values($myrow));
-    $next_action = "";
+      $row = join ("</td><td>", array_values($myrow));
+      $next_action = "";
     if ($myrow['load_date'] != "") {
       $next_action = MakeButton ("view.php?table=$myrow[table_name]", "images/edit.png", "View/Edit");
       $next_action.= MakeButton ("print.php?table=$myrow[table_name]", "images/printer.png", "Print View");
