@@ -98,6 +98,8 @@ where "apache" is the name of a permissions group that grants write-permissions 
 			
 <p>Create a list of ITEM records in III Millennium or Sierra.</p>																								<p>To upload new data from a III Review File, export the data in this format (order matters!):</p>
 <div class="example">
+<p>n.b.: <i>Some libraries use MARC 260 for publisher info; others use 264. Choose those fields based on your library's cataloging standards.</i></p>
+
 <table>
 <thead>
  <tr><th>Field Type</th> <th>Field</th></tr>
@@ -105,9 +107,9 @@ where "apache" is the name of a permissions group that grants write-permissions 
 <tbody>
 <tr><td>Bibliographic</td> <td>AUTHOR</td></tr>
 <tr><td>Bibliographic</td> <td>TITLE</td></tr>
-<tr><td>Bibliographic</td> <td>MARC FIELD 260|a</td></tr>
-<tr><td>Bibliographic</td> <td>MARC FIELD 260|b</td></tr>
-<tr><td>Bibliographic</td> <td>MARC FIELD 260|c</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|a (or 264|a)</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|b (or 264|b)</td></tr>
+<tr><td>Bibliographic</td> <td>MARC FIELD 260|c (or 264|c)</td></tr>
 <tr><td>Bibliographic</td> <td>SUBJECT</td></tr>
 <tr><td>Bibliographic</td> <td>CAT DATE</td></tr>
 <tr><td>Bibliographic</td> <td>LOCATION</td></tr>
