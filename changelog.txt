@@ -1,3 +1,7 @@
+v 2.4.1 - 25 July 2019
+* on ingest, delete RDA authority URLs in Author and LCSH fields
+* fixed bug that lost field headers on CSV export
+
 v 2.4.0 - 21 May 2019
 * updated to PDO + PHP 7.x
 * updated simple_html_dom parser for php7
