@@ -31,16 +31,23 @@ else {
 $q = "SELECT * FROM `$table` $whereCopyTwo";
 $stmt = $db->query($q);
 $headers = array();
+$headers_meta = array();
 for ($i = 0; $i < $stmt->columnCount(); $i++) {
-  $headers[] = $stmt->getColumnMeta($i);
+  $headers_meta[] = $stmt->getColumnMeta($i);
+}
+
+foreach ($headers_meta as $h) {
+    array_push($headers, $h['name']);
 }
 
 $fp = fopen('php://output', 'w');
 if ($fp && $stmt) {
-      header('Content-Type: text/csv');
-      header('Content-Disposition: attachment; filename="'.$table.'.csv"');
-  header('Pragma: no-cache');
-  header('Expires: 0');
+
+    header('Content-Type: text/csv');
+    header('Content-Disposition: attachment; filename="'.$table.'.csv"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
     fputcsv($fp, $headers);
 
   while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
