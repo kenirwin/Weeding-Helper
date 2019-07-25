@@ -325,6 +325,11 @@ function PrepFile ($filename, $call_type="LC") {
 	$$field = sqlDate(${$field});
       }
 
+      /* strip RDA urls from author and subject fields */
+      
+      $lcsh = StripRDA($lcsh);
+      $author = StripRDA($lcsh);
+
       $key = "";
       if (! preg_match ("/CALL/", $call_item)) {//skip headers
 	//index based on item call # if there is one
@@ -360,7 +365,12 @@ function PrepFile ($filename, $call_type="LC") {
   return true;
 } //end function PrepFile
 
-
+function StripRDA($str) {
+    //strip URLs 
+    //stop at spaces or semicolons; take the semi-colon if it's there
+    $str = preg_replace ('/http(s*):\/\/[^ ;]+;?/','',$str);
+    return $str;
+}
 
 function CreateTable ($table_name) {
     global $db;
