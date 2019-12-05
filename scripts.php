@@ -328,7 +328,7 @@ function PrepFile ($filename, $call_type="LC") {
       /* strip RDA urls from author and subject fields */
       
       $lcsh = StripRDA($lcsh);
-      $author = StripRDA($lcsh);
+      $author = StripRDA($author);
 
       $key = "";
       if (! preg_match ("/CALL/", $call_item)) {//skip headers
