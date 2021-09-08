@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 { padding-left: 110px;
+     background-image: url('images/logo-color100.png');
+     background-repeat: no-repeat;
+     height: 100px;
+   }
+
+input.upload {
+    width: 200px;
+}
+
+label {
+  font-weight: bold;
+ display: block;
+ width: 150px;
+   float: left;
+ }
+
+.warn, .warning {
+    color: red;
+}
+.success {
+    color: blue;
+}
+
+div.example {
+  padding: .25em 1em;
+  background-color: #CFDBF3;
+  border-radius: 5px;
+}
+
+
+#license {
+margin-top: 3em;
+color: grey;
+border-top: 1px solid grey;
+padding: 1em 0;
+}
+#license a, #license a:visited {
+color: grey;
+}
+#navlinks {
+    z-index: 2;
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    line-height: 2em;
+}
+
+.action {
+    line-height: 2em;
+    white-space: nowrap;
+}
+
+#navlinks li, .action {
+    display: inline;
+    list-style: none;
+    border: 1px solid black;
+    padding: .25em;
+    border-radius: 5px;
+    margin-left: 1em;
+    background-color: #CFDBF3;
+}
+
+#navlinks li.turned-off {
+    background-color: #ccc;
+}
+
+#navlinks li a, #navlinks li a:visited, .action {
+    color: black;
+    font-family: arial, helvetica, sans-serif;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#navlinks li.turned-off a {
+    color: #666;
+}
+
+#navlinks li:hover {
+    background-color: lightgreen;
+}
+
+dt { padding-top: .5em }
+dd { text-indent: -3em; margin-left: 3em;}
+

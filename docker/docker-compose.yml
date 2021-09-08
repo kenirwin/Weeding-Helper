@@ -1,0 +1,81 @@
+# ------------------------------------------------------------------------------------------------
+# ❤️ Use Compose Spec: https://www.compose-spec.io/ ❤️
+#
+# This file builds a containerized instance of Weeding Helper behind Traefik as a reverse proxy.
+# Images for Traefik and Ofelia are pulled from their respective authorities on Docker Hub.
+# Configurations and the database volume are bind-mounted to the project root's data directory
+#
+# If at some point you'd want to take this application into production, Traefik provides reverse
+# proxy functionality, support for automating Let's Encrypt certificates installation and renewal,
+# and other useful services.
+# -------------------------------------------------------------------------------------------------
+
+# --------------------------
+# Docker Volume for MariaDB
+# --------------------------
+volumes:
+  weeding-helper-data:
+
+
+services:
+# ---------------------------------------------------------------------
+# Traefik: reverse proxy and routing service
+# ---------------------------------------------------------------------
+  traefik:
+    container_name: traefik
+    image: traefik:v2.4
+    # ------------------------------------------------
+    # Listen to HTTP Port 80 and Docker
+    # ------------------------------------------------
+    command: --providers.docker=true
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+
+# ------------------------------------------------
+# Weeding Helper Application Code
+# ------------------------------------------------
+  weeding-helper-app:
+    container_name: weeding-helper-app
+    image: dzoladz/weeding-helper-app:latest
+    labels:
+    # -------------------------------------------------------
+    # Assign an HTTP hostname = http://weeding.docker.localhost
+    # -------------------------------------------------------
+      - "traefik.http.routers.weeding-helper.rule=Host(`weeding.docker.localhost`)"
+    restart: unless-stopped
+
+
+# ------------------------------------------------
+# MariaDB Database Instance for Weeding Helper
+#
+# NOTE: The MYSQL_* environment variables below
+# need to match the values used in config.php
+# ------------------------------------------------
+  weeding-helper-db:
+    container_name: weeding-helper-db
+    image: dzoladz/weeding-helper-db:latest
+    restart: unless-stopped
+    volumes:
+      - weeding-helper-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: weeding
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+
+# ------------------------------------------------------
+# Ofelia: docker job scheduler (aka. crontab for docker)
+# ------------------------------------------------------
+  ofelia:
+    container_name: ofelia
+    image: mcuadros/ofelia:latest
+    restart: always
+    depends_on:
+      - weeding-helper-app
+    volumes:
+      - "./ofelia.ini:/etc/ofelia/config.ini"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
