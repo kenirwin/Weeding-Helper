@@ -5,3 +5,4 @@ config.php
 upload/*
 prepped/*
 *.zip
+!/docker/app/config.php
