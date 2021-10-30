@@ -26,6 +26,7 @@ COPY ./docker/app/copytwo.php /var/www/html/copytwo.php
 COPY ./docker/app/innreach_check.php /var/www/html/innreach_check.php
 COPY ./docker/app/upload.php /var/www/html/upload.php
 COPY ./docker/app/ajaxCRUD.class.php /var/www/html/ajaxcrud/ajaxCRUD.class.php
+COPY ./docker/app/simple_html_dom.php /var/www/html/DOM/simple_html_dom.php
 
 # makes the file upload directories, path is defined according
 # to the value of $secure_outside_path set in config.php
