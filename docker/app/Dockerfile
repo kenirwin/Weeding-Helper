@@ -23,6 +23,7 @@ COPY ./docker/app/style.css /var/www/html/style.css
 COPY ./docker/app/config.php /var/www/html/config.php
 COPY ./docker/app/scripts.php /var/www/html/scripts.php
 COPY ./docker/app/copytwo.php /var/www/html/copytwo.php
+COPY ./docker/app/innreach_check.php /var/www/html/innreach_check.php
 COPY ./docker/app/upload.php /var/www/html/upload.php
 COPY ./docker/app/ajaxCRUD.class.php /var/www/html/ajaxcrud/ajaxCRUD.class.php
 
