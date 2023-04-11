@@ -37,7 +37,7 @@ also included.
 
 ## Authors
 
-Weeding Helper was developed by Ken Irwin, kirwin@wittenberg.edu
+Weeding Helper was developed by Ken Irwin, ken@kenirwin.net
 
 ## License
 
